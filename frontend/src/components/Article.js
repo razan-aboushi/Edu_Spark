@@ -5,13 +5,13 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { HashLink } from 'react-router-hash-link';
 import axios from 'axios';
 
-function Article() {
+function Article()
+ {
   const [currentPage, setCurrentPage] = useState(1);
   const [articles, setArticles] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [commentsCountFetched, setCommentsCountFetched] = useState(false);
-
 
 
 

@@ -196,16 +196,6 @@ function App() {
               }
             />
             <Route
-              path="/Error404"
-              element={
-                <>
-                  <Nav />
-                  <Error404 />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
               path="/TermsOfService"
               element={
                 <>
@@ -264,6 +254,11 @@ function App() {
                 path="/UserProfileTeacher"
                 element={
                   <UserProfileTeacher />} />)}
+
+
+
+            <Route path="*" element={<Error404 />} />
+
           </Routes>
         </CartProvider>
 
