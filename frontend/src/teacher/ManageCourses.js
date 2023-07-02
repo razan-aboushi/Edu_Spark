@@ -1,0 +1,218 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import { useParams } from 'react-router-dom';
+
+function ManageCourses() {
+  const [courses, setCourses] = useState([]);
+  const [summaries, setSummaries] = useState([]); 
+  const { user_id } = useParams();
+
+  useEffect(() => {
+    getCourses();
+    getSummaries(); 
+  }, []);
+
+
+
+  // get courses from the databse for the teacher
+  const getCourses = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        const user_id = decodedToken.userId;
+        console.log(user_id);
+
+        const response = await axios.get(`http://localhost:4000/user-courses/${user_id}`);
+        console.log(response.data);
+        setCourses(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    }
+  };
+
+
+  // get summaries from the databse for the teacher
+  const getSummaries = async () => {
+    try {
+
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        const user_id = decodedToken.userId;
+        console.log(user_id);
+
+
+      const response = await axios.get(`http://localhost:4000/user-summaries/${user_id}`);
+      console.log(response.data);
+      setSummaries(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching summaries:', error);
+    }
+  };
+
+  // convert the timestamp to date
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('en-US');
+  };
+
+  // change the color of the status
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'approve':
+        return 'green';
+      case 'pending':
+        return 'black';
+      case 'reject':
+        return 'red';
+      default:
+        return 'black';
+    }
+  };
+
+  return (
+    <section id="ManageCourses" className="text-right mt-5">
+      <h4 className="text-center">دوراتي المُقدمة</h4>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        {courses.map((course) => (
+          <div
+            style={{
+              width: '300px',
+              border: '1px solid #ccc',
+              borderRadius: '10px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              overflow: 'hidden',
+              margin: '10px',
+              transition: 'box-shadow 0.3s',
+            }}
+            key={course.course_id}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+            }}
+          >
+            {/* Add the status card */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '30px',
+                backgroundColor: getStatusColor(course.course_status),
+                color: 'white',
+              }}
+            >
+              {course.course_status}
+            </div>
+
+            <div style={{ height: '200px', overflow: 'hidden' }}>
+              <img
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                src={`http://localhost:4000/images/${course.course_image}`}
+                alt="صورة الدورة"
+              />
+            </div>
+            <div style={{ padding: '20px' }}>
+              <h5 style={{ fontSize: '18px', marginBottom: '10px' }}>{course.course_title}</h5>
+              <p style={{ fontSize: '14px', marginBottom: '5px' }}>السعر: {course.course_price}</p>
+              <p style={{ fontSize: '14px', marginBottom: '5px' }}>{course.university}</p>
+              <p style={{ fontSize: '14px', marginBottom: '5px' }}>
+                المشتركون: {course.subscribers}
+              </p>
+              <p style={{ fontSize: '14px', marginBottom: '5px' }}>
+                وقت البدء: {course.start_time} {'  -  '} وقت الإنتهاء: {course.end_time}
+              </p>
+              <p style={{ fontSize: '14px', marginBottom: '5px' }}>
+                تاريخ البدء: {formatDate(course.start_date)}
+              </p>
+              <p style={{ fontSize: '14px', marginBottom: '5px' }}>
+                تاريخ الإنتهاء: {formatDate(course.end_date)}
+              </p>
+              {course.course_status === 'reject' && (
+                <p style={{ fontSize: '14px', marginBottom: '5px', marginTop: '10px', color: 'red' }}>
+                  سبب الرفض: {course.rejection_reason}
+                </p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Section to display user added summaries */}
+      <section className="text-right mt-5 mb-5">
+        <h4 className="text-center">مُلخصاتي المُضافة</h4>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {summaries.length > 0 ? (
+            summaries.map((summary) => (
+              <div
+                style={{
+                  width: '300px',
+                  border: '1px solid #ccc',
+                  borderRadius: '10px',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                  overflow: 'hidden',
+                  margin: '10px',
+                  transition: 'box-shadow 0.3s',
+                }}
+                key={summary.summary_id}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    height: '30px',
+                    backgroundColor: getStatusColor(summary.summary_status),
+                    color: 'white',
+                  }}
+                >
+                  {summary.summary_status}
+                </div>
+
+
+                <div style={{ height: '200px', overflow: 'hidden' }}>
+              <img
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                src={`http://localhost:4000/images/${summary.summary_image}`}
+                alt="صورة الدورة"
+              />
+            </div>
+
+                <div style={{ padding: '20px' }}>
+                  <h5 style={{ fontSize: '18px', marginBottom: '10px' }}>{summary.summary_title}</h5>
+                  <p style={{ fontSize: '14px', marginBottom: '5px' }}>{summary.summary_description}</p>
+                  <p style={{ fontSize: '14px', marginBottom: '5px' }}>
+                    وصف المُلخص : {summary.summary_description}
+                  </p>
+                  {summary.summary_status === 'reject' && (
+                    <p style={{ fontSize: '14px', marginBottom: '5px', marginTop: '10px', color: 'red' }}>
+                      سبب الرفض: {summary.rejection_reason}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div>لم تقّم بإضافة أيّة مُلخص حتى الأن</div>
+          )}
+        </div>
+      </section>
+    </section>
+  );
+}
+
+export default ManageCourses;

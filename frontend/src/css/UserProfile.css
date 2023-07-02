@@ -1,0 +1,724 @@
+body {
+  color: #272829;
+}
+
+a {
+  
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000000;
+  text-decoration: none;
+}
+
+
+
+
+.navbar-light #navbarCollapseUserProfile .navbar-nav .nav-link
+{
+  font-size: 12px;
+}
+
+
+
+
+
+/*--------------------------------------------------------------
+# Sections General
+--------------------------------------------------------------*/
+section {
+  overflow: hidden;
+}
+
+
+
+main>#UserProfile
+{
+  padding-top: 0;
+}
+
+.section-title h2 {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  position: relative;
+  color: #173b6c;
+}
+
+.section-title h2::after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: #149ddd;
+  bottom: 0;
+  left: 0;
+}
+
+p,li,.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6 {
+  line-height: 1.7em;
+}
+
+
+
+
+
+
+/* User Profile style */
+
+
+#UserProfile .panel-defaultProfile {
+  background-color: #fff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+#UserProfile .panel-defaultProfile:hover {
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+#UserProfile .panel-headingProfile {
+  background-color: #06BBCC;
+  color: #fff;
+  font-size: 25px;
+  padding: 10px;
+}
+
+#UserProfile .panel-bodyUserProfile {
+  display: flex;
+}
+
+#UserProfile img {
+  display: block;
+  margin: auto;
+}
+
+#UserProfile .ContainerProfileSection {
+  margin-top: 30px;
+}
+
+#UserProfile hr {
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+}
+
+#UserProfile .details {
+  font-size: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#UserProfile .details li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#UserProfile .details p {
+  margin: 0;
+  padding: 5px;
+}
+
+#UserProfile .details .one {
+  display: inline-block;
+  font-size: 24px;
+  margin-right: 10px;
+  text-align: center;
+  width: 50px;
+}
+
+#UserProfile .details .glyphicon {
+  font-size: 24px;
+}
+
+#UserProfile .details .bi {
+  font-size: 24px;
+}
+
+#UserProfile .details .fa-solid {
+  font-size: 24px;
+  color: #FF69B4;
+  animation: beat 1s ease-in-out infinite;
+}
+
+#profile-image1
+{
+  border-radius: 15px;
+}
+
+
+@keyframes beat {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/*  End user profile style*/
+
+
+/* Edit user profile section */
+
+#upload-image {
+  position: relative;
+  display: inline-block;
+}
+
+#upload-image label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color:black;
+}
+
+#upload-image input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+#upload-image img {
+  max-width: 100%;
+  max-height: 200px;
+  margin-top: 10px;
+  display: block;
+}
+
+
+/* End user profile style in the section section "uploud image" */
+
+
+
+/* Edit profile */
+
+.account-settings .user-profile {
+  margin: 0 0 1rem 0;
+  padding-bottom: 1rem;
+ 
+}
+.account-settings .user-profile .user-avatar {
+  margin: 0 0 1rem 0;
+}
+.account-settings .user-profile .user-avatar img {
+  width: 90px;
+  height: 90px;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+}
+.account-settings .user-profile h5.user-name {
+  margin: 0 0 0.5rem 0;
+}
+.account-settings .user-profile h6.user-email {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #9fa8b9;
+}
+.account-settings .about {
+  margin: 2rem 0 0 0;
+  text-align: center;
+}
+.account-settings .about h5 {
+  margin: 0 0 15px 0;
+  color: #007ae1;
+}
+.account-settings .about p {
+  font-size: 0.825rem;
+}
+.form-control {
+  border: 1px solid #cfd1d8;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  font-size: .900rem;
+  background: #ffffff;
+  color: #2e323c;
+  
+}
+
+.card {
+  background: #ffffff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 0;
+  margin-bottom: 1rem;
+}
+
+
+.container .card11 {
+ width: 100%;
+  height: auto;
+  padding: 20px 15px;
+  margin-bottom: 20px;
+  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+  transition: 0.3s ease-in-out;
+  border:1px solid rgb(34, 32, 32);
+}
+
+.form-group ,#image-form label ,.editProfilePic {
+  /* font-size: 20px; */
+  text-align: right;
+
+}
+
+.form-group input{
+  font-size: 17px;
+}
+
+
+/* add image in the profile page */
+
+
+.profile-image-container {
+  position: relative;
+  width: 130px; /* adjust the width and height to your needs */
+  height: 130px;
+  margin: 0 auto; /* center the container horizontally */
+  overflow: hidden; /* hide the overflow of the image */
+  border-radius: 50%; /* create a circular shape */
+}
+
+.profile-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* center the image inside the container */
+  width: 100%;
+  height: auto;
+  border: none;
+}
+/* End edit profile */
+
+
+
+
+
+
+
+/* To do list style */
+
+
+.card-bodyToDo
+{
+  background-color: #f5fcfe;
+}
+
+
+
+/* End To do list style */
+
+
+
+
+
+/* animation for the  My bank account details */
+.cardBank {
+  animation: slideInFromLeft 0.5s ease-in-out;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+      transform: translateX(-100%);
+      opacity: 0;
+  }
+  100% {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+/* End animation for the table My bank account details */
+
+
+
+
+
+
+
+
+/* Add summary or course */
+
+.value {
+  width:100%;
+}
+
+
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+
+.textarea--style-6 {
+  width: 100%;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: none;
+}
+
+.dropdown {
+  width: 100%;
+}
+
+.dropdown-menu {
+  width: 100%;
+}
+
+
+
+/* CSS for hiding and showing the form sections */
+#AddSummary.hidden,
+#AddCourse.hidden {
+  display: none;
+}
+
+#AddSummary.visible,
+#AddCourse.visible {
+  display: block;
+}
+
+
+
+
+/* Add Summary couse buttons style */
+.AddCourseSummary {
+  width: fit-content;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .1rem;
+  border: none;
+  background: transparent;
+  box-shadow: inset -20px -16px 0px 2px rgb(6, 187, 204);
+  border-radius: 100px;
+  color: rgb(67, 46, 19);
+  transition: all 1s cubic-bezier(.66, .00, .34, 1.00);
+}
+
+AddCourseSummary:hover {
+  box-shadow: inset 0px 0px 0px 0px rgb(6, 187, 204);
+  background: rgb(33, 30, 24);
+  transform: translateY(-5px);
+  color: rgb(230, 221, 221);
+  font-weight: 700;
+}
+
+/* End summary course button style */
+
+
+
+
+
+
+
+
+
+.cardCourse {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.card-heading {
+  background-color: rgb(6, 187, 204);
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.form-groupAdd {
+  margin-bottom: 20px;
+}
+
+.control-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+
+.form-control:focus {
+  outline: none;
+  border-bottom: 2px solid #303f9f;
+}
+
+.input-file {
+  display: none;
+}
+
+
+
+.input-file__info {
+  margin-left: 10px;
+}
+
+.label--desc {
+  font-size: 14px;
+  color: #999;
+}
+
+
+
+@media (max-width: 767px) {
+  .form-control {
+    font-size: 14px;
+  }
+}
+/* end style of add summary */
+
+/* start style of add course */
+
+#AddCourse {
+  display: none;
+}
+
+#AddCourse.show-section {
+  display: block;
+}
+
+.page-wrapper {
+  background-color: #f7f7f7;
+}
+
+.wrapper--w900 {
+  margin: 0 auto;
+}
+
+.cardCourse {
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+}
+
+.card-heading {
+  background-color: rgb(6, 187, 204);
+  border-bottom: 1px solid #e6e6e6;
+  border-radius: 5px 5px 0 0;
+  padding: 20px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.form-groupAdd {
+  margin-bottom: 20px;
+}
+
+.form-groupAdd label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  text-align: right;
+}
+
+.custom-file-label::after {
+  content: "Choose file";
+}
+
+.input-group-text {
+  background-color: #f2f2f2;
+  border: 1px solid #cccccc;
+  border-radius: 5px 0 0 5px;
+}
+
+
+
+
+@media (min-width: 768px) {
+  .wrapper--w900 {
+    max-width: 900px;
+  }
+}
+
+/* end add course style  */
+
+
+/* End add course and summary style */
+
+
+
+/* Style for manage courses */
+.ManageCard {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top-Course {
+  width: 40%;
+  height: auto;
+  object-fit: contain;
+  margin-left: 20px;
+  border-radius: 5px;
+}
+
+.ManageCard-body {
+  width: calc(100% - 240px);
+  padding-left: 20px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.card-text {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+
+
+
+
+.ManageCard-body
+{
+  width:100%;
+}
+
+
+/* End Style for manage courses */
+
+
+
+
+
+/* style buttons in the add course or summary section */
+/* Style for the buttons */
+#add-summary-btn , #add-course-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #179ba7;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width:60%;
+  height: 100px;
+  margin-bottom: 10px;
+}
+/* Hover style for the buttons */
+#add-summary-btn:hover {
+  background-color: #179ba7;
+}
+
+/* Active style for
+ the buttons */
+#add-summary-btn:active {
+  background-color: #179ba7;
+}
+
+/* Animation for the buttons */
+@keyframes scale-in {
+  0% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#add-summary-btn , #add-course-btn
+{
+  animation: scale-in 0.3s ease;
+}
+
+
+.hideButton
+ {
+  background-color: #06BBCC;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.hideButton:hover {
+  background-color: #06BBCC;
+}
+/* End style buttons in the add course or summary section */
+
+
+
+
+
+/* Add some basic styling */
+.bttn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Style for the primary button */
+.btnn-primary {
+  background-color: #007bff; /* You can change this to your desired color */
+}
+
+/* Add animation on hover */
+.bttn:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+/* Add animation on click */
+.bttn:active {
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+
+
+
+

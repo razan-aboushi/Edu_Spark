@@ -1,0 +1,73 @@
+{
+  "name": "edu_spark",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mdi/js": "^7.2.96",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.2.3",
+    "breadcrumb": "^1.0.0",
+    "classnames": "^2.3.2",
+    "cors": "^2.8.5",
+    "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
+    "link-react": "^3.0.0",
+    "owl.carousel": "^2.3.4",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.4",
+    "react-bootstrap-icons": "^1.10.3",
+    "react-circular-progressbar": "^2.1.0",
+    "react-credit-cards-2": "^1.0.1",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.9",
+    "react-icons": "^4.9.0",
+    "react-owl-carousel": "^2.3.3",
+    "react-router": "^6.11.2",
+    "react-router-dom": "^6.13.0",
+    "react-router-hash-link": "^2.4.3",
+    "react-scripts": "5.0.1",
+    "react-wow": "^1.0.0",
+    "recharts": "^2.6.2",
+    "sweetalert2": "^11.7.5",
+    "web-vitals": "^2.1.4",
+    "wowjs": "^1.1.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "eslint-plugin-react": "^7.32.2"
+  }
+}
