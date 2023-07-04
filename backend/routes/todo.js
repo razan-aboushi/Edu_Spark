@@ -12,9 +12,13 @@ router.get("/todos/:user_id", todoController.getAllTodoTasks);
 router.get("/todos/:user_id/:id", todoController.getTodoTask);
 
 // Update a to do
-router.put("/todos/:id", todoController.updateTodo);
+router.put("/todos/:todo_id", todoController.updateTodo);
 
 // Delete a to do
-router.delete("/todos/:id/:user_id", todoController.deleteTodo);
+router.delete("/todos/:todo_id", todoController.deleteTodo);
+
+
+// get to do id 
+router.get('/todos',todoController.getTodoId);
 
 module.exports = router;

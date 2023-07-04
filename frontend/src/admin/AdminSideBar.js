@@ -14,11 +14,13 @@ import ContactMessages from "../admin/ContactMessages";
 import AdminPanel from "../admin/AdminPanel";
 import AddUniversity from '../admin/AddUniversity';
 import PublishRequestCourse from './PublishRequestCourse';
+import ApprovedContent from './ApprovedContent';
 import axios from 'axios';
+
 
 function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeLink, setActiveLink] = useState('/AdminProfile');
+  const [activeLink, setActiveLink] = useState('/DashBoard');
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
   const navigate = useNavigate();
 
@@ -178,6 +180,16 @@ function Sidebar() {
 
           <li>
             <button
+              className={`sidebar-link ${activeLink === '/ApprovedContent ' ? 'active' : ''}`}
+              onClick={() => handleLinkClick('/ApprovedContent ')}
+            >
+              <FontAwesomeIcon icon={faFileAlt} className='ms-2' />
+              أرشيف الموافقة على الطلبات
+            </button>
+          </li>
+
+          <li>
+            <button
               className={`sidebar-link ${activeLink === '/AddUniversity' ? 'active' : ''}`}
               onClick={() => handleLinkClick('/AddUniversity')}
             >
@@ -213,6 +225,7 @@ function Sidebar() {
         {activeLink === '/ContactMessages' && <ContactMessages />}
         {activeLink === '/PublishRequest' && <PublishRequest />}
         {activeLink === '/PublishRequestCourse' && <PublishRequestCourse />}
+        {activeLink === '/ApprovedContent' && <ApprovedContent />}
         {activeLink === '/AdminPanel' && <AdminPanel />}
         {activeLink === '/AdminProfile' && <AdminProfile />}
         {activeLink === '/AddUniversity' && <AddUniversity />}

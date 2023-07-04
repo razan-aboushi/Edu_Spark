@@ -70,7 +70,7 @@ function UserProfileTeacher() {
                 className={`nav-item nav-link scrollto ${activeSection === 'financial-dues' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('financial-dues')}
               >
-                مستحقاتي المالية
+                سجل المدفوعات
               </span>
               <span
                 className={`nav-item nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}

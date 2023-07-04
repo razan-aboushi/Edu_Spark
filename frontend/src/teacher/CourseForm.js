@@ -10,10 +10,6 @@ function CourseForm() {
     const [universities, setUniversities] = useState([]);
 
 
-    const { user_id } = useParams();
-
-
-
 
     const [courseData, setCourseData] = useState({
         course_title: "",

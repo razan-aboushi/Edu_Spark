@@ -64,9 +64,9 @@ function SummaryDetails() {
 
   const navigate = useNavigate();
 
-  const handleContinuePayment = () => {
-    navigate('/checkoutPayment');
-  };
+  // const handleContinuePayment = () => {
+  //   navigate('/checkoutPayment');
+  // };
 
 
 
@@ -116,9 +116,9 @@ function SummaryDetails() {
         showCancelButton: true,
         confirmButtonText: 'متابعة الدفع',
         showLoaderOnConfirm: true,
-        preConfirm: () => {
-          handleContinuePayment();
-        },
+        // preConfirm: () => {
+        //   handleContinuePayment();
+        // },
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
           confirmButton: 'swal-close-button',

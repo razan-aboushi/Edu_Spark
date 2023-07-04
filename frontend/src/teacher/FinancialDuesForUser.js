@@ -27,24 +27,24 @@ function FinancialDues() {
     }
   };
 
-const convertDateFormate = (timestamp)=>{
+  const convertDateFormate = (timestamp) => {
 
-const date = new Date(timestamp);
-return date.toLocaleDateString();
-}
+    const date = new Date(timestamp);
+    return date.toLocaleDateString();
+  }
 
 
   return (
     <section className="container" id="MyFinancialDues">
       <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3 mt-5 mb-4">
-          قائمة بالتحويلات المالية
-        </h6>
+          سجل المدفوعات 
+           </h6>
       </div>
       <div className="table-responsive">
         <table className="table table-striped table-bordered" aria-label="listOfTransfer">
           <thead>
-            <tr style={{backgroundColor:"#06BBCC" , textAlign:"center"}}>
+            <tr style={{ backgroundColor: "#06BBCC", textAlign: "center" }}>
               <th>الإسم</th>
               <th>رقم المنتج</th>
               <th>المبلغ</th>

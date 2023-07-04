@@ -100,9 +100,9 @@ function CoursesAndSummaries() {
 
   const navigate = useNavigate();
 
-  const handleContinuePayment = () => {
-    navigate('/checkoutPayment');
-  };
+  // const handleContinuePayment = () => {
+  //   navigate('/checkoutPayment');
+  // };
 
   const handleAddToCart = (item, itemType) => {
     // Function to handle adding an item to the cart
@@ -150,9 +150,9 @@ function CoursesAndSummaries() {
         showCancelButton: true,
         confirmButtonText: 'متابعة الدفع',
         showLoaderOnConfirm: true,
-        preConfirm: () => {
-          handleContinuePayment();
-        },
+        // preConfirm: () => {
+        //   handleContinuePayment();
+        // },
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
           confirmButton: 'swal-close-button',

@@ -5,17 +5,17 @@ import { useParams } from 'react-router-dom';
 
 function ManageCourses() {
   const [courses, setCourses] = useState([]);
-  const [summaries, setSummaries] = useState([]); 
-  const { user_id } = useParams();
+  const [summaries, setSummaries] = useState([]);
+  const [subscriberCounts, setSubscriberCounts] = useState({});
 
   useEffect(() => {
     getCourses();
-    getSummaries(); 
+    getSummaries();
   }, []);
 
 
 
-  // get courses from the databse for the teacher
+
   const getCourses = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -27,11 +27,28 @@ function ManageCourses() {
         const response = await axios.get(`http://localhost:4000/user-courses/${user_id}`);
         console.log(response.data);
         setCourses(response.data);
+
+        // Fetch subscriber counts for each course
+        const courseIds = response.data.map(course => course.course_id);
+        const subscriberCounts = await Promise.all(courseIds.map(async courseId => {
+          const subscriberResponse = await axios.get(`http://localhost:4000/courses/${courseId}/subscribers`);
+          return {
+            courseId,
+            subscriberCount: subscriberResponse.data.subscriberCount
+          };
+        }));
+
+        const subscriberCountMap = {};
+        subscriberCounts.forEach(count => {
+          subscriberCountMap[count.courseId] = count.subscriberCount;
+        });
+        setSubscriberCounts(subscriberCountMap);
       }
     } catch (error) {
       console.error('Error fetching courses:', error);
     }
   };
+
 
 
   // get summaries from the databse for the teacher
@@ -45,9 +62,9 @@ function ManageCourses() {
         console.log(user_id);
 
 
-      const response = await axios.get(`http://localhost:4000/user-summaries/${user_id}`);
-      console.log(response.data);
-      setSummaries(response.data);
+        const response = await axios.get(`http://localhost:4000/user-summaries/${user_id}`);
+        console.log(response.data);
+        setSummaries(response.data);
       }
     } catch (error) {
       console.error('Error fetching summaries:', error);
@@ -63,14 +80,14 @@ function ManageCourses() {
   // change the color of the status
   const getStatusColor = (status) => {
     switch (status) {
-      case 'approve':
+      case 'مقبول':
         return 'green';
-      case 'pending':
-        return 'black';
-      case 'reject':
+      case 'قيد الإنتظار':
+        return 'gray';
+      case 'مرفوض':
         return 'red';
       default:
-        return 'black';
+        return 'gray';
     }
   };
 
@@ -121,10 +138,16 @@ function ManageCourses() {
             </div>
             <div style={{ padding: '20px' }}>
               <h5 style={{ fontSize: '18px', marginBottom: '10px' }}>{course.course_title}</h5>
-              <p style={{ fontSize: '14px', marginBottom: '5px' }}>السعر: {course.course_price}</p>
+              <p style={{ fontSize: '14px', marginBottom: '5px' }}>
+                السعر: {course.course_price === "0" ? (
+                  <span style={{ color: 'green' }}>مجاني</span>
+                ) : (
+                  <span>{course.course_price} د.أ</span>
+                )}              </p>
               <p style={{ fontSize: '14px', marginBottom: '5px' }}>{course.university}</p>
               <p style={{ fontSize: '14px', marginBottom: '5px' }}>
-                المشتركون: {course.subscribers}
+                المشتركون: {subscriberCounts[course.course_id] || 0}
+
               </p>
               <p style={{ fontSize: '14px', marginBottom: '5px' }}>
                 وقت البدء: {course.start_time} {'  -  '} وقت الإنتهاء: {course.end_time}
@@ -135,7 +158,7 @@ function ManageCourses() {
               <p style={{ fontSize: '14px', marginBottom: '5px' }}>
                 تاريخ الإنتهاء: {formatDate(course.end_date)}
               </p>
-              {course.course_status === 'reject' && (
+              {course.course_status === 'مرفوض' && (
                 <p style={{ fontSize: '14px', marginBottom: '5px', marginTop: '10px', color: 'red' }}>
                   سبب الرفض: {course.rejection_reason}
                 </p>
@@ -185,20 +208,28 @@ function ManageCourses() {
 
 
                 <div style={{ height: '200px', overflow: 'hidden' }}>
-              <img
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                src={`http://localhost:4000/images/${summary.summary_image}`}
-                alt="صورة الدورة"
-              />
-            </div>
+                  <img
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    src={`http://localhost:4000/images/${summary.summary_image}`}
+                    alt="صورة الدورة"
+                  />
+                </div>
 
                 <div style={{ padding: '20px' }}>
                   <h5 style={{ fontSize: '18px', marginBottom: '10px' }}>{summary.summary_title}</h5>
+                  <p style={{ fontSize: '14px', marginBottom: '5px' }}>
+                    السعر: {summary.summary_price === "0" ? (
+                      <span style={{ color: 'green' }}>مجاني</span>
+                    ) : (
+                      <span>{summary.summary_price} د.أ</span>
+                    )}
+                  </p>
+
                   <p style={{ fontSize: '14px', marginBottom: '5px' }}>{summary.summary_description}</p>
                   <p style={{ fontSize: '14px', marginBottom: '5px' }}>
                     وصف المُلخص : {summary.summary_description}
                   </p>
-                  {summary.summary_status === 'reject' && (
+                  {summary.summary_status === 'مرفوض' && (
                     <p style={{ fontSize: '14px', marginBottom: '5px', marginTop: '10px', color: 'red' }}>
                       سبب الرفض: {summary.rejection_reason}
                     </p>

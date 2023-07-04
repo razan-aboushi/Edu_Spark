@@ -43,15 +43,15 @@ const getIdFromUserData = async (req, res) => {
 
 // post the data of user bank account into database
 const postUserBankAccounts = (req, res) => {
-  const { accountNumber, cvc } = req.body;
+  const { accountNumber, cvv } = req.body;
   const userId = req.params.userId;
 
-  // Hash the account number and cvc using bcrypt
+  // Hash the account number and cvv using bcrypt
   const hashedAccountNumber = bcrypt.hashSync(accountNumber, 10);
-  const hashedCvc = bcrypt.hashSync(cvc, 10);
+  const hashedcvv = bcrypt.hashSync(cvv, 10);
 
-  const query = 'INSERT INTO bank_accounts (account_number, cvc, user_id) VALUES ( ?, ?, ?)';
-  connection.query(query, [ hashedAccountNumber, hashedCvc, userId], (err, result) => {
+  const query = 'INSERT INTO bank_accounts (account_number, cvv, user_id) VALUES ( ?, ?, ?)';
+  connection.query(query, [ hashedAccountNumber, hashedcvv, userId], (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ error: 'An error occurred while saving bank account information' });

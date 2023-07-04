@@ -46,9 +46,9 @@ function CoursesHome() {
 
   const navigate = useNavigate();
 
-  const handleContinuePayment = () => {
-    navigate('/checkoutPayment');
-  };
+  // const handleContinuePayment = () => {
+  //   navigate('/checkoutPayment');
+  // };
 
   const handleAddToCart = (course) => {
     const token = localStorage.getItem('token');
@@ -96,9 +96,9 @@ function CoursesHome() {
         showCancelButton: true,
         confirmButtonText: 'متابعة الدفع',
         showLoaderOnConfirm: true,
-        preConfirm: () => {
-          handleContinuePayment();
-        },
+        // preConfirm: () => {
+        //   handleContinuePayment();
+        // },
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
           confirmButton: 'swal-close-button',

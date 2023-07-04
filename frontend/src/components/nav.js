@@ -12,6 +12,7 @@ function Nav() {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [userRole, setUserRole] = useState(0);
   const navigate = useNavigate();
+  const [itemCount, setItemCount] = useState(0);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -25,6 +26,20 @@ function Nav() {
 
     fetchUserData();
   }, []);
+
+
+
+  useEffect(() => {
+
+    const items = localStorage.getItem('cartItems');
+    if (items) {
+      const parsedItems = JSON.parse(items);
+      const count = parsedItems.length;
+      setItemCount(count);
+    }
+  }, []);
+
+
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -139,7 +154,7 @@ function Nav() {
                   تواصل
                 </Link>
               </li>
-             
+
             </ul>
             <div className="d-flex align-items-end">
 
@@ -150,6 +165,8 @@ function Nav() {
                   style={{ borderRadius: '25px' }}
                 >
                   <FontAwesomeIcon icon={faShoppingCart} className="ms-1" size="2x" />
+                  <span className="badge bg-primary" style={{ borderRadius: "100%", transform: 'scaleX(-1)' }}>{itemCount}</span>
+
                 </Link>
               </div>
 

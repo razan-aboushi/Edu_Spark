@@ -113,4 +113,7 @@ router.get('/universityNumber',adminController.getUniversityNumberInTheWebSite);
 
 
 
+router.get('/approvedCourses',adminController.getApprovedCourses);
+
+router.get('/approvedSummaries',adminController.getApprovedSummaries );
 module.exports = router;

@@ -302,7 +302,7 @@ function CheckoutPayment()
           Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'تمت عملية الدفع بنجاح',
+            title: 'تمت عملية الدفع بنجاح ، إذهب إلى حسابك الشخصي ستجده هناك',
             showConfirmButton: false,
             timer: 3000,
           });
@@ -454,7 +454,7 @@ function CheckoutPayment()
           Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'تمت عملية الدفع بنجاح',
+            title: 'تمت عملية الدفع بنجاح ، إذهب إلى حسابك الشخصي ستجده هناك',
             showConfirmButton: false,
             timer: 3000,
           });

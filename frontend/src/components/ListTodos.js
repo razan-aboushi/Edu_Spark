@@ -1,45 +1,39 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import EditTodo from "./EditTodo";
-import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
 function ListTodos() {
   const [todos, setTodos] = useState([]);
-  const { user_id } = useParams(); 
 
   const [loggedInUserId, setLoggedInUserId] = useState(1);
 
   const token = localStorage.getItem('token');
   const decodedToken = token ? jwt_decode(token) : null;
-  const decodedUserId = decodedToken?.userId;
-  
-  // Delete todo function
-  const deleteTodo = async (id) => {
+  const user_id = decodedToken?.userId;
+
+  const deleteTodo = async (todo_id) => {
     try {
-      await axios.delete(`http://localhost:4000/todos/${user_id}/${id}`); 
-      setTodos(todos.filter((todo) => todo.todo_id !== id));
-    } catch (err) {
-      console.error(err.message);
+      await axios.delete(`http://localhost:4000/todos/${todo_id}`);
+      getTodos();
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  
-  const getTodos = async () => { 
+  const getTodos = async () => {
     try {
       const response = await axios.get(`http://localhost:4000/todos/${user_id}`);
-      console.log(response);
       setTodos(response.data);
-    } catch (err) {
-      console.error(err.message);
+      console.log(todos);
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
   useEffect(() => {
     getTodos();
   }, []);
-
-  console.log(todos);
 
   return (
     <Fragment>
@@ -57,7 +51,7 @@ function ListTodos() {
               <tr key={todo.todo_id}>
                 <td>{todo.description}</td>
                 <td>
-                  <EditTodo todo={todo} userId={user_id} /> 
+                  <EditTodo todo={todo} userId={user_id} />
                 </td>
                 <td>
                   <button

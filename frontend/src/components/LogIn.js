@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import axios from 'axios';
-import bcrypt from 'bcryptjs';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../css/style.css';
 
@@ -16,14 +15,25 @@ function LogIn() {
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
-    const savedPasswordHash = localStorage.getItem('password');
+    const password = localStorage.getItem('password');
 
-    if (savedEmail && savedPasswordHash) {
+    if (savedEmail && password) {
       setEmail(savedEmail);
-      setPassword('');
+      setPassword(password);
       setRememberMe(true);
     }
   }, []);
+
+
+  // remove the remember me from the local storage
+  useEffect(() => {
+    if (!rememberMe) {
+      localStorage.removeItem('email');
+      localStorage.removeItem('password');
+    }
+  }, [rememberMe]);
+
+
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -48,9 +58,8 @@ function LogIn() {
         console.log(data);
 
         if (rememberMe) {
-          const passwordHash = await bcrypt.hash(password, 10);
           localStorage.setItem('email', email);
-          localStorage.setItem('password', passwordHash);
+          localStorage.setItem('password', password);
         }
 
         const { role } = response.data;
@@ -138,10 +147,8 @@ function LogIn() {
               </div>
               <div className="d-flex justify-content-between align-items-center">
                 {/* خانة الاختيار */}
+
                 <div className="form-check mb-0">
-                  <label className="form-check-label" htmlFor="form2Example3">
-                    تذكرني
-                  </label>
                   <input
                     className="form-check-input me-2"
                     type="checkbox"
@@ -149,6 +156,9 @@ function LogIn() {
                     checked={rememberMe}
                     onChange={() => setRememberMe(!rememberMe)}
                   />
+                  <label className="form-check-label" htmlFor="form2Example3">
+                    تذكرني
+                  </label>
                 </div>
                 <Link to="/ResetPassword" className="text-body">
                   هل نسيت كلمة المرور؟

@@ -64,7 +64,7 @@ const postSummaryForm = (req, res) => {
       [
         summary_university,
         summary_title,
-        'pending',
+        'قيد الإنتظار',
         summary_price,
         summary_image,
         summary_file,
@@ -173,7 +173,7 @@ const postCourseForm = (req, res) => {
         course_image,
         course_title,
         course_brief,
-        'pending',
+        'قيد الإنتظار',
         sell_or_free ,
         course_price,
         course_duration,

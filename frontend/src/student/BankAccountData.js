@@ -9,7 +9,7 @@ import {useParams } from 'react-router-dom';
 function BankAccountData() {
   const [fullName, setFullName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
-  const [cvc, setCvc] = useState('');
+  const [cvv, setcvv] = useState('');
 
 
   const { user_id } = useParams();
@@ -52,14 +52,14 @@ function BankAccountData() {
   }
 
 
-  function handleCvcChange(event) {
-    setCvc(event.target.value);
+  function handlecvvChange(event) {
+    setcvv(event.target.value);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (!fullName || !accountNumber || !cvc) {
+    if (!fullName || !accountNumber || !cvv) {
       Swal.fire({
         icon: 'error',
         title: 'خطأ!',
@@ -76,9 +76,9 @@ function BankAccountData() {
       const user_id = decodedToken.userId;
       console.log(user_id);
 
-      // Encrypt the account number and CVC
+      // Encrypt the account number and cvv
       const encryptedAccountNumber = bcrypt.hashSync(accountNumber, 10);
-      const encryptedCvc = bcrypt.hashSync(cvc, 10);
+      const encryptedcvv = bcrypt.hashSync(cvv, 10);
 
       // Display security message to the user
       Swal.fire({
@@ -93,7 +93,7 @@ function BankAccountData() {
             .post(`http://localhost:4000/UsersBankAccountsData/${user_id}`, {
               fullName,
               accountNumber: encryptedAccountNumber,
-              cvc: encryptedCvc,
+              cvv: encryptedcvv,
 
             })
             .then((response) => {
@@ -125,7 +125,7 @@ function BankAccountData() {
           <div className="cardBank">
             <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
               <h6 className="section-title bg-white text-center text-primary px-3 mt-5">
-                أضف معلوماتك البنكية
+                أضف تفاصيل البطاقة البنكية
               </h6>
             </div>
             <div className="card-body">
@@ -145,7 +145,7 @@ function BankAccountData() {
                 </div>
                 <div className="form-group">
                   <label htmlFor="accountNumber" className="mb-2 mt-2">
-                    رقم حسابك البنكي أبآن "IBAN":
+                    رقم بطاقة حسابك البنكي :
                   </label>
                   <input
                     type="text"
@@ -157,16 +157,16 @@ function BankAccountData() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="cvc" className="mb-2 mt-2">
-                    أدخل رقم ال cvc :
+                  <label htmlFor="cvv" className="mb-2 mt-2">
+                    أدخل رقم ال cvv :
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="cvc"
+                    id="cvv"
                     placeholder="111"
-                    value={cvc}
-                    onChange={handleCvcChange}
+                    value={cvv}
+                    onChange={handlecvvChange}
                   />
                 </div>
 

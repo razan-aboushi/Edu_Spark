@@ -46,8 +46,6 @@ function EditProfileSection() {
           setPhoneNumber(formattedProfile.phone_number);
           setBirthdate(formattedProfile.birthdate);
           setPassword(formattedProfile.password);
-
-          handleCancel();
         }
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -219,16 +217,6 @@ function EditProfileSection() {
                             style={{ minWidth: 120 }}
                           >
                             تحديث
-                          </button>
-                          <button
-                            type="button"
-                            id="cancel-button"
-                            name="submit"
-                            className="btn btn-danger mb-2"
-                            onClick={handleCancel}
-                            style={{ minWidth: 120 }}
-                          >
-                            إلغاء
                           </button>
                         </div>
                       </form>

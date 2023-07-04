@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 const connection = require('../models/dbConnect');
 const multer = require('multer');
 const path = require('path');
+const router = require('../routes/admin');
 
 // Configure Multer to specify the destination and filename
 const storage = multer.diskStorage({
@@ -12,8 +13,8 @@ const storage = multer.diskStorage({
       cb(null, './images');
     } else if (file.fieldname === 'article_image') {
       cb(null, './images');
-    }  
-     else {
+    }
+    else {
       cb(new Error('Invalid fieldname'));
     }
   },
@@ -223,9 +224,9 @@ const getAllContactsCounts = (req, res) => {
 
 
 // update the number of read messages 
-const readMessagesContactUs =  (req, res) => {
+const readMessagesContactUs = (req, res) => {
   try {
-     connection.query('UPDATE contact_us SET is_read =1 WHERE is_read = 0');
+    connection.query('UPDATE contact_us SET is_read =1 WHERE is_read = 0');
     res.status(200).json({ message: 'Messages marked as read' });
   } catch (error) {
     console.error('Error marking messages as read:', error);
@@ -361,7 +362,8 @@ const getRevenueOfTheWebSite = (req, res) => {
       }
 
       const revenue = results[0].revenue || 0;
-      res.json({ revenue });
+      const roundedRevenue = Math.round(revenue); 
+      res.json({ revenue: roundedRevenue });
 
       connection.release();
     });
@@ -500,7 +502,7 @@ const getPendingSumaries = (req, res) => {
     SELECT summaries.*, users.email , users.name
     FROM summaries
     INNER JOIN users ON summaries.user_id = users.user_id
-    WHERE summaries.summary_status = 'pending'
+    WHERE summaries.summary_status = 'قيد الإنتظار'
   `;
 
   // Execute the query
@@ -517,11 +519,11 @@ const getPendingSumaries = (req, res) => {
 
 
 // update the status of the summaries 
-const updateSummaryApproveStatus=  (req, res) => {
+const updateSummaryApproveStatus = (req, res) => {
   const { id } = req.params;
 
   const updateQuery = 'UPDATE summaries SET summary_status = ? WHERE summary_id = ?';
-  const status = 'approve';
+  const status = 'مقبول';
 
   connection.query(updateQuery, [status, id], (err, result) => {
     if (err) {
@@ -543,13 +545,13 @@ const updateSummaryApproveStatus=  (req, res) => {
 
 
 // Endpoint to reject a summary
-const updateSummarRejectStatus =(req, res) => {
+const updateSummarRejectStatus = (req, res) => {
   const { id } = req.params;
   const { reason } = req.body;
 
   // Update the summary status to 'reject' in the database
   const updateQuery = 'UPDATE summaries SET summary_status = ?, rejection_reason = ? WHERE summary_id = ?';
-  const status = 'reject';
+  const status = 'مرفوض';
 
   // Execute the query with the provided summary ID, status, and rejection reason
   connection.query(updateQuery, [status, reason, id], (err, result) => {
@@ -575,7 +577,7 @@ const getAllPendingCourses = (req, res) => {
     SELECT courses.*, users.name, users.email
     FROM courses
     JOIN users ON courses.user_id = users.user_id
-    WHERE course_status = 'pending';
+    WHERE course_status = 'قيد الإنتظار';
   `;
   connection.query(query, (error, results) => {
     if (error) {
@@ -592,11 +594,11 @@ const getAllPendingCourses = (req, res) => {
 
 
 // Update course status to "approve"
-const updateCourseStatusApprove =(req, res) => {
+const updateCourseStatusApprove = (req, res) => {
   const courseId = req.params.id;
   const query = `
     UPDATE courses
-    SET course_status = 'approve'
+    SET course_status = 'مقبول'
     WHERE course_id = ?;
   `;
   connection.query(query, [courseId], (error, results) => {
@@ -614,12 +616,12 @@ const updateCourseStatusApprove =(req, res) => {
 
 
 // Update course status to "reject" and store the rejection reason
-const updateCourseStatusReject= (req, res) => {
+const updateCourseStatusReject = (req, res) => {
   const courseId = req.params.id;
   const { reason } = req.body;
   const query = `
     UPDATE courses
-    SET course_status = 'reject', rejection_reason = ?
+    SET course_status = 'مرفوض', rejection_reason = ?
     WHERE course_id = ?;
   `;
   connection.query(query, [reason, courseId], (error, results) => {
@@ -638,6 +640,60 @@ const updateCourseStatusReject= (req, res) => {
 
 
 
+// Endpoint to get approved courses
+const getApprovedCourses =(req, res) => {
+  const query = `
+    SELECT courses.course_id, courses.course_title, courses.course_brief, users.name
+    FROM courses
+    INNER JOIN users ON courses.user_id = users.user_id
+    WHERE courses.course_status = 'مقبول'
+  `;
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching approved courses:', err);
+      res.status(500).json({ error: 'An error occurred' });
+      return;
+    }
+
+    res.json(results);
+  });
+}
+
+// Endpoint to get approved summaries
+const getApprovedSummaries =(req, res) => {
+  const query = `
+    SELECT summaries.summary_id, summaries.summary_title, summaries.summary_brief, users.name
+    FROM summaries
+    INNER JOIN users ON summaries.user_id = users.user_id
+    WHERE summaries.summary_status = 'مقبول'
+  `;
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching approved summaries:', err);
+      res.status(500).json({ error: 'An error occurred' });
+      return;
+    }
+
+    res.json(results);
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -648,8 +704,8 @@ module.exports = {
   updateAboutUs, getAllUsers, deleteUserFromWS, allContactUsMessages,
   getAdminDataProfile, updateAdminProfileData, writeAndPostArticles, getAllContactsCounts,
   updateUserRole, getStudentNumberInWebsite, getExplainerNumberInWebsite,
-   getContactUsMessagesNumber, postUniversity ,postCategories,getPendingSumaries,
-   updateSummaryApproveStatus,updateSummarRejectStatus,getAllPendingCourses,
-   updateCourseStatusApprove,updateCourseStatusReject , readMessagesContactUs ,
-    getRevenueOfTheWebSite,getSalesInTheWebSite,getUniversityNumberInTheWebSite
+  getContactUsMessagesNumber, postUniversity, postCategories, getPendingSumaries,
+  updateSummaryApproveStatus, updateSummarRejectStatus, getAllPendingCourses,
+  updateCourseStatusApprove, updateCourseStatusReject, readMessagesContactUs,
+  getRevenueOfTheWebSite, getSalesInTheWebSite, getUniversityNumberInTheWebSite,getApprovedCourses,getApprovedSummaries
 };
