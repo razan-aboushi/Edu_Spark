@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -12,7 +12,6 @@ function Contact() {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
 
-  const { user_id } = useParams();
 
   useEffect(() => {
     const getUserProfile = async () => {

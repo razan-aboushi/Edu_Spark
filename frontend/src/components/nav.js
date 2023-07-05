@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt, faSignOutAlt, faUser, faCreditCard, faBook, faGraduationCap, faNewspaper, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
@@ -29,16 +30,23 @@ function Nav() {
 
 
 
+  // Frontend code
   useEffect(() => {
+    const fetchCartItems = async () => {
+      const token = localStorage.getItem('token');
+      const decodedToken = token ? jwt_decode(token) : null;
+      const user_id = decodedToken?.userId;
 
-    const items = localStorage.getItem('cartItems');
-    if (items) {
-      const parsedItems = JSON.parse(items);
-      const count = parsedItems.length;
-      setItemCount(count);
-    }
+      try {
+        // Make the API request to retrieve cart items count for a specific user
+        const response = await axios.get(`http://localhost:4000/cartItemsLength/${user_id}`);
+        setItemCount(response.data);
+      } catch (error) {
+        console.error('Error fetching cart items count:', error);
+      }
+    };
+    fetchCartItems();
   }, []);
-
 
 
   const handleTabClick = (tabName) => {

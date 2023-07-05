@@ -1,40 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Cards from "react-credit-cards-2";
-import "react-credit-cards-2/dist/es/styles-compiled.css";
-import Swal from "sweetalert2";
+import Cards from 'react-credit-cards-2';
+import 'react-credit-cards-2/dist/es/styles-compiled.css';
+import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
-function CheckoutPayment() 
-{
-  const [tab, setTab] = useState("creditCard");
-  const [focus, setFocus] = useState("");
+function CheckoutPayment() {
+  const [tab, setTab] = useState('creditCard');
+  const [focus, setFocus] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  const [combinedData, setCombinedData] = useState([]);
   const [summariesId, setSummariesId] = useState([]);
   const [coursesId, setCoursesId] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(0);
 
 
   const [formData, setFormData] = useState({
-    cvc: "",
-    expiry: "",
-    name: "",
-    number: "",
+    cvv: '',
+    expiry: '',
+    name: '',
+    number: ''
   });
 
-
-
   const [phone_number, setFormDataOrange] = useState([]);
-  const [amount, setFormOrangeAmount] = useState([]);
 
-
-  const user_id = useParams();
 
   useEffect(() => {
-    // Check if the user is logged in 
+    // Check if the user is logged in
     const userLoggedIn = checkUserLoggedIn();
     setIsLoggedIn(userLoggedIn);
   }, []);
@@ -51,11 +43,6 @@ function CheckoutPayment()
     }
     return false;
   }
-
-
-  useEffect(() => {
-    setCombinedData(cartItems);
-  }, [cartItems]);
 
 
 
@@ -80,68 +67,61 @@ function CheckoutPayment()
 
 
 
-
-  //get the transactions 
-  useEffect(() => {
-    const getTransactions = async () => {
-      try {
-        const response = await axios.get('http://localhost:4000/transactions');
-        console.log(response.data);
-        // Process the transaction data as needed
-      } catch (error) {
-        console.error('Error fetching transactions:', error);
-      }
-    };
-
-    getTransactions();
-  }, []);
-
-
-
-
-
-
   function handleInputChangePaymentOrangeAmount(event) {
-    setFormOrangeAmount(event.target.value)
-
+    setFormOrangeAmount(event.target.value);
   }
 
-
-  function allCartItems() {
-    const cartData = localStorage.getItem('cartItems');
-    if (cartData) {
-      const parsedData = JSON.parse(cartData);
-      const cartItems = parsedData.map(item => {
+  
+  async function fetchCartItems() {
+    try {
+      const token = localStorage.getItem('token');
+      const decodedToken = token ? jwt_decode(token) : null;
+      const user_id = decodedToken?.userId;
+  
+      const response = await axios.get(`http://localhost:4000/getAllCartItems/${user_id}`);
+      const cartItems = response.data;
+  
+      const transformedCartItems = cartItems.map(item => {
         if (item.course_id) {
           return {
             id: item.course_id,
-            type: 'course',
             title: item.course_title,
-            price: item.course_price
+            price: item.course_price,
+            type: 'course'
           };
-        } else if (item.summary_id) {
+        } else {
           return {
             id: item.summary_id,
-            type: 'summary',
             title: item.summary_title,
-            price: item.summary_price
+            price: item.summary_price,
+            type: 'summary'
           };
         }
-        return null;
       });
-
-      setCartItems(cartItems);
+  
+      setCartItems(transformedCartItems);
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
     }
   }
-
+  
   useEffect(() => {
-
-    allCartItems();
+    fetchCartItems();
   }, []);
+  
   
 
 
 
+
+  // Calculate sub-total
+  const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price), 0);
+  // Calculate fees (15%)
+  const fees = subtotal * 0.15;
+  const total = subtotal + fees;
+
+
+  const [amount, setFormOrangeAmount] = useState(total);
 
 
 
@@ -152,11 +132,12 @@ function CheckoutPayment()
   }
 
 
+
   // Handle the credit card form submit
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    if (!formData.number || !formData.name || !formData.expiry || !formData.cvc) {
+    if (!formData.number || !formData.name || !formData.expiry || !formData.cvv) {
       // Display an error message if any required fields are missing
       Swal.fire({
         position: 'center',
@@ -192,7 +173,6 @@ function CheckoutPayment()
       });
       return;
     }
-    const total = subtotal + fees;
 
     Swal.fire({
       title: 'تأكيد الطلب',
@@ -203,110 +183,93 @@ function CheckoutPayment()
       cancelButtonText: 'إلغاء',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Get the summaries and courses from local storage
-        const cartData = localStorage.getItem('cartItems');
-        if (cartData) {
-          const parsedData = JSON.parse(cartData);
-          const cartItems = parsedData.map((item) => {
-            if (item.course_id) {
-              return {
-                id: item.course_id,
-                type: 'course',
-                title: item.course_title,
-                price: item.course_price,
-              };
-            } else if (item.summary_id) {
-              return {
-                id: item.summary_id,
-                type: 'summary',
-                title: item.summary_title,
-                price: item.summary_price,
-              };
-            }
-            return null;
-          }).filter((item) => item !== null);
+        const summariesId = cartItems
+          .filter((item) => item.type === 'summary')
+          .map((item) => item.id);
 
-          const summariesId = cartItems
-            .filter((item) => item.type === 'summary')
-            .map((item) => item.id);
+        const coursesId = cartItems
+          .filter((item) => item.type === 'course')
+          .map((item) => item.id);
 
-          const coursesId = cartItems
-            .filter((item) => item.type === 'course')
-            .map((item) => item.id);
+        setSummariesId(summariesId);
+        setCoursesId(coursesId);
 
-          setSummariesId(summariesId);
-          setCoursesId(coursesId);
+        const token = localStorage.getItem('token');
+        const decodedToken = token ? jwt_decode(token) : null;
+        const user_id = decodedToken?.userId;
 
-          const token = localStorage.getItem('token');
-          const decodedToken = token ? jwt_decode(token) : null;
-          const user_id = decodedToken?.userId;
-
-          // Retrieve payment method ID based on the slug
-          axios.get('http://localhost:4000/getPaymentMethodId', {
+        // Retrieve payment method ID based on the slug
+        axios
+          .get('http://localhost:4000/getPaymentMethodId', {
             params: {
               paymentMethodName: 'credit-card'
             }
           })
-            .then((response) => {
-              const payment_methods_id = response.data.id;
-              console.log(payment_methods_id)
-              // Insert transaction into the database
-              axios.post(`http://localhost:4000/insertTransaction/${user_id}`, {
+          .then((response) => {
+            const payment_methods_id = response.data.id;
+            console.log(payment_methods_id);
+
+            // Insert transaction into the database
+            axios
+              .post(`http://localhost:4000/insertTransaction/${user_id}`, {
                 payment_methods_id: payment_methods_id,
                 date: new Date(),
-                user_id: user_id, amount: total
-              }).then((response) => {
+                user_id: user_id,
+                amount: total
+              })
+              .then((response) => {
                 // Handle success response
                 console.log(response.data);
-              }).catch((error) => {
+              })
+              .catch((error) => {
                 // Handle error
                 console.error(error);
               });
 
-              // Send summariesId to backend to store in the summary enrollment table
-              axios.post(`http://localhost:4000/storeSummariesEnrollment/${user_id}`, {
+            // Send summariesId to backend to store in the summary enrollment table
+            axios
+              .post(`http://localhost:4000/storeSummariesEnrollment/${user_id}`, {
                 summariesId: summariesId,
               })
-                .then((response) => {
-                  // Handle success response
-                  console.log(response.data);
-                })
-                .catch((error) => {
-                  // Handle error
-                  console.error(error);
-                });
+              .then((response) => {
+                // Handle success response
+                console.log(response.data);
+              })
+              .catch((error) => {
+                // Handle error
+                console.error(error);
+              });
 
-              // Send coursesId to backend to store in the course enrollment table
-              axios
-                .post(`http://localhost:4000/storeCoursesEnrollment/${user_id}`, {
-                  coursesId: coursesId,
-                })
-                .then((response) => {
-                  // Handle success response
-                  console.log(response.data);
-                })
-                .catch((error) => {
-                  // Handle error
-                  console.error(error);
-                });
+            // Send coursesId to backend to store in the course enrollment table
+            axios
+              .post(`http://localhost:4000/storeCoursesEnrollment/${user_id}`, {
+                coursesId: coursesId,
+              })
+              .then((response) => {
+                // Handle success response
+                console.log(response.data);
+              })
+              .catch((error) => {
+                // Handle error
+                console.error(error);
+              });
 
-              // Clear the cart items from local storage
-              localStorage.removeItem('cartItems');
+            // Clear the cart items from the state
+            setCartItems([]);
 
-            }).catch((error) => {
-              // Handle error
-              console.error(error);
+            // Display a success message
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'تمت عملية الدفع بنجاح ، إذهب إلى حسابك الشخصي ستجده هناك',
+              showConfirmButton: false,
+              timer: 3000,
             });
-
-          // Display a success message
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'تمت عملية الدفع بنجاح ، إذهب إلى حسابك الشخصي ستجده هناك',
-            showConfirmButton: false,
-            timer: 3000,
+          })
+          .catch((error) => {
+            // Handle error
+            console.error(error);
           });
-        }
       }
     });
   }
@@ -318,7 +281,7 @@ function CheckoutPayment()
   function handleOrangeMoneyFormSubmit(event) {
     event.preventDefault();
 
-    localStorage.setItem("formDataOrangePayment", JSON.stringify(phone_number));
+    setFormDataOrange(phone_number);
 
     // Check if all required fields are filled
     if (!phone_number) {
@@ -344,126 +307,124 @@ function CheckoutPayment()
       });
       return;
     }
-    const total = subtotal + fees;
 
     Swal.fire({
-      title: "تأكيد الطلب",
+      title: 'تأكيد الطلب',
       text: `هل أنت متأكد أنك ترغب في المتابعة مع عملية الدفع؟ المبلغ الإجمالي: ${total}`,
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "نعم، تابع للدفع",
-      cancelButtonText: "إلغاء",
+      confirmButtonText: 'نعم، تابع للدفع',
+      cancelButtonText: 'إلغاء',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Get the summaries and courses from local storage
-        const cartData = localStorage.getItem('cartItems');
-        if (cartData) {
-          const parsedData = JSON.parse(cartData);
-          const cartItems = parsedData.map(item => {
-            if (item.course_id) {
-              return {
-                id: item.course_id,
-                type: 'course',
-                title: item.course_title,
-                price: item.course_price
-              };
-            } else if (item.summary_id) {
-              return {
-                id: item.summary_id,
-                type: 'summary',
-                title: item.summary_title,
-                price: item.summary_price
-              };
-            }
-            return null;
-          }).filter(item => item !== null);
+        const summariesId = cartItems
+          .filter((item) => item.type === 'summary')
+          .map((item) => item.id);
 
-          const summariesId = cartItems
-            .filter(item => item.type === 'summary')
-            .map(item => item.id);
+        const coursesId = cartItems
+          .filter((item) => item.type === 'course')
+          .map((item) => item.id);
 
-          const coursesId = cartItems
-            .filter(item => item.type === 'course')
-            .map(item => item.id);
+        setSummariesId(summariesId);
+        setCoursesId(coursesId);
+        const token = localStorage.getItem('token');
+        const decodedToken = token ? jwt_decode(token) : null;
+        const user_id = decodedToken?.userId;
 
-          setSummariesId(summariesId);
-          setCoursesId(coursesId);
-
-          const token = localStorage.getItem('token');
-          const decodedToken = token ? jwt_decode(token) : null;
-          const user_id = decodedToken?.userId;
-
-          // Retrieve payment method ID based on the slug
-          axios.get('http://localhost:4000/getPaymentMethodId', {
+        // Retrieve payment method ID based on the slug
+        axios
+          .get('http://localhost:4000/getPaymentMethodId', {
             params: {
-              paymentMethodName: 'orange-money'
-            }
+              paymentMethodName: 'orange-money',
+            },
           })
-            .then((response) => {
-              const payment_methods_id = response.data.id;
-              console.log(payment_methods_id);
-              // Insert transaction into the database
-              axios.post(`http://localhost:4000/insertTransaction/${user_id}`, {
+          .then((response) => {
+            const payment_methods_id = response.data.id;
+            console.log(payment_methods_id);
+            // Insert transaction into the database
+            axios
+              .post(`http://localhost:4000/insertTransaction/${user_id}`, {
                 payment_methods_id: payment_methods_id,
                 date: new Date(),
-                user_id: user_id, amount: total
-              }).then((response) => {
+                user_id: user_id,
+                amount: total,
+              })
+              .then((response) => {
                 // Handle success response
                 console.log(response.data);
-              }).catch((error) => {
+              })
+              .catch((error) => {
                 // Handle error
                 console.error(error);
               });
 
-              // Send summariesId to backend to store in the summary enrollment table
-              axios.post(`http://localhost:4000/storeSummariesEnrollment/${user_id}`, {
-                summariesId: summariesId,
+            // Send summariesId to backend to store in the summary enrollment table
+            axios
+              .post(
+                `http://localhost:4000/storeSummariesEnrollment/${user_id}`,
+                {
+                  summariesId: summariesId,
+                }
+              )
+              .then((response) => {
+                // Handle success response
+                console.log(response.data);
               })
-                .then((response) => {
-                  // Handle success response
-                  console.log(response.data);
-                })
-                .catch((error) => {
-                  // Handle error
-                  console.error(error);
-                });
+              .catch((error) => {
+                // Handle error
+                console.error(error);
+              });
 
-              // Send coursesId to backend to store in the course enrollment table
-              axios.post(`http://localhost:4000/storeCoursesEnrollment/${user_id}`, {
-                coursesId: coursesId,
+            // Send coursesId to backend to store in the course enrollment table
+            axios
+              .post(
+                `http://localhost:4000/storeCoursesEnrollment/${user_id}`,
+                {
+                  coursesId: coursesId,
+                }
+              )
+              .then((response) => {
+                // Handle success response
+                console.log(response.data);
               })
-                .then((response) => {
-                  // Handle success response
-                  console.log(response.data);
-                })
-                .catch((error) => {
-                  // Handle error
-                  console.error(error);
-                });
+              .catch((error) => {
+                // Handle error
+                console.error(error);
+              });
 
-              // Clear the cart items from local storage
-              localStorage.removeItem('cartItems');
+            // Clear the cart items from the backend
+            axios
+              .delete(`http://localhost:4000/clearCartItems/${user_id}`)
+              .then((response) => {
+                // Handle success response
+                console.log(response.data);
+              })
+              .catch((error) => {
+                // Handle error
+                console.error(error);
+              });
 
-            })
-            .catch((error) => {
-              console.error(error);
-              // Handle error
+            // Display a success message
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title:
+                'تمت عملية الدفع بنجاح ، إذهب إلى حسابك الشخصي ستجده هناك',
+              showConfirmButton: false,
+              timer: 3000,
             });
-
-          // Display a success message
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'تمت عملية الدفع بنجاح ، إذهب إلى حسابك الشخصي ستجده هناك',
-            showConfirmButton: false,
-            timer: 3000,
+          })
+          .catch((error) => {
+            console.error(error);
+            // Handle error
           });
-        }
       }
     });
-    setFormDataOrange("");
 
+    setFormDataOrange('');
   }
+
+
 
 
 
@@ -488,33 +449,36 @@ function CheckoutPayment()
 
 
 
-  // Calculate sub-total
-  const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price), 0);
-  // Calculate fees (15%)
-  const fees = subtotal * 0.15;
-  const total = subtotal + fees;
-  // setFormOrangeAmount(total);
-
-
 
 
   // Function to remove an item from the cart
   function removeItemFromCart(itemId) {
-    const updatedCartItems = JSON.parse(localStorage.getItem("cartItems"));
-    updatedCartItems.splice(itemId, 1);
-    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
     setCartItems(updatedCartItems);
-    setCombinedData(updatedCartItems);
-    allCartItems();
-
+  
+    const token = localStorage.getItem('token');
+    const decodedToken = jwt_decode(token);
+    const user_id = decodedToken.userId;
+  
+    // Make a DELETE request to remove the item from the database
+    axios.delete(`http://localhost:4000/removeCartItemsFromCart/${user_id}/${itemId}`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  
+    fetchCartItems();
   }
+  
 
 
 
   return (
     <>
 
-      <div style={{marginBottom:"150px"}}>
+      <div style={{ marginBottom: "150px" }}>
         {/* Header Start */}
         <div className="container-fluid bg-primary py-5 page-headerPayment" dir="ltr">
           <div className="container py-5">
@@ -561,20 +525,33 @@ function CheckoutPayment()
                               <p className="mb-1"> عربة التسوق : </p>
                             </div>
                           </div>
-                          {combinedData.map((item, index) => (
-                            <div key={index} className="d-flex justify-content-between align-items-center mb-2 shadow p-4" style={{ borderRadius: "30px", width: "440px", margin: "20px" }}>
-                              <div>
+
+                          {cartItems.map((item) => (
+                            <div
+                              key={item.id}
+                              className="d-flex flex-column mb-2 shadow p-4"
+                              style={{
+                                borderRadius: "30px",
+                                width: "100%",
+                                maxWidth: "400px",
+                                margin: "20px",
+                                transition: "width 0.3s",
+                              }}
+                            >
+                              <div className="d-flex justify-content-between align-items-center">
                                 <strong>
                                   <p>{item.title}</p>
                                 </strong>
+                                <span style={{ color: "red", cursor: "pointer" }} onClick={() => removeItemFromCart(item.id)}>
+                                  X
+                                </span>
                               </div>
-                              <div>
-                                <p>{item.price} JD</p>
+                              <div className="d-flex justify-content-between align-items-center">
+                                <div>
+                                  <p>{item.price} JD</p>
+                                </div>
                               </div>
-                              <span style={{ color: 'red', cursor: 'pointer' }} onClick={() => removeItemFromCart(index)}> X  </span>
-                            </div>
-
-                          ))}
+                            </div>))}
 
                           <div className="row mt-4">
                             <div className="col-lg-12">
@@ -582,10 +559,10 @@ function CheckoutPayment()
                                 <div className="card-body p-4">
                                   <h4>تفاصيل الدفع:</h4>
                                   <p>المجموع الفرعي: {parseFloat(subtotal).toFixed(1)} JD</p>
-                                  <p>الرسوم: {parseFloat(fees).toFixed(1)} JD</p>
-                                  <p>إجمالي المبلغ: {(total).toFixed(1)} JD</p>
-                                  <p>سيتم إضافة رسوم رمزية ستكون شاملة ضريبة القيمة المضافة
-                                    نشكر تعاونكم.</p>
+                                  <p>إجمالي المبلغ: {parseFloat(total).toFixed(1)} JD</p>
+                                  <p>
+                                    سيتم إضافة رسوم رمزية ستكون شاملة ضريبة القيمة المضافة نشكر تعاونكم.
+                                  </p>
                                 </div>
                               </div>
                             </div>
@@ -603,13 +580,13 @@ function CheckoutPayment()
           <div className="empty-cart text-center mt-5 mb-5">
             <p className='mb-5'>
 
-            <img src="https://shaguf.com/site/assets/img/empty-cart.svg" width="300px"/>
+              <img src="https://shaguf.com/site/assets/img/empty-cart.svg" width="300px" />
 
 
             </p>
             <p>عربة تسوقِك فارغة ، سارع في شراء مُلخص أو الإنضمام لدورة الأن</p>
 
-            <Link to="/summaries">إستمر بالتعلم و إحصل على موادك</Link>
+            <Link to="/summaries">إستمر بالتعلم و إحصل على المعرفة و الدرجات العالية</Link>
           </div>
         )}
       </div>
@@ -617,10 +594,12 @@ function CheckoutPayment()
 
 
 
+
+
       {/* Payment form  */}
       {!isLoggedIn ? (
         <div className='d-flex justify-content-center'>
-          <button className="checkout-btn buttonInAddArticle mt-5" onClick={() =>
+          <button className="checkout-btn buttonInAddArticle mt-5 fa-solid fa-book-open-reader" onClick={() =>
             Swal.fire({
               title: 'قم بعملية تسجيل الدخول لتستمر في عملية الدفع',
               icon: 'info',
@@ -639,7 +618,7 @@ function CheckoutPayment()
               }
             })
           }>
-            أكمل عملية الدفع
+            قم بتسجيل الدخول لبدء الحصول على موادك
           </button>
 
         </div>
@@ -674,7 +653,7 @@ function CheckoutPayment()
                     <div className="cardPayment">
                       <div className="card-body">
                         <Cards
-                          cvc={formData.cvc}
+                          cvv={formData.cvv}
                           expiry={formData.expiry}
                           name={formData.name}
                           number={formData.number}
@@ -728,13 +707,13 @@ function CheckoutPayment()
 
                             </div>
                             <div className="col-lg-6 col-md-6 col-sm-12">
-                              <label className="form-label">CVC</label>
+                              <label className="form-label">CVV</label>
                               <input
                                 className="form-control"
                                 type="tel"
-                                name="cvc"
-                                placeholder="CVC"
-                                value={formData.cvc}
+                                name="cvv"
+                                placeholder="CVV"
+                                value={formData.cvv}
                                 minLength="3"
                                 maxLength="3"
                                 onChange={handleInputChangePayment}
@@ -784,8 +763,9 @@ function CheckoutPayment()
                               value={amount}
                               onChange={handleInputChangePaymentOrangeAmount}
                               required
-
+                              disabled
                             />
+
                           </div>
 
                           <button

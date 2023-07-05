@@ -100,70 +100,61 @@ function CoursesAndSummaries() {
 
   const navigate = useNavigate();
 
-  // const handleContinuePayment = () => {
-  //   navigate('/checkoutPayment');
-  // };
 
-  const handleAddToCart = (item, itemType) => {
-    // Function to handle adding an item to the cart
-    // Extracting user ID from the decoded token stored in localStorage
+
+
+  const handleAddToCart = async (item, itemType) => {
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
 
-    // Creating a new item object
-    const newItem = {
-      user_id: user_id,
-      [`${itemType}_id`]: item[`${itemType}_id`],
-      [`${itemType}_title`]: item[`${itemType}_title`],
-      [`${itemType}_price`]: item[`${itemType}_price`],
-      [`${itemType}_image`]: item[`${itemType}_image`],
-      quantity: 1,
-      type: itemType
-    };
+    try {
+      const response = await axios.get(`http://localhost:4000/checkCartItem/${user_id}/${itemType}/${item[`${itemType}_id`]}`);
 
-    // Retrieving existing cart items from localStorage or initializing an empty array
-    const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+      if (response.data.exists) {
+        Swal.fire({
+          title: `هذا ${itemType} موجود بالفعل في السلة. يرجى استكمال عملية الدفع.`,
+          icon: 'info',
+          confirmButtonText: 'متابعة',
+        });
+      } else {
+        const newItem = {
+          user_id: user_id,
+          [`${itemType}_id`]: item[`${itemType}_id`],
+          [`${itemType}_title`]: item[`${itemType}_title`],
+          [`${itemType}_price`]: item[`${itemType}_price`],
+          [`${itemType}_image`]: item[`${itemType}_image`],
+          type: itemType
+        };
 
-    // Checking if the item already exists in the cart
-    const existingItemIndex = existingCartItems.findIndex((existingItem) => existingItem[`${itemType}_id`] === newItem[`${itemType}_id`]);
+        await axios.post(`http://localhost:4000/addToCart`, newItem);
 
-    if (existingItemIndex !== -1) {
-      // Item already exists in the cart, display an alert
+        Swal.fire({
+          title: `تمت إضافة ${itemType.charAt(0).toUpperCase() + itemType.slice(1)} إلى السلة`,
+          html: `
+            <img src="http://localhost:4000/images/${item[`${itemType}_image`]}" alt="صورة ${itemType}" className="popup-image" width="265px">
+            <p className="popup-title">${item[`${itemType}_title`]}</p>
+            <p className="popup-price">السعر: ${item[`${itemType}_price`]} د.أ</p>
+          `,
+          showCancelButton: false,
+          confirmButtonText: 'إضافة للسلة',
+          showLoaderOnConfirm: true,
+          allowOutsideClick: () => !Swal.isLoading(),
+          
+   
+        });
+      }
+    } catch (error) {
       Swal.fire({
-        title: `هذا ${itemType} موجود بالفعل في السلة. يرجى استكمال عملية الدفع.`,
-        icon: 'info',
-        confirmButtonText: 'متابعة',
-      });
-    } else {
-      // Item does not exist in the cart, add it to the cart and display an alert
-      existingCartItems.push(newItem);
-      localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
-
-      Swal.fire({
-        title: `تمت إضافة ${itemType.charAt(0).toUpperCase() + itemType.slice(1)} إلى السلة`,
-        html: `
-          <img src="http://localhost:4000/images/${item[`${itemType}_image`]}" alt="صورة ${itemType}" className="popup-image" width="265px">
-          <p className="popup-title">${item[`${itemType}_title`]}</p>
-          <p className="popup-price">السعر: ${item[`${itemType}_price`]} د.أ</p>
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'متابعة الدفع',
-        showLoaderOnConfirm: true,
-        // preConfirm: () => {
-        //   handleContinuePayment();
-        // },
-        allowOutsideClick: () => !Swal.isLoading(),
-        customClass: {
-          confirmButton: 'swal-close-button',
-        },
-      }).then((result) => {
-        if (result.dismiss === Swal.DismissReason.cancel) {
-          localStorage.removeItem('cartItems');
-        }
+        icon: 'error',
+        title: 'Oops...',
+        text: 'حدث خطأ ما!',
       });
     }
   };
+
+
+
 
   const convertDateFormate = (timestamp) => {
     // Function to convert a timestamp to a formatted date string
@@ -305,9 +296,9 @@ function CoursesAndSummaries() {
               </p>
               <div className="button-section d-flex justify-content-center">
                 <button className="join-course-btn buttonInAddArticle ms-3" onClick={() => handleAddToCart(summary, 'summary')}
-                 disabled={enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id)}> 
-                  <FaMoneyBill className="button-icon" /> 
-                  {enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id) ? 'لقد تمَّ شرائهُ مسبقاً' :  'شراء المُلخص'}
+                  disabled={enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id)}>
+                  <FaMoneyBill className="button-icon" />
+                  {enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id) ? 'لقد تمَّ شرائهُ مسبقاً' : 'شراء المُلخص'}
                 </button>
                 <Link to={`/SummaryDetails/${summary.summary_id}`}>
                   <button className="details-btn buttonInAddArticle">

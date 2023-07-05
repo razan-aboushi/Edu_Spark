@@ -40,6 +40,15 @@ router.get('/enrolled-courses/:user_id', homeController.enrolledCourses);
 router.get('/enrolled-summaries/:user_id', homeController.enrolledSummaries);
 
 
+// get the count of items in the cart and render them in nav bar
+router.get('/cartItemsLength/:user_id',homeController.getTheCountOfItems);
+
+
+// get all users in sign up page 
+router.get('/usersEmailCheck',homeController.emailUsersCheck);
+
+
+
 
 
 module.exports = router;

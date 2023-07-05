@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
@@ -71,6 +71,27 @@ function SignUp() {
       }
     }
   }
+
+  useEffect(() => {
+    // Fetch all data from the database
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/usersEmailCheck');
+        const userData = response.data;
+        // Check if email exists in the fetched data
+        const emailExists = userData.some(user => user.email === values.email);
+        if (emailExists) {
+          setErrors({ email: 'البريد الإلكتروني موجود من قبل' });
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    if (values.email) {
+      fetchData();
+    }
+  }, [values.email]);
 
 
 

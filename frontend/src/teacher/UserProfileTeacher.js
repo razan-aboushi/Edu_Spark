@@ -44,12 +44,7 @@ function UserProfileTeacher() {
     <div>
       <header>
         <nav className="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-          <Link
-            to="/"
-            className={`nav-item nav-link scrollto ${activeSection === null ? 'active' : ''}`}
-          >
-            الصفحة الرئيسية
-          </Link>
+
           <button
             type="button"
             className="navbar-toggler me-4"
@@ -115,6 +110,14 @@ function UserProfileTeacher() {
               >
                 الملف الشخصي
               </span>
+              <Link
+                to="/"
+                className={`nav-item nav-link scrollto ${activeSection === null ? 'active' : ''}`}
+              >
+                الصفحة الرئيسية
+              </Link>
+
+
             </div>
           </div>
         </nav>

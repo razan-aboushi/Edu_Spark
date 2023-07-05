@@ -5,17 +5,16 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import "../css/style.css";
 
-function ArticleDetails() {
+function ArticleDetails()
+ {
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const { article_id } = useParams();
   const token = localStorage.getItem('token');
   const decodedToken = token ? jwt_decode(token) : null;
   const user_id = decodedToken ? decodedToken.userId : null;
-  const [showComments, setShowComments] = useState(false); // New state variable
+  const [showComments, setShowComments] = useState(false);
 
 
   // get article by article id to display it here in the article details page
@@ -50,25 +49,6 @@ function ArticleDetails() {
 
 
 
-  // get the user data " to get the user id , name and email"
-  useEffect(() => {
-    if (user_id) {
-      const getUserData = async () => {
-        try {
-          const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
-          console.log(response);
-
-          // to auto fill the user name and email in the add comments form
-          setName(response.data.name);
-          setEmail(response.data.email);
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      };
-
-      getUserData();
-    }
-  }, [user_id]);
 
 
 
@@ -121,8 +101,7 @@ function ArticleDetails() {
       });
 
       // Clear the comment form
-      setName('');
-      setEmail('');
+   
       setMessage('');
 
       // Refresh the comments
@@ -138,11 +117,15 @@ function ArticleDetails() {
     }
   };
 
+
+
   // to convert the date from the timestamp format to normal date
   const formatTimestampToDate = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString();
   };
+
+
 
   // just when you click on the rply for any comment , you will make tag for this person as @user1 or @user2
   const handleReplyClick = (commentId) => {
@@ -150,6 +133,7 @@ function ArticleDetails() {
     const replyFormat = `@user${commentId} `;
     setMessage(replyFormat);
   };
+
 
   if (!article) {
     return <div className='m-5'>جارٍ التحميل...</div>;
@@ -217,34 +201,34 @@ function ArticleDetails() {
                     {showComments && (
                       comments.length > 0 ? (
 
-                      comments.map((comment) => (
-                        <div key={comment.comment_id} className="comment">
-                          <div className="d-flex">
-                           
-                            <div>
-                              <h5>
-                                <Link to="">{comment.name}</Link>{" "}
-                                <Link
-                                  to="#"
-                                  className="reply"
-                                  onClick={() => handleReplyClick(comment.comment_id)}
-                                >
-                                  <i className="bi bi-reply-fill" />
-                                  الرد
-                                </Link>
-                              </h5>
-                              <time dateTime={comment.date}>
-                                {formatTimestampToDate(comment.date)}
-                              </time>
-                              <p>{comment.comment_content}</p>
+                        comments.map((comment) => (
+                          <div key={comment.comment_id} className="comment">
+                            <div className="d-flex">
+
+                              <div>
+                                <h5>
+                                  <Link to="">{comment.name}</Link>{" "}
+                                  <Link
+                                    to="#"
+                                    className="reply"
+                                    onClick={() => handleReplyClick(comment.comment_id)}
+                                  >
+                                    <i className="bi bi-reply-fill" />
+                                    الرد
+                                  </Link>
+                                </h5>
+                                <time dateTime={comment.date}>
+                                  {formatTimestampToDate(comment.date)}
+                                </time>
+                                <p>{comment.comment_content}</p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))
+                        ))
                       ) : (
                         <div className="no-comments">لا يوجد تعليقات حتى الآن. بادر بإبداء رأيك!</div>
                       )
-                      
+
                     )}
 
                   </div>
@@ -261,41 +245,10 @@ function ArticleDetails() {
 
 
                   <div className="reply-form mt-5">
-                    <h5>اترك تعليقًا</h5>
-                    <p>
-                      لن يتم نشر عنوان بريدك الإلكتروني. هذه الحقول مطلوبة.
-                    </p>
+                    <h5 className='mb-4'>اترك تعليقًا</h5>
+                  
                     <form onSubmit={handleCommentSubmit}>
-                      <div className="row">
-                        {user_id ? (
-                          <>
-                            <div className="col-md-6 form-group mb-2">
-                              <input
-                                name="name"
-                                type="text"
-                                id="responderName"
-                                className="form-control"
-                                placeholder="اسمك"
-                                value={name}
-                                onChange={(event) => setName(event.target.value)}
-                                required
-                              />
-                            </div>
-                            <div className="col-md-6 form-group">
-                              <input
-                                name="email"
-                                type="text"
-                                id="email"
-                                className="form-control"
-                                placeholder="example@gmail.com"
-                                value={email}
-                                onChange={(event) => setEmail(event.target.value)}
-                                required
-                              />
-                            </div>
-                          </>
-                        ) : null}
-                      </div>
+
                       <div className="form-group mt-2">
                         <textarea
                           name="message"

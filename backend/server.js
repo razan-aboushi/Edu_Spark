@@ -17,6 +17,7 @@ const teacherProfile=require('./routes/teacherProfile');
 const studentProfile=require('./routes/studentProfile');
 const transfers=require('./routes/transfers');
 const todo=require('./routes/todo');
+const cart =require('./routes/cart');
 const resetPassword = require('./routes/reSetPassword');
 const coursesAndsummaries=require('./routes/summaryAndCourses');
 const dotenv =require('dotenv');
@@ -46,6 +47,7 @@ app.use(studentProfile);
 app.use(transfers);
 app.use(courses);
 app.use(todo);
+app.use(cart);
 app.use(resetPassword);
 app.use(coursesAndsummaries);
 

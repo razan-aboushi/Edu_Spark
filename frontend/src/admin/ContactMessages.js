@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/style.css';
 
-function ReplySection({ messageId, email }) {
+function ReplySection({ messageId, email })
+ {
+
   const [reply, setReply] = useState('');
 
   const handleReply = async () => {

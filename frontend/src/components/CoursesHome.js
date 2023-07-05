@@ -46,70 +46,70 @@ function CoursesHome() {
 
   const navigate = useNavigate();
 
-  // const handleContinuePayment = () => {
-  //   navigate('/checkoutPayment');
-  // };
 
-  const handleAddToCart = (course) => {
+
+  const handleAddToCart = async (course) => {
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
 
-    // Use the user_id to save the course to the user's cart
-    const newItem = {
-      user_id: user_id,
-      course_id: course.course_id,
-      course_title: course.course_title,
-      course_price: course.course_price,
-      course_image: course.course_image,
-      quantity: 1,
-      type: 'course'
-    };
+    try {
+      // Check if the course already exists in the cart table
+      const response = await axios.get(`http://localhost:4000/cartCourse/${user_id}/${course.course_id}`);
+      console.log(response);
+      if (response.data.exists) {
+        Swal.fire({
+          title: 'الدورة موجود بالفعل بالسلة',
+          icon: 'info',
+          confirmButtonText: 'موافق',
+        });
+        return; // Exit the function if the course is already in the cart
+      }
 
-    // Get the existing cart items from local storage or initialize an empty array
-    const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-    // Check if the current course already exists in the cart
-    const existingItemIndex = existingCartItems.findIndex((item) => item.course_id === course.course_id);
-
-    if (existingItemIndex !== -1) {
-      // If the item already exists, show a message that it is already in the cart
-      Swal.fire({
-        title: 'هذه الدورة موجودة بالفعل في السلة و لقد تم الإنضمام لها مسبقًا، تأكد من استكمال عملية الدفع',
-        icon: 'info',
-        confirmButtonText: 'متابعة',
+      // Send a request to the server to add the course to the cart table
+      await axios.post('http://localhost:4000/cartCourse', {
+        user_id: user_id,
+        course_id: course.course_id,
+        course_title: course.course_title,
+        course_price: course.course_price,
+        course_image: course.course_image,
+        type:'course'
       });
-    } else {
-      // If the item doesn't exist, add it to the cart with a quantity of 1
-      existingCartItems.push(newItem);
-
-      // Store the updated cart items back to local storage
-      localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
 
       Swal.fire({
         title: 'تمت إضافة الدورة إلى السلة',
         html: `
-          <img src="http://localhost:4000/images/${course.course_image}" alt="Summary Image" className="popup-image" width="265px">
+          <img src="http://localhost:4000/images/${course.course_image}" alt="course Image" className="popup-image" width="265px">
           <p className="popup-title">عنوان الدورة: ${course.course_title}</p>
           <p className="popup-price">السعر: ${course.course_price} JD</p>
         `,
         showCancelButton: true,
         confirmButtonText: 'متابعة الدفع',
         showLoaderOnConfirm: true,
-        // preConfirm: () => {
-        //   handleContinuePayment();
-        // },
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
           confirmButton: 'swal-close-button',
         },
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.dismiss === Swal.DismissReason.cancel) {
-          localStorage.removeItem('cartItems');
+          // Remove the cart items from the server if the user cancels the payment
+          await axios.delete(`http://localhost:4000/cart/${user_id}/${course.course_id}`);
+
+          Swal.fire({
+            title: 'تم إلغاء الطلب بنجاح',
+            icon: 'success',
+            confirmButtonText: 'موافق',
+          });
         }
       });
+    } catch (error) {
+      console.log(error);
     }
   };
+
+
+
+
 
   return (
     <div className="container py-5 mt-5" style={{ marginTop: '70px' }}>

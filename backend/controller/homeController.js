@@ -1,4 +1,5 @@
 const connection = require('../models/dbConnect');
+const router = require('../routes/payment');
 
 // Get the last 6 articles for the home page
 const getArticlesHome = (req, res) => {
@@ -145,6 +146,44 @@ const enrolledSummaries = async (req, res) => {
 
 
 
+// retrieve cart items count
+const getTheCountOfItems = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const query = 'SELECT COUNT(*) AS count FROM cart WHERE user_id = ?';
+    const [results] = await connection.promise().query(query, [user_id]);
+    const count = results[0].count;
+
+    res.json(count);
+  } catch (error) {
+    console.error('Error fetching cart items count:', error);
+    res.status(500).json({ error: 'Failed to fetch cart items count' });
+  }
+}
+
+
+
+
+
+
+
+// get all users in sign up page
+const emailUsersCheck = (req, res) => {
+  const query = 'SELECT * FROM users';
+
+  connection.query(query, (err, result) => {
+    if (err) {
+      console.error('Error fetching users data:', err);
+      return res.status(500).json({ error: 'Error fetching users data' });
+    }
+
+    // Return the users data
+    return res.status(200).json(result);
+  });
+}
+
+
+
 
 
 
@@ -154,5 +193,5 @@ module.exports = {
   getCoursesSection,
   getThreeSummaries,
   getAllUniversitiessection,
-  getThreeCoursesInHome,enrolledCourses,enrolledSummaries
+  getThreeCoursesInHome,enrolledCourses,enrolledSummaries,getTheCountOfItems,emailUsersCheck
 };

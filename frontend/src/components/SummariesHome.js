@@ -60,69 +60,65 @@ function SummariesHome() {
 
 
 
-  const handleAddToCart = (summary) => {
+
+  const handleAddToCart = async (summary) => {
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
-    // Use the user_id to save the summary to the user's cart
-    const newItem = {
-      user_id: user_id,
-      summary_id: summary.summary_id,
-      summary_title: summary.summary_title,
-      summary_price: summary.summary_price,
-      summary_image: summary.summary_image,
-      quantity: 1,
-      type: 'summary'
-    };
-
-    // Get the existing cart items from local storage or initialize an empty array
-    const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-    // Check if the current summary already exists in the cart
-    const existingItemIndex = existingCartItems.findIndex((item) => item.summary_id === summary.summary_id);
-
-    if (existingItemIndex !== -1) {
-      // If the item already exists, show a message that it is already in the cart
-      Swal.fire({
-        title: 'هذا المُلخص موجود بالفعل في السلة، تأكد من استكمال عملية الدفع',
-        icon: 'info',
-        confirmButtonText: 'متابعة',
+  
+    try {
+      // Check if the summary already exists in the cart table
+      const response = await axios.get(`http://localhost:4000/cart/${user_id}/${summary.summary_id}`);
+      if (response.data.exists) {
+        Swal.fire({
+          title: 'الملخص موجود بالفعل بالسلة',
+          icon: 'info',
+          confirmButtonText: 'موافق',
+        });
+        return; // Exit the function if the summary is already in the cart
+      }
+  
+      // Send a request to the server to add the summary to the cart table
+      await axios.post('http://localhost:4000/cart', {
+        user_id: user_id,
+        summary_id: summary.summary_id,
+        summary_title: summary.summary_title,
+        summary_price: summary.summary_price,
+        summary_image: summary.summary_image,
+        type:'summary'
       });
-    } else {
-      // If the item doesn't exist, add it to the cart with a quantity of 1
-      existingCartItems.push(newItem);
-
-      // Store the updated cart items back to local storage
-      localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
-
+  
       Swal.fire({
         title: 'تمت إضافة المُلخص إلى السلة',
         html: `
-            <img src="http://localhost:4000/images/${summary.summary_image}" alt="Summary Image" className="popup-image" width="265px">
-            <p className="popup-title">عنوان الملخص: ${summary.summary_title}</p>
-            <p className="popup-price">السعر: ${summary.summary_price} JD</p>
-          `,
+          <img src="http://localhost:4000/images/${summary.summary_image}" alt="Summary Image" className="popup-image" width="265px">
+          <p className="popup-title">عنوان الملخص: ${summary.summary_title}</p>
+          <p className="popup-price">السعر: ${summary.summary_price} JD</p>
+        `,
         showCancelButton: true,
         confirmButtonText: 'متابعة الدفع',
         showLoaderOnConfirm: true,
-        // preConfirm: () => {
-        //   handleContinuePayment();
-        // },
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
           confirmButton: 'swal-close-button',
         },
       }).then((result) => {
         if (result.dismiss === Swal.DismissReason.cancel) {
-          localStorage.removeItem('cartItems');
+          // Remove the cart items from the server if the user cancels the payment
+         axios.delete(`http://localhost:4000/cartSummary/${user_id}/${summary.summary_id}`);
         }
       });
+    } catch (error) {
+      console.error('Error adding summary to cart:', error);
+      Swal.fire({
+        title: 'حدث خطأ أثناء إضافة المُلخص إلى السلة',
+        icon: 'error',
+        confirmButtonText: 'محاولة مرة أخرى',
+      });
     }
-
-
   };
-
-
+  
+  
 
   return (
     <div className="container mb-5" style={{ marginTop: '150px' }}>

@@ -34,16 +34,16 @@ const ApprovedContent = () => {
     <div className="container mt-5 text-center mb-5" style={{ borderRadius: "5px", backgroundColor: "#06BBCC" }}>
       <div className="tabs mb-4" style={{ fontSize: "18px", fontWeight: "bold" }}>
         <button
-          className={`tab ms-5 ${activeTab === 1 ? 'active' : ''}`}
-          onClick={() => handleTabChange(1)}
+          className={`tab mt-2 shadow ms-5 ${activeTab === 1 ? 'active' : ''}`}
+          onClick={() => handleTabChange(1)} style={{border:"1px solid gray", padding:"15px" , borderRadius:"15px"}}
         >
           الدورات المعتمدة
         </button>
         <button
-          className={`tab ${activeTab === 2 ? 'active' : ''}`}
+          className={`tab shadow mt-2 ${activeTab === 2 ? 'active' : ''}`} style={{border:"1px solid gray", padding:"15px" , borderRadius:"15px"}}
           onClick={() => handleTabChange(2)}
         >
-          الملخصات المعتمدة
+          المُلخصات المعتمدة
         </button>
       </div >
 

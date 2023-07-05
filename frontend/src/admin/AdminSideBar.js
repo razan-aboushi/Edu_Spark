@@ -180,8 +180,8 @@ function Sidebar() {
 
           <li>
             <button
-              className={`sidebar-link ${activeLink === '/ApprovedContent ' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/ApprovedContent ')}
+              className={`sidebar-link ${activeLink === '/ApprovedContent' ? 'active' : ''}`}
+              onClick={() => handleLinkClick('/ApprovedContent')}
             >
               <FontAwesomeIcon icon={faFileAlt} className='ms-2' />
               أرشيف الموافقة على الطلبات

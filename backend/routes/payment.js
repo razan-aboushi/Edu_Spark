@@ -23,13 +23,11 @@ router.post('/insertTransaction/:user_id',paymentsController.postTransaction);
 router.get('/getPaymentMethodId',paymentsController.getPaymentIdOfCreditCard);
 
 
-
-// router.get('/transactions',paymentsController.getTransactionsData);
-
-
-
-// router.post('/transactionDetails',paymentsController.postTransactionDetails);
+// get all items
+router.get('/getAllCartItems/:user_id',paymentsController.getAllCartItems);
 
 
+// delete the items from the cart
+router.delete('/removeCartItemsFromCart/:user_id/:item_id', paymentsController.deleteCartItem);
 
 module.exports = router;

@@ -23,12 +23,11 @@ function Index() {
 
   const [aboutUsData, setAboutUsData] = useState({});
  
-
   useEffect(() => {
     const hasVisited = sessionStorage.getItem('hasVisited');
     if (!hasVisited) {
       Swal.fire({
-        title: 'إيديو سبارك يتمنى لك يوماً جميلاً',
+        title: '<img src="https://static.hellooha.com/uploads/thumbs/articles/original/naiioloaplm32_article.jpg" style="width: 100%; margin-bottom: 10px;" alt="Image" /> <br> إيديو سبارك يتمنى لك يوماً جميلاً',
         html: 'أهلاً بك في بيتك الثاني ... دُمتَ شرارةً و شغفاً للتعلم <i class="fas fa-heart"></i>',
         color: '#06BBCC',
         timer: 6000,
@@ -38,7 +37,6 @@ function Index() {
       sessionStorage.setItem('hasVisited', true);
     }
   }, []);
-
   
 
   useEffect(() => {

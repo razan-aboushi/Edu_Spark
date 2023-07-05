@@ -76,7 +76,7 @@ function UserProfileStudent() {
                 className={`nav-item nav-link scrollto ${activeSection === 'financial-dues' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('financial-dues')}
               >
-سجل المدفوعات
+                سجل المدفوعات
               </span>
               <span
                 className={`nav-item nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
@@ -108,6 +108,8 @@ function UserProfileStudent() {
               >
                 الملف الشخصي
               </span>
+
+
             </div>
           </div>
         </nav>

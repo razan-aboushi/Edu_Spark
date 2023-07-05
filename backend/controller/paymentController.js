@@ -108,47 +108,61 @@ const getPaymentIdOfCreditCard = (req, res) => {
 
 
 
+// Define the route to fetch cart items
+const getAllCartItems = async (req, res) => {
+    const { user_id } = req.params;
+    try {
+      const [cartItems] = await connection.promise().query(`
+        SELECT c.course_id, c.course_title, c.course_price, s.summary_id, s.summary_title, s.summary_price, cart.type
+        FROM cart
+        LEFT JOIN courses c ON cart.course_id = c.course_id
+        LEFT JOIN summaries s ON cart.summary_id = s.summary_id
+        WHERE cart.user_id = ?
+      `, [user_id]);
+  
+      res.json(cartItems);
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+      res.status(500).json({ error: 'Failed to fetch cart items' });
+    }
+  };
+  
 
-// Get the three summaries for the home page
-// const getTransactionsData = (req, res) => {
-
-//     const query = 'SELECT * FROM transactions';
-
-//     connection.query(query, (error, results) => {
-//         if (error) {
-//             console.error(error);
-//             res.status(500).json({ error: 'Failed to fetch summaries' });
-//         } else {
-//             res.json(results);
-//         }
-//     });
-// };
 
 
 
+// delete the items from the carts 
+const deleteCartItem = async (req, res) => {
+  const { user_id, item_id } = req.params;
 
-// handling form submission and storing transaction details
-// const postTransactionDetails = (req, res) => {
-//     const { transaction_id, amount } = req.body;
+  // Check if item_id is undefined
+  if (typeof item_id === 'undefined') {
+    res.status(400).json({ error: 'Invalid item_id' });
+    return;
+  }
 
-//     // Create a new transaction details object
-//     const transactionDetails = {
-//         transaction_id: transaction_id,
-//         amount: amount,
-      
-//     };
+  try {
+    const [result] = await connection.promise().query(`
+      DELETE FROM cart WHERE user_id = ? AND (course_id = ? OR summary_id = ?)
+    `, [user_id, item_id, item_id]);
 
-//     connection.query('INSERT INTO transaction_details SET ?', transactionDetails, (error, results) => {
+    if (result.affectedRows === 0) {
+      // No matching cart item found
+      res.status(404).json({ message: 'Cart item not found' });
+    } else {
+      // Cart item deleted successfully
+      res.json({ message: 'Cart item deleted' });
+    }
+  } catch (error) {
+    console.error('Error removing item from cart:', error);
+    res.status(500).json({ error: 'Failed to remove item from cart'});
+  }
+};
 
-//         if (error) {
-//             console.error('Error inserting transaction details:', error);
-//             res.status(500).json({ error: 'Failed to insert transaction details' });
-//         } else {
-//             console.log('Transaction details inserted successfully:', results);
-//             res.status(200).json({ message: 'Transaction details inserted successfully' });
-//         }
-//     });
-// }
+  
+
+
+
 
 
 
@@ -160,6 +174,6 @@ const getPaymentIdOfCreditCard = (req, res) => {
 
 module.exports = {
     postSummariesIdEnrollment,
-    postCourseIdEnrollment, postTransaction, getPaymentIdOfCreditCard,
-    //  getTransactionsData,postTransactionDetails
+    postCourseIdEnrollment, postTransaction,
+     getPaymentIdOfCreditCard,getAllCartItems,deleteCartItem
 };
