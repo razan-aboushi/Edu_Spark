@@ -74,7 +74,7 @@
 
 3. Configuration :
 
-   - Create a MySQL database for the project. You can refer to the database tables structure in the [EduSpark Database](file:///C:/Users/Orange/Downloads/EduSpark_Database.pdf).
+   - Create a MySQL database for the project. You can refer to the database tables structure in the [file:///C:/Users/Orange/Desktop/Project%20delivderable/EduSpark_Database.pdf](file:///C:/Users/Orange/Downloads/EduSpark_Database.pdf).
 
    - Copy the sample configuration file and update it with the necessary database credentials.
 
