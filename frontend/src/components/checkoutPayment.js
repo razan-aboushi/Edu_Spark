@@ -464,13 +464,42 @@ function CheckoutPayment() {
     axios.delete(`http://localhost:4000/removeCartItemsFromCart/${user_id}/${itemId}`)
       .then((response) => {
         console.log(response.data);
+        fetchCartItems();
+
       })
       .catch((error) => {
         console.error(error);
       });
   
-    fetchCartItems();
   }
+  
+  const [userAccountInfo, setUserAccountInfo] = useState([]);
+
+  useEffect(() => {
+    const getUserAccountInfo = async () => {
+      const token = localStorage.getItem('token');
+  
+      if (!token) {
+        console.log('Token not available');
+        // Handle the case when the token is missing
+        return;
+      }
+  
+      try {
+        const decodedToken = jwt_decode(token);
+        const user_id = decodedToken.userId;
+  
+        const response = await axios.get(`http://localhost:4000/userAccountInfo/${user_id}`);
+        setUserAccountInfo(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.log('Error while trying to get the user account info:', error);
+        // Handle the error case appropriately
+      }
+    };
+  
+    getUserAccountInfo();
+  }, []);
   
 
 

@@ -8,18 +8,17 @@ import jwt_decode from 'jwt-decode';
 function SummaryForm() {
     const [summaryData, setSummaryData] = useState({
         summary_title: "",
-        summary_image: null,
+        summary_image: "",
         summary_brief: "",
         summary_description: "",
         sell_or_free: "",
         summary_price: 0,
         summary_category: "",
         summary_university: "",
-        summary_file: null,
+        summary_file: "",
         facebook_link: "",
         linkedin_link: "",
     });
-
 
     const [categories, setCategories] = useState([]);
     const [university, setUniversity] = useState([]);
@@ -31,7 +30,6 @@ function SummaryForm() {
         });
     };
 
-
     const handleFileimageChange = (event) => {
         setSummaryData({
             ...summaryData,
@@ -39,18 +37,13 @@ function SummaryForm() {
         });
     };
 
-
-
-
     const { universityId } = useParams();
 
     useEffect(() => {
         handleInputChange();
     }, [universityId]);
 
-
     useEffect(() => {
-
         // get universities
         axios.get("http://localhost:4000/universities")
             .then((response) => {
@@ -61,11 +54,8 @@ function SummaryForm() {
             });
     }, []);
 
-
-
     const handleInputChange = (event) => {
         if (event && event.target) {
-
             const { name, value } = event.target;
             if (name && value) {
                 setSummaryData({ ...summaryData, [name]: value });
@@ -85,14 +75,8 @@ function SummaryForm() {
         }
     };
 
-
-
-
-
-
     const handleFormSubmitSummary = (event) => {
         event.preventDefault();
-
 
         const {
             summary_title,
@@ -108,13 +92,12 @@ function SummaryForm() {
             linkedin_link
         } = summaryData;
 
-
         const token = localStorage.getItem('token');
         if (token) {
             const decodedToken = jwt_decode(token);
             const user_id = decodedToken.userId;
             console.log(user_id)
-            
+
             if (summary_file && summary_image) {
                 const formData = new FormData();
                 formData.append('summary_title', summary_title);
@@ -174,9 +157,34 @@ function SummaryForm() {
         }
     };
 
+    const isRequiredField = (field) => {
+        return (
+            field === "summary_title" ||
+            field === "summary_image" ||
+            field === "summary_brief" ||
+            field === "summary_description" ||
+            field === "sell_or_free" ||
+            field === "summary_category" ||
+            field === "summary_university" ||
+            field === "summary_file" ||
+            field === "facebook_link" ||
+            field === "linkedin_link"
 
+        );
+    };
 
+    const isFilledField = (field) => {
+        return summaryData[field] !== "";
+    };
 
+    const getInputClass = (field) => {
+        if (isRequiredField(field) && !isFilledField(field)) {
+            return "required-input";
+        } else if (isFilledField(field)) {
+            return "filled-input";
+        }
+        return "";
+    };
 
     return (
         <div className="page-wrapper p-t-100 p-b-50">
@@ -193,7 +201,7 @@ function SummaryForm() {
                             onSubmit={handleFormSubmitSummary}
                         >
                             {/* Summary Title */}
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("summary_title")}`}>
                                 <label className="control-label" htmlFor="summary_title">
                                     عنوان الملخص
                                 </label>
@@ -210,7 +218,7 @@ function SummaryForm() {
                             </div>
 
                             {/* Summary Image */}
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("summary_image")}`}>
                                 <label className="control-label" htmlFor="summary_image">
                                     صورة الملخص
                                 </label>
@@ -224,12 +232,9 @@ function SummaryForm() {
                                     required
                                 />
                             </div>
-                            <small className="form-text text-muted">
-                                رفع صورة الدورة. الحجم الأقصى للملف هو 50 ميغابايت.
-                            </small>
 
                             {/* Summary Description */}
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("summary_brief")}`}>
                                 <label className="control-label" htmlFor="summary_brief">
                                     وصف الملخص
                                 </label>
@@ -245,7 +250,7 @@ function SummaryForm() {
                             </div>
 
                             {/* Summary Details */}
-                            <div className="form-group  mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("summary_description")}`}>
                                 <label className="control-label" htmlFor="summary_description">
                                     تفاصيل الملخص
                                 </label>
@@ -261,7 +266,7 @@ function SummaryForm() {
                             </div>
 
                             {/* Sell or Free */}
-                            <div className="form-group  mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("sell_or_free")}`}>
                                 <label className="control-label" htmlFor="summary_sell">
                                     السعر:
                                 </label>
@@ -280,7 +285,7 @@ function SummaryForm() {
                                         مجاني
                                     </label>
                                 </div>
-                                <div className="form-check  mt-3">
+                                <div className="form-check mt-3">
                                     <input
                                         className="form-check-input"
                                         type="radio"
@@ -289,7 +294,6 @@ function SummaryForm() {
                                         value="paid"
                                         checked={summaryData.sell_or_free === 'paid'}
                                         onChange={handleInputChange}
-
                                     />
                                     <label className="form-check-label" htmlFor="summary_sell_paid">
                                         مدفوع
@@ -298,7 +302,7 @@ function SummaryForm() {
                             </div>
 
                             {/* Summary Price */}
-                            <div className={`form-group  mt-3 ${summaryData.sell_or_free === 'free' ? 'hidden' : 'visible'}`}>
+                            <div className={`form-group mt-3 ${getInputClass("summary_price")}`}>
                                 <label className="control-label" htmlFor="summary_price">
                                     أدخل السعر:
                                 </label>
@@ -310,14 +314,13 @@ function SummaryForm() {
                                     id="summary_price"
                                     value={summaryData.summary_price}
                                     onChange={handleInputChange}
-
                                 />
                             </div>
 
 
 
                             {/* course University */}
-                            <div className="form-group  mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("summary_university")}`}>
                                 <label className="control-label" htmlFor="summary_university">
                                     الجامعة
                                 </label>
@@ -327,6 +330,7 @@ function SummaryForm() {
                                     id="summary_university"
                                     value={summaryData.summary_university}
                                     onChange={(e) => handleInputChange(e)}
+                                    required
                                 >
                                     <option value="">اختر الجامعة</option>
                                     {university.map((university) => (
@@ -339,9 +343,10 @@ function SummaryForm() {
 
 
                             {/* course Category */}
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("summary_category")}`}>
                                 <label className="control-label" htmlFor="summary_category">
-                                    التخصص                                </label>
+                                    التخصص
+                                </label>
                                 <select
                                     className="form-control"
                                     name="summary_category"
@@ -349,6 +354,7 @@ function SummaryForm() {
                                     value={summaryData.summary_category}
                                     onChange={handleInputChange}
                                     disabled={!summaryData.summary_university}
+                                    required
                                 >
                                     <option value="">اختر التخصص</option>
                                     {categories.map((category) => (
@@ -362,10 +368,12 @@ function SummaryForm() {
 
 
 
+
                             {/* Summary File */}
-                            <div className="form-group  mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("summary_file")}`}>
                                 <label className="control-label" htmlFor="summary_file">
-                                    حمّل ملف PDF                                        </label>
+                                    حمّل ملف PDF
+                                </label>
                                 <input
                                     className="form-control"
                                     type="file"
@@ -379,7 +387,7 @@ function SummaryForm() {
 
 
                             {/* Facebook Link */}
-                            <div className="form-group  mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("facebook_link")}`}>
                                 <label className="control-label" htmlFor="summary_facebook">
                                     رابط الفيسبوك
                                 </label>
@@ -391,12 +399,12 @@ function SummaryForm() {
                                     id="summary_facebook"
                                     value={summaryData.facebook_link}
                                     onChange={handleInputChange}
-
+                                    required
                                 />
                             </div>
 
                             {/* LinkedIn Link */}
-                            <div className="form-group  mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("linkedin_link")}`}>
                                 <label className="control-label" htmlFor="summary_linkedin">
                                     رابط LinkedIn
                                 </label>
@@ -408,10 +416,9 @@ function SummaryForm() {
                                     id="summary_linkedin"
                                     value={summaryData.linkedin_link}
                                     onChange={handleInputChange}
-
+                                    required
                                 />
                             </div>
-
 
 
                             {/* Submit Button */}

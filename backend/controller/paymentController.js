@@ -165,7 +165,21 @@ const deleteCartItem = async (req, res) => {
 
 
 
+const getUserAccountInfo = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const [rows] = await connection.promise().query(`
+      SELECT *
+      FROM bank_accounts
+      WHERE user_id = ?
+    `, [user_id]);
 
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching bank accounts info:', error);
+    res.status(500).json({ error: 'Failed to fetch bank accounts info' });
+  }
+};
 
 
 
@@ -175,5 +189,5 @@ const deleteCartItem = async (req, res) => {
 module.exports = {
     postSummariesIdEnrollment,
     postCourseIdEnrollment, postTransaction,
-     getPaymentIdOfCreditCard,getAllCartItems,deleteCartItem
+     getPaymentIdOfCreditCard,getAllCartItems,deleteCartItem,getUserAccountInfo
 };

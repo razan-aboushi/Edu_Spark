@@ -23,6 +23,13 @@
  * [Edu Spark Trello](https://trello.com/b/Yox6tMAO/edu-spark-project).
 
 
+
+ ### 📎 Here I created Technical documentation for the website :
+
+ * [Technical documentation](file:///C:/Users/Orange/Downloads/Documenation%20(1)%20(1).pdf).
+
+
+
 ### 💻⚙️ And I used the technological tools that to complete this project:
  
  + Figma: Used for designing the user interface.
@@ -35,4 +42,50 @@
  + MySql RDBMS.
  + Git and GithHub.
  
+
+## MVC Pattern
+- Model Database
+- View HTML
+- Controller Node JS
+
+
+### 💻⚙️ Development Setup :
+## To set up a local development environment for the HireHints project, follow these steps :-
+
+1. Prerequisites : 
+
+   - Node.js (version >= 12).
+   - React.js.
+   - Mysql "you can install the mysql workbench 8.0".
+   - Git (optional).
+   - Visual Studio Code (or any preferred code editor).
+   - Postman (for API testing).
+
+
+2. Installation :
+
+   - Clone the repository "git clone repository_url".
+
+   - Navigate to the project directory :
+   + For backend " cd backend ".
+   + For frontend " cd frontend ".
+
+   - Install the dependencies in each directory of the project by use "npm i".
+
+3. Configuration :
+
+   - Create a MySQL database for the project. You can refer to the database tables structure in the [EduSpark Database](file:///C:/Users/Orange/Downloads/EduSpark_Database.pdf).
+
+   - Copy the sample configuration file and update it with the necessary database credentials.
+
+
+4. Usage:
+
+   - Start the development server "nodemon server".
+   - Start the development frontend "npm start".
+
+
+5. Contact :
+
+   - If you have any questions or suggestions regarding this project, feel free to contact me at [razanalqaddoumi@gmail.com](razanalqaddoumi@gmail.com).
 

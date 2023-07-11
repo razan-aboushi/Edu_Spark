@@ -41,6 +41,7 @@ function Nav() {
         // Make the API request to retrieve cart items count for a specific user
         const response = await axios.get(`http://localhost:4000/cartItemsLength/${user_id}`);
         setItemCount(response.data);
+        fetchCartItems();
       } catch (error) {
         console.error('Error fetching cart items count:', error);
       }

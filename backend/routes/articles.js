@@ -31,6 +31,13 @@ router.get('/articles/:article_id/comments', articlesController.getAllCommentsFo
 router.post('/comments', articlesController.InsertComments);
 
 
+// Edit the user comment in article details
+router.put('/comments/:commentId', articlesController.editUserComment);
+
+
+
+// Delete the user comment 
+router.delete('/comments/:commentId',articlesController.deleteUserComment );
 
 
 module.exports = router;

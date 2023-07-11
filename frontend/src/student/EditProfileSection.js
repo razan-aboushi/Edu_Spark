@@ -10,11 +10,10 @@ function EditProfileSection() {
   const [userProfile, setUserProfile] = useState([]);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
   const [birthdate, setBirthdate] = useState('');
+  const [emailError, setEmailError] = useState('');
   const { user_id } = useParams();
-
   // To get the user data
   useEffect(() => {
     const getUserProfile = async () => {
@@ -27,7 +26,6 @@ function EditProfileSection() {
           const user_id = decodedToken.userId;
           console.log(user_id);
           const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
-          console.log(response.data);
 
           const passwordFromInput = password;
 
@@ -42,7 +40,6 @@ function EditProfileSection() {
 
           setUserProfile(formattedProfile);
           setName(formattedProfile.name);
-          setEmail(formattedProfile.email);
           setPhoneNumber(formattedProfile.phone_number);
           setBirthdate(formattedProfile.birthdate);
           setPassword(formattedProfile.password);
@@ -55,58 +52,72 @@ function EditProfileSection() {
     getUserProfile();
   }, []);
 
+
+
+
   const handleUpdateProfile = async () => {
-    // Show a confirmation pop-up message
-    Swal.fire({
-      title: 'هل أنت متأكد؟',
-      text: 'هل ترغب في تحديث ملفك الشخصي؟',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'نعم',
-      cancelButtonText: 'لا',
-      reverseButtons: true,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const updatedUserData = {
-          name,
-          email,
-          phone_number,
-          birthdate,
-        };
 
-        if (password) {
-          // Encrypt the password
-          const salt = await bcrypt.genSalt(10);
-          const encryptedPassword = await bcrypt.hash(password, salt);
-          updatedUserData.password = encryptedPassword;
+
+    try {
+      const response = await axios.get('http://localhost:4000/getAllUserInfoData');
+      const users = response.data;
+      console.log(users);
+
+      // Show a confirmation pop-up message
+      Swal.fire({
+        title: 'هل أنت متأكد؟',
+        text: 'هل ترغب في تحديث ملفك الشخصي؟',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'نعم',
+        cancelButtonText: 'لا',
+        reverseButtons: true,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const updatedUserData = {
+            name,
+            phone_number,
+            birthdate,
+          };
+
+          if (password) {
+            // Encrypt the password
+            const salt = await bcrypt.genSalt(10);
+            const encryptedPassword = await bcrypt.hash(password, salt);
+            updatedUserData.password = encryptedPassword;
+          }
+
+          const token = localStorage.getItem('token');
+          console.log(token);
+          if (token) {
+            const decodedToken = jwt_decode(token);
+            console.log(decodedToken);
+            const user_id = decodedToken.userId;
+            console.log(user_id);
+
+            axios
+              .put(`http://localhost:4000/userUpdateInfo/${user_id}`, updatedUserData)
+              .then((response) => {
+                Swal.fire('نجاح', 'تم تحديث الملف الشخصي بنجاح!', 'success');
+              })
+              .catch((error) => {
+                console.error('حدث خطأ أثناء تحديث ملف المستخدم:', error);
+                Swal.fire('خطأ', 'فشل تحديث الملف الشخصي.', 'error');
+              });
+          }
         }
 
-        const token = localStorage.getItem('token');
-        console.log(token);
-        if (token) {
-          const decodedToken = jwt_decode(token);
-          console.log(decodedToken);
-          const user_id = decodedToken.userId;
-          console.log(user_id);
-
-          axios
-            .put(`http://localhost:4000/userUpdateInfo/${user_id}`, updatedUserData)
-            .then((response) => {
-              Swal.fire('نجاح', 'تم تحديث الملف الشخصي بنجاح!', 'success');
-            })
-            .catch((error) => {
-              console.error('حدث خطأ أثناء تحديث ملف المستخدم:', error);
-              Swal.fire('خطأ', 'فشل تحديث الملف الشخصي.', 'error');
-            });
-        }
-      }
-    });
+      
+      });
+    } catch (error) {
+      console.error('An error occurred while getting the user data:', error);
+    }
   };
+
 
   const handleCancel = () => {
     // Reset the form fields
     setName(userProfile.name);
-    setEmail(userProfile.email);
     setPhoneNumber(userProfile.phone_number);
     setBirthdate(userProfile.birthdate);
     setPassword(userProfile.password);
@@ -155,19 +166,8 @@ function EditProfileSection() {
                             onChange={(e) => setName(e.target.value)}
                           />
                         </div>
-                        <div className="form-groupAdd">
-                          <label htmlFor="eMail" className="text-left">
-                            البريد الإلكتروني
-                          </label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="eMail"
-                            placeholder="example@gmail.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                          />
-                        </div>
+                       
+
                         <div className="form-groupAdd">
                           <label htmlFor="phone" className="text-left">
                             رقم الهاتف

@@ -51,14 +51,15 @@ const postUserBankAccounts = (req, res) => {
   const hashedcvv = bcrypt.hashSync(cvv, 10);
 
   const query = 'INSERT INTO bank_accounts (account_number, cvv, user_id) VALUES ( ?, ?, ?)';
-  connection.query(query, [ hashedAccountNumber, hashedcvv, userId], (err, result) => {
+  connection.query(query, [hashedAccountNumber, hashedcvv, userId], (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ error: 'An error occurred while saving bank account information' });
     } else {
       res.status(200).json({ message: 'Bank account information saved successfully' });
     }
-  })}
+  })
+}
 
 
 
@@ -67,107 +68,117 @@ const postUserBankAccounts = (req, res) => {
 
 
 
-  // get the student information in the student profile
-  const getStudentProfileInfo = (req, res) => {
-    const { id } = req.params;
-    if (!id) {
-      res.status(400).json({ error: 'User ID is missing' });
-      return;
+// get the student information in the student profile
+const getStudentProfileInfo = (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    res.status(400).json({ error: 'User ID is missing' });
+    return;
+  }
+  const query = 'SELECT * FROM users WHERE user_id = ?';
+  connection.query(query, [id], (err, results) => {
+    if (err) {
+      console.error('Error fetching user profile:', err);
+      res.status(500).json({ error: 'Error fetching user profile' });
+    } else if (results.length === 0) {
+      res.status(404).json({ error: 'User not found' });
+    } else {
+      const userProfile = results[0];
+      res.json(userProfile);
     }
-    const query = 'SELECT * FROM users WHERE user_id = ?';
-    connection.query(query, [id], (err, results) => {
-      if (err) {
-        console.error('Error fetching user profile:', err);
-        res.status(500).json({ error: 'Error fetching user profile' });
-      } else if (results.length === 0) {
-        res.status(404).json({ error: 'User not found' });
-      } else {
-        const userProfile = results[0];
-        res.json(userProfile);
-      }
-    });
-  };
+  });
+};
 
 
 
 
-  // edit student information
-  const editStudentInfo = (req, res) => {
-    const { id } = req.params;
+// edit student information
+const editStudentInfo = (req, res) => {
+  const { id } = req.params;
 
-    if (!id) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
-    const { name, email, phone_number, birthdate, password } = req.body;
-
-    const query = 'UPDATE users SET name = ?, email = ?, phone_number = ?, birthdate = ?, password = ? WHERE user_id = ?';
-
-    connection.query(query, [name, email, phone_number, birthdate, password, id], (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'An error occurred while updating the user profile' });
-      }
-
-      return res.status(200).json({ message: 'User profile updated successfully' });
-    });
+  if (!id) {
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
+  const { name, phone_number, birthdate, password } = req.body;
+
+  const query = 'UPDATE users SET name = ?, phone_number = ?, birthdate = ?, password = ? WHERE user_id = ?';
+
+  connection.query(query, [name, phone_number, birthdate, password, id], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'An error occurred while updating the user profile' });
+    }
+
+    return res.status(200).json({ message: 'User profile updated successfully' });
+  });
+}
 
 
 
- 
-  // Endpoint to get all the summaries bought by a specific user
+
+
+// Endpoint to get all the summaries bought by a specific user
 const getUserBuySummaries = (req, res) => {
-    const { user_id } = req.params;
-  
-    const query = `
+  const { user_id } = req.params;
+
+  const query = `
       SELECT summaries.*, summary_enrollments.enrollment_date AS purchaseDate
       FROM summaries
       INNER JOIN summary_enrollments ON summaries.summary_id = summary_enrollments.summary_id
       WHERE summary_enrollments.user_id = ?
     `;
-  
-    connection.query(query, [user_id], (error, results) => {
-      if (error) {
-        console.error('Error retrieving summaries:', error);
-        res.status(500).json({ error: 'An error occurred while retrieving the summaries.' });
-      } else {
-        res.json(results);
-      }
-    });
-  }
+
+  connection.query(query, [user_id], (error, results) => {
+    if (error) {
+      console.error('Error retrieving summaries:', error);
+      res.status(500).json({ error: 'An error occurred while retrieving the summaries.' });
+    } else {
+      res.json(results);
+    }
+  });
+}
 
 
 
 
-  const getCourseTheUserJoined = async (req, res) => {
-    const { user_id } = req.params;
-  
-    try {
-      // Fetch the courses joined by the user
-      const [courses] = await connection.promise().query(
-        `SELECT c.course_id, c.course_title, c.start_date, c.end_date, c.start_time, c.end_time, c.connection_channel ,c.course_brief
+const getCourseTheUserJoined = async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    // Fetch the courses joined by the user
+    const [courses] = await connection.promise().query(
+      `SELECT c.course_id, c.course_title, c.start_date, c.end_date, c.start_time, c.end_time, c.connection_channel ,c.course_brief
          FROM course_enrollments ce
          INNER JOIN courses c ON c.course_id = ce.course_id
          WHERE ce.user_id = ?`,
-        [user_id]
-      );
-  
-      res.json(courses);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'An error occurred while fetching the courses.' });
-    }
+      [user_id]
+    );
+
+    res.json(courses);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching the courses.' });
   }
-  
+}
 
 
 
 
-
-  module.exports = {
-
-    getIdFromUserData, postUserBankAccounts, getStudentProfileInfo, editStudentInfo ,getUserBuySummaries,getCourseTheUserJoined
-
+const getAllUserInfoData = async (req, res) => {
+  try {
+    const userData = await connection.promise().query('SELECT email FROM users');
+    res.json(userData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching the user data.'});
   }
+};
+
+
+
+module.exports = {
+
+  getIdFromUserData, postUserBankAccounts, getStudentProfileInfo, editStudentInfo, getUserBuySummaries, getCourseTheUserJoined,getAllUserInfoData
+
+}

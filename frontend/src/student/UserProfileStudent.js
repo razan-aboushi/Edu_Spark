@@ -8,7 +8,6 @@ import UserProfile from './UserProfile';
 import EditProfileSection from './EditProfileSection';
 import BankAccountData from './BankAccountData';
 import CourseCalendar from './CourseCalendar';
-import InputTodo from '../components/InputTodo';
 import ListTodos from '../components/ListTodos';
 import FinancialDuesForUser from '../teacher/FinancialDuesForUser';
 import SummariesBuy from './SummariesBuy';
@@ -61,49 +60,49 @@ function UserProfileStudent() {
             الصفحة الرئيسية
           </Link>
           <button type="button" className="navbar-toggler me-4" onClick={handleNavbarToggle}>
-            <span className="navbar-toggler-icon" />
+            <span className="navbar-toggler-icon pointer-link" />
           </button>
           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`}>
             <div className="navbar-nav ms-auto p-4 p-lg-0">
               {/* Tab links */}
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'bank-details' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'bank-details' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('bank-details')}
               >
                 تفاصيل حسابي البنكي
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'financial-dues' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'financial-dues' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('financial-dues')}
               >
                 سجل المدفوعات
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('todo-list')}
               >
                 قائمة المهام
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('summary-buy')}
               >
                 مُلخصاتي
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'course-calendar' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'course-calendar' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('course-calendar')}
               >
                 تواريخ دوراتي
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'edit-profile' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'edit-profile' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('edit-profile')}
               >
                 تعديل الملف الشخصي
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'profile' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'profile' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('profile')}
               >
                 الملف الشخصي
@@ -123,7 +122,6 @@ function UserProfileStudent() {
         {activeSection === 'financial-dues' && <FinancialDuesForUser />}
         {activeSection === 'todo-list' && (
           <>
-            <InputTodo />
             <ListTodos />
           </>
         )}

@@ -10,7 +10,6 @@ import BankAccountData from '../student/BankAccountData';
 import FinancialDuesForUser from './FinancialDuesForUser';
 import ManageCourses from './ManageCourses';
 import CourseCalendar from '../student/CourseCalendar';
-import InputTodo from '../components/InputTodo';
 import ListTodos from '../components/ListTodos';
 import SummariesBuy from '../student/SummariesBuy';
 
@@ -50,69 +49,69 @@ function UserProfileTeacher() {
             className="navbar-toggler me-4"
             onClick={handleNavbarToggle}
           >
-            <span className="navbar-toggler-icon" />
+            <span className="navbar-toggler-icon pointer-link" />
           </button>
           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`}>
             <div className="navbar-nav ms-auto p-4 p-lg-0">
 
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'bank-details' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'bank-details' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('bank-details')}
               >
                 تفاصيل حسابي البنكي
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'financial-dues' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'financial-dues' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('financial-dues')}
               >
                 سجل المدفوعات
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('todo-list')}
               >
                 قائمة المهام
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'add-course' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'add-course' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('add-course')}
               >
                 إضافة دورة أو ملخص
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('summary-buy')}
               >
                 مُلخصاتي المُشتراة
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'manage-courses' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'manage-courses' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('manage-courses')}
               >
                 دوراتي المُقدمة
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'course-calendar' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'course-calendar' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('course-calendar')}
               >
                 تواريخ دوراتي
               </span>
 
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'edit-profile' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'edit-profile' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('edit-profile')}
               >
                 تعديل الملف الشخصي
               </span>
               <span
-                className={`nav-item nav-link scrollto ${activeSection === 'profile' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'profile' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('profile')}
               >
                 الملف الشخصي
               </span>
               <Link
                 to="/"
-                className={`nav-item nav-link scrollto ${activeSection === null ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === null ? 'active' : ''}`}
               >
                 الصفحة الرئيسية
               </Link>
@@ -130,7 +129,6 @@ function UserProfileTeacher() {
         {activeSection === 'summary-buy' && <SummariesBuy />}
         {activeSection === 'todo-list' && (
           <>
-            <InputTodo />
             <ListTodos />
           </>
         )}

@@ -13,7 +13,7 @@ function CourseForm() {
 
     const [courseData, setCourseData] = useState({
         course_title: "",
-        course_image: null,
+        course_image: "",
         course_brief: "",
         course_description: "",
         connection_channel: "",
@@ -107,7 +107,7 @@ function CourseForm() {
                     console.log(response.data);
                     setCourseData({
                         course_title: "",
-                        course_image: null,
+                        course_image: "",
                         course_brief: "",
                         course_description: "",
                         connection_channel: "",
@@ -122,8 +122,7 @@ function CourseForm() {
                         course_category: "",
                         course_university: "",
                         facebook_link: "",
-                        linkedin_link: "",
-                        email: "",
+                        linkedin_link: ""
 
                     });
                     Swal.fire({
@@ -153,6 +152,61 @@ function CourseForm() {
     };
 
 
+
+
+    const isRequiredField = (field) => {
+        return (
+            field === "course_title" ||
+            field === "course_image" ||
+            field === "course_brief" ||
+            field === "course_description" ||
+            field === "sell_or_free" ||
+            field === "course_category" ||
+            field === "course_university" ||
+            field === "course_file" ||
+            field === "facebook_link" ||
+            field === "linkedin_link" ||
+            field === "connection_channel" ||
+            field === "course_type" ||
+            field === "sell_or_free" ||
+            field === "start_date"  ||
+            field === "end_date"  ||
+            field === "start_time"  ||
+            field === "end_time"  ||
+            field === "course_duration"  ||
+            field === "course_category"  ||
+            field === "course_university"  ||
+            field === "facebook_link"  ||
+            field === "linkedin_link"  
+
+
+        );
+    };
+
+    const isFilledField = (field) => {
+        return courseData[field] !== "";
+    };
+
+    const getInputClass = (field) => {
+        if (isRequiredField(field) && !isFilledField(field)) {
+            return "required-input";
+        } else if (isFilledField(field)) {
+            return "filled-input";
+        }
+        return "";
+    };
+
+
+
+
+
+
+
+
+
+
+
+
     return (
         <div className="page-wrapper p-t-100 p-b-50">
             <div className="container">
@@ -162,7 +216,7 @@ function CourseForm() {
                     </div>
                     <div className="card-body">
                         <form id="courseForm" onSubmit={handleSubmitCourseForm}>
-                            <div className="form-group mt-3">
+                        <div className={`form-group mt-3 ${getInputClass("course_title")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_title">عنوان الدورة:</label>
                                 <input
                                     className="form-control"
@@ -175,7 +229,7 @@ function CourseForm() {
                                     required
                                 />
                             </div>
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("course_image")}`}>
                                 <label htmlFor="course_image">صورة تعبّر عن الدورة المقدمة :</label>
                                 <div className="input-group">
                                     <div className="custom-file">
@@ -194,7 +248,7 @@ function CourseForm() {
                                     رفع صورة الدورة. الحجم الأقصى للملف هو 50 ميغابايت.
                                 </small>
                             </div>
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("course_brief")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_brief">وصف موجز:</label>
                                 <textarea
                                     className="form-control"
@@ -207,7 +261,7 @@ function CourseForm() {
                                     required
                                 />
                             </div>
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("course_description")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_description">تفاصيل الدورة:</label>
                                 <textarea
                                     className="form-control"
@@ -220,7 +274,7 @@ function CourseForm() {
                                     required
                                 />
                             </div>
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("connection_channel")}`}>
                                 <label className="mb-2 mt-2" htmlFor="connection_channel">قناة الاتصال:</label>
                                 <input
                                     className="form-control"
@@ -233,7 +287,7 @@ function CourseForm() {
                                     required
                                 />
                             </div>
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("course_type")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_type">نوع الدورة:</label>
                                 <input
                                     className="form-control"
@@ -248,7 +302,7 @@ function CourseForm() {
                             </div>
 
                             {/* Sell or Free */}
-                            <div className="form-group  mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("sell_or_free")}`}>
                                 <label className="control-label" htmlFor="course_sell">
                                     السعر:
                                 </label>
@@ -267,7 +321,7 @@ function CourseForm() {
                                         مجاني
                                     </label>
                                 </div>
-                                <div className="form-check  mt-3">
+                                <div className="form-check  mt-3" >
                                     <input
                                         className="form-check-input"
                                         type="radio"
@@ -284,7 +338,7 @@ function CourseForm() {
                                 </div>
                             </div>
 
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("course_price")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_price">سعر الدورة:</label>
                                 <input
                                     className="form-control"
@@ -297,7 +351,7 @@ function CourseForm() {
                                     required
                                 />
                             </div>
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 ${getInputClass("course_duration")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_duration">مدة الدورة:</label>
                                 <input
                                     className="form-control"
@@ -312,7 +366,7 @@ function CourseForm() {
                             </div>
 
 
-                            <div className="mb-3">
+                            <div className={`form-group mt-3 mb-3 ${getInputClass("start_date")}`}>
                                 <label className="mb-2 mt-2" htmlFor="">تحديد تاريخ بدء و إنتهاء الدورة :</label>
                                 <div className="input-group">
                                     <span className="input-group-text">من</span>
@@ -339,7 +393,7 @@ function CourseForm() {
                             </div>
 
 
-                            <div className="mb-3">
+                            <div className={`form-group mt-3 mb-3 ${getInputClass("start_time")}`}>
                                 <label className="mb-2 mt-2" htmlFor="">وقت بدء و نهاية الدورة :</label>
                                 <div className="input-group">
                                     <span className="input-group-text">وقت البدء  </span>
@@ -366,7 +420,7 @@ function CourseForm() {
                             </div>
 
                             {/* course University */}
-                            <div className="form-group  mt-3">
+                            <div className={`form-group mt-3 mb-3 ${getInputClass("course_university")}`}>
                                 <label className="control-label" htmlFor="course_university">
                                     الجامعة
                                 </label>
@@ -388,7 +442,7 @@ function CourseForm() {
 
 
                             {/* course Category */}
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 mb-3 ${getInputClass("course_category")}`}>
                                 <label className="control-label" htmlFor="course_category">
                                     التخصص                                </label>
                                 <select
@@ -411,7 +465,7 @@ function CourseForm() {
 
 
 
-                            <div className="form-group mt-3">
+                            <div className={`form-group mt-3 mb-3 ${getInputClass("facebook_link")}`}>
                                 <label className="mb-2 mt-2" htmlFor="facebook_link">رابط الفيسبوك:</label>
                                 <input
                                     className="form-control"
@@ -424,7 +478,8 @@ function CourseForm() {
                                     required
                                 />
                             </div>
-                            <div className="form-group mt-3">
+
+                            <div className={`form-group mt-3 mb-3 ${getInputClass("linkedin_link")}`}>
                                 <label className="mb-2 mt-2" htmlFor="linkedin_link">رابط لينكد إن:</label>
                                 <input
                                     className="form-control"

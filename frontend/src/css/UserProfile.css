@@ -722,3 +722,26 @@ AddCourseSummary:hover {
 
 
 
+.pointer-link {
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+/* Add red box shadow to required input fields */
+.required-input input,
+.required-input textarea {
+  box-shadow: 0 0 4px red;
+}
+
+/* Add green box shadow to filled input fields */
+.filled-input input,
+.filled-input textarea {
+  box-shadow: 0 0 4px green;
+}

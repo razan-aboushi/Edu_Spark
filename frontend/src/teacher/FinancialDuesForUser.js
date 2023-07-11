@@ -28,45 +28,49 @@ function FinancialDues() {
   };
 
   const convertDateFormate = (timestamp) => {
-
     const date = new Date(timestamp);
     return date.toLocaleDateString();
   }
-
 
   return (
     <section className="container" id="MyFinancialDues">
       <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3 mt-5 mb-4">
           سجل المدفوعات 
-           </h6>
+        </h6>
       </div>
-      <div className="table-responsive">
-        <table className="table table-striped table-bordered" aria-label="listOfTransfer">
-          <thead>
-            <tr style={{ backgroundColor: "#06BBCC", textAlign: "center" }}>
-              <th>الإسم</th>
-              <th>رقم المنتج</th>
-              <th>المبلغ</th>
-              <th>التاريخ</th>
-              <th>عنوان الدورة</th>
-              <th>عنوان الملخص</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transferData.map((transfer) => (
-              <tr key={transfer.transaction_id}>
-                <td>{transfer.name}</td>
-                <td>{transfer.summary_id}</td>
-                <td>{transfer.amount} د.أ</td>
-                <td>{convertDateFormate(transfer.enrollment_date)}</td>
-                <td>{transfer.course_title}</td>
-                <td>{transfer.summary_title}</td>
+      {transferData.length === 0 ? (
+        <div className="text-center mt-5">
+          <p>لا توجد مدفوعات حتى الآن</p>
+        </div>
+      ) : (
+        <div className="table-responsive">
+          <table className="table table-striped table-bordered" aria-label="listOfTransfer">
+            <thead>
+              <tr style={{ backgroundColor: "#06BBCC", textAlign: "center" }}>
+                <th>الإسم</th>
+                <th>رقم المنتج</th>
+                <th>المبلغ</th>
+                <th>التاريخ</th>
+                <th>عنوان الدورة</th>
+                <th>عنوان الملخص</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {transferData.map((transfer) => (
+                <tr key={transfer.transaction_id}>
+                  <td>{transfer.name}</td>
+                  <td>{transfer.summary_id}</td>
+                  <td>{transfer.amount} د.أ</td>
+                  <td>{convertDateFormate(transfer.enrollment_date)}</td>
+                  <td>{transfer.course_title}</td>
+                  <td>{transfer.summary_title}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 }

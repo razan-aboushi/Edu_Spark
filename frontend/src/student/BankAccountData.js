@@ -12,7 +12,6 @@ function BankAccountData() {
   const [cvv, setcvv] = useState('');
 
 
-  const { user_id } = useParams();
 
 
   useEffect(() => {

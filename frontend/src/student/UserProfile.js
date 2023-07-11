@@ -44,7 +44,7 @@ function UserProfile() {
             </div>
             <div className="panel-bodyUserProfile">
               
-              <div className="col-md-12 col-xs-12 col-sm-12 col-lg-8" style={{width:"500px"}}>
+              <div className="col-md-12 col-xs-8 col-sm-12 col-lg-8" style={{width:"500px"}}>
                 <div className="ContainerProfileSection"></div>
                 <hr />
                 <ul className="ContainerProfileSection details" style={{fontSize:"18px"}}>

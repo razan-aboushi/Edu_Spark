@@ -10,7 +10,7 @@ const getAllCourses = (req, res) => {
     INNER JOIN universities ON courses.university_id = universities.university_id
     INNER JOIN categories ON courses.category_id = categories.category_id
     INNER JOIN users ON courses.user_id = users.user_id
-    WHERE courses.course_status = 'approve'
+    WHERE courses.course_status = 'مقبول'
 
   `;
 

@@ -31,4 +31,7 @@ router.get('/reservationCourses/:user_id',studentProfileController.getCourseTheU
 
 
 
+
+router.get('/getAllUserInfoData',studentProfileController.getAllUserInfoData);
+
 module.exports = router;

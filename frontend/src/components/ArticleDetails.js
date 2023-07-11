@@ -5,8 +5,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import "../css/style.css";
 
-function ArticleDetails()
- {
+function ArticleDetails() {
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState('');
@@ -101,7 +100,7 @@ function ArticleDetails()
       });
 
       // Clear the comment form
-   
+
       setMessage('');
 
       // Refresh the comments
@@ -143,6 +142,38 @@ function ArticleDetails()
   const toggleComments = () => {
     setShowComments(!showComments);
   };
+
+
+
+
+  // Function to delete a comment
+  const deleteComment = async (commentId) => {
+    try {
+      await axios.delete(`http://localhost:4000/comments/${commentId}`);
+      // Refresh the comments after deletion
+      getComments();
+      Swal.fire('نجاح', 'تم حذف التعليق بنجاح!', 'success');
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      Swal.fire('خطأ', 'حدث خطأ أثناء حذف التعليق.', 'error');
+    }
+  };
+
+  // Function to edit a comment
+  const editComment = async (commentId, updatedContent) => {
+    try {
+      await axios.put(`http://localhost:4000/comments/${commentId}`, {
+        comment_content: updatedContent,
+      });
+      // Refresh the comments after editing
+      getComments();
+      Swal.fire('نجاح', 'تم تعديل التعليق بنجاح!', 'success');
+    } catch (error) {
+      console.error('Error editing comment:', error);
+      Swal.fire('خطأ', 'حدث خطأ أثناء تعديل التعليق.', 'error');
+    }
+  };
+
 
 
   return (
@@ -200,22 +231,71 @@ function ArticleDetails()
                     <h5 className="comments-count">{comments.length} تعليقات</h5>
                     {showComments && (
                       comments.length > 0 ? (
-
                         comments.map((comment) => (
                           <div key={comment.comment_id} className="comment">
                             <div className="d-flex">
-
                               <div>
                                 <h5>
                                   <Link to="">{comment.name}</Link>{" "}
-                                  <Link
-                                    to="#"
-                                    className="reply"
-                                    onClick={() => handleReplyClick(comment.comment_id)}
-                                  >
-                                    <i className="bi bi-reply-fill" />
-                                    الرد
-                                  </Link>
+                                  {user_id === comment.user_id && (
+                                    <div className="dropdown d-inline">
+                                      <button
+                                        className="btn btn-link btn-sm dropdown-toggle"
+                                        type="button"
+                                        id={`commentDropdown${comment.comment_id}`}
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      ></button>
+                                      <ul
+                                        className="dropdown-menu"
+                                        aria-labelledby={`commentDropdown${comment.comment_id}`}
+                                      >
+                                        <li>
+                                          <button
+                                            className="dropdown-item text-center"
+                                            onClick={() => {
+                                              Swal.fire({
+                                                title: 'تعديل التعليق',
+                                                input: 'textarea',
+                                                inputValue: comment.comment_content,
+                                                showCancelButton: true,
+                                                confirmButtonText: 'حفظ',
+                                                cancelButtonText: 'إلغاء',
+                                              }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                  const updatedContent = result.value;
+                                                  editComment(comment.comment_id, updatedContent);
+                                                }
+                                              });
+                                            }}
+                                          >
+                                            تعديل
+                                          </button>
+                                        </li>
+                                        <li>
+                                          <button
+                                            className="dropdown-item text-center"
+                                            onClick={() => {
+                                              Swal.fire({
+                                                title: 'حذف التعليق',
+                                                text: 'هل أنت متأكد أنك تريد حذف هذا التعليق؟',
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonText: 'حذف',
+                                                cancelButtonText: 'إلغاء',
+                                              }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                  deleteComment(comment.comment_id);
+                                                }
+                                              });
+                                            }}
+                                          >
+                                            حذف
+                                          </button>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  )}
                                 </h5>
                                 <time dateTime={comment.date}>
                                   {formatTimestampToDate(comment.date)}
@@ -225,12 +305,11 @@ function ArticleDetails()
                             </div>
                           </div>
                         ))
+                        
                       ) : (
                         <div className="no-comments">لا يوجد تعليقات حتى الآن. بادر بإبداء رأيك!</div>
                       )
-
                     )}
-
                   </div>
 
                   <div className="toggle-comments mt-4 mb-4">
@@ -246,7 +325,7 @@ function ArticleDetails()
 
                   <div className="reply-form mt-5">
                     <h5 className='mb-4'>اترك تعليقًا</h5>
-                  
+
                     <form onSubmit={handleCommentSubmit}>
 
                       <div className="form-group mt-2">
@@ -272,6 +351,9 @@ function ArticleDetails()
             </div>
           </section>
         </main>
+
+
+
 
         {/* نهاية المحتوى الرئيسي */}
       </div>

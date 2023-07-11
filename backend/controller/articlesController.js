@@ -134,8 +134,69 @@ const InsertComments = (req, res) => {
 
 
 
+
+
+
+
+
+
+// Edit a comment
+const editUserComment = async (req, res) => {
+  const { commentId } = req.params;
+  const { comment_content } = req.body;
+
+  try {
+    const updateCommentQuery = `
+      UPDATE comments
+      SET comment_content = ?
+      WHERE comment_id = ?;
+    `;
+    await connection.promise().query(updateCommentQuery, [comment_content, commentId]);
+    res.sendStatus(200);
+  } catch (error) {
+    console.error('Error editing comment:', error);
+    res.sendStatus(500);
+  }
+}
+
+
+
+// Delete the user a comment
+const deleteUserComment = async (req, res) => {
+  const { commentId } = req.params;
+
+  try {
+    const deleteCommentQuery = `
+      DELETE FROM comments
+      WHERE comment_id = ?;
+    `;
+    await connection.promise().query(deleteCommentQuery, [commentId]);
+    res.sendStatus(200);
+  } catch (error) {
+    console.error('Error deleting comment:', error);
+    res.sendStatus(500);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = {
 
   getarticlesbyID,
-  articlesAll, getAllCommentsForArticle, InsertComments , getCountOfComments
+  articlesAll, getAllCommentsForArticle, InsertComments , getCountOfComments,editUserComment,deleteUserComment
 }

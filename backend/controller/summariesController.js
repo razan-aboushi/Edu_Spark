@@ -8,7 +8,7 @@ const getAllSummaries = (req, res) => {
       INNER JOIN universities ON summaries.university_id = universities.university_id
       INNER JOIN categories ON summaries.category_id = categories.category_id
       INNER JOIN users ON summaries.user_id = users.user_id
-      WHERE summaries.summary_status = 'approve'
+      WHERE summaries.summary_status = 'مقبول'
 
     `;
 

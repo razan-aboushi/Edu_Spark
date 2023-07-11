@@ -30,4 +30,10 @@ router.get('/getAllCartItems/:user_id',paymentsController.getAllCartItems);
 // delete the items from the cart
 router.delete('/removeCartItemsFromCart/:user_id/:item_id', paymentsController.deleteCartItem);
 
+
+
+
+router.get('/userAccountInfo/:user_id',paymentsController.getUserAccountInfo);
+
+
 module.exports = router;
