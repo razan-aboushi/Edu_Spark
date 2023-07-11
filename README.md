@@ -30,6 +30,7 @@
 
 
 
+
 ### 💻⚙️ And I used the technological tools that to complete this project:
  
  + Figma: Used for designing the user interface.
@@ -43,14 +44,18 @@
  + Git and GithHub.
  
 
+
+
 ## MVC Pattern
 - Model Database
 - View HTML
 - Controller Node JS
 
 
+
+
 ### 💻⚙️ Development Setup :
-## To set up a local development environment for the HireHints project, follow these steps :-
+## To set up a local development environment for the EduSpark project, follow these steps :-
 
 1. Prerequisites : 
 
@@ -74,7 +79,7 @@
 
 3. Configuration :
 
-   - Create a MySQL database for the project. You can refer to the database tables structure in the [file:///C:/Users/Orange/Desktop/Project%20delivderable/EduSpark_Database.pdf](file:///C:/Users/Orange/Downloads/EduSpark_Database.pdf).
+   - Create a MySQL database for the project. You can refer to the database tables structure in the [EduSpark Database](file:///C:/Users/Orange/Downloads/EduSpark_Database.pdf).
 
    - Copy the sample configuration file and update it with the necessary database credentials.
 
