@@ -90,7 +90,7 @@ const updateAboutUs = async (req, res) => {
 
 // get all the users in the database 
 const getAllUsers = (req, res) => {
-  const query = `SELECT users.*, roles.name AS role FROM users INNER JOIN roles ON users.role_id = roles.id`;
+  const query = `SELECT users.*, roles.name AS role FROM users INNER JOIN roles ON users.role_id = roles.id WHERE is_deleted='0'`;
   connection.query(query, (error, results) => {
     if (error) {
       console.error('Error retrieving users: ', error);
@@ -102,19 +102,28 @@ const getAllUsers = (req, res) => {
 }
 
 
-//delete one user in database
-const deleteUserFromWS = (req, res) => {
-  const userId = req.params.id;
-  const query = `DELETE FROM users WHERE user_id = ${userId}`;
-  connection.query(query, (error, results) => {
+
+
+
+// Soft delete one user in the database
+const softDeleteUserFromWS = (req, res) => {
+  const { user_id } = req.params;
+  const { is_deleted } = req.body;
+
+  const query = `UPDATE users SET is_deleted = ? WHERE user_id = ?`;
+  connection.query(query, [is_deleted, user_id], (error, results) => {
     if (error) {
-      console.error('Error deleting user: ', error);
-      res.status(500).json({ error: 'Error deleting user' });
+      console.error('Error soft deleting user: ', error);
+      res.status(500).json({ error: 'Error soft deleting user' });
       return;
     }
     res.sendStatus(200);
   });
 }
+
+
+
+
 
 
 // get all messages in the from contact us
@@ -362,7 +371,7 @@ const getRevenueOfTheWebSite = (req, res) => {
       }
 
       const revenue = results[0].revenue || 0;
-      const roundedRevenue = Math.round(revenue); 
+      const roundedRevenue = Math.round(revenue);
       res.json({ revenue: roundedRevenue });
 
       connection.release();
@@ -371,10 +380,9 @@ const getRevenueOfTheWebSite = (req, res) => {
 };
 
 
-
 // get the revenue in the website
 const getSalesInTheWebSite = (req, res) => {
-  const query = 'SELECT SUM(amount) AS sales FROM transactions';
+  const query = 'SELECT ROUND(SUM(amount)) AS sales FROM transactions';
 
   connection.getConnection((err, connection) => {
     if (err) {
@@ -641,7 +649,7 @@ const updateCourseStatusReject = (req, res) => {
 
 
 // Endpoint to get approved courses
-const getApprovedCourses =(req, res) => {
+const getApprovedCourses = (req, res) => {
   const query = `
     SELECT courses.course_id, courses.course_title, courses.course_brief, users.name
     FROM courses
@@ -661,7 +669,7 @@ const getApprovedCourses =(req, res) => {
 }
 
 // Endpoint to get approved summaries
-const getApprovedSummaries =(req, res) => {
+const getApprovedSummaries = (req, res) => {
   const query = `
     SELECT summaries.summary_id, summaries.summary_title, summaries.summary_brief, users.name
     FROM summaries
@@ -701,11 +709,11 @@ const getApprovedSummaries =(req, res) => {
 module.exports = {
   getAllDataInAboutUs,
   updateVisionMission,
-  updateAboutUs, getAllUsers, deleteUserFromWS, allContactUsMessages,
+  updateAboutUs, getAllUsers, softDeleteUserFromWS, allContactUsMessages,
   getAdminDataProfile, updateAdminProfileData, writeAndPostArticles, getAllContactsCounts,
   updateUserRole, getStudentNumberInWebsite, getExplainerNumberInWebsite,
   getContactUsMessagesNumber, postUniversity, postCategories, getPendingSumaries,
   updateSummaryApproveStatus, updateSummarRejectStatus, getAllPendingCourses,
   updateCourseStatusApprove, updateCourseStatusReject, readMessagesContactUs,
-  getRevenueOfTheWebSite, getSalesInTheWebSite, getUniversityNumberInTheWebSite,getApprovedCourses,getApprovedSummaries
+  getRevenueOfTheWebSite, getSalesInTheWebSite, getUniversityNumberInTheWebSite, getApprovedCourses, getApprovedSummaries
 };

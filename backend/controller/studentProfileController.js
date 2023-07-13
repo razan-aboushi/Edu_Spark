@@ -28,7 +28,7 @@ const upload = multer({ storage: storage });
 const getIdFromUserData = async (req, res) => {
   try {
     // Perform a database query to fetch the user data
-    const userData = await connection.query('SELECT user_id FROM users');
+    const userData = await connection.promise().query('SELECT user_id FROM users');
 
     // Return the user ID
     res.json({ userId: userData.user_id });

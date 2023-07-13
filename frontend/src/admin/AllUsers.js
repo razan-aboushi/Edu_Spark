@@ -3,6 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import "../css/style.css";
 
+
 function UserForm() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +24,8 @@ function UserForm() {
 
 
 
-  async function deleteUser(id) {
+
+  async function deleteUser(user_id) {
     try {
       const result = await Swal.fire({
         icon: "warning",
@@ -36,8 +38,8 @@ function UserForm() {
       });
 
       if (result.isConfirmed) {
-        await axios.delete(`http://localhost:4000/usersRegistered/${id}`);
-        fetchUsers();
+        await axios.put(`http://localhost:4000/usersRegistered/${user_id}`, { is_deleted: true });
+        setUsers(users.filter((user) => user.user_id !== user_id));
         Swal.fire({
           icon: "success",
           title: "تم الحذف",
@@ -49,6 +51,12 @@ function UserForm() {
       console.log(error);
     }
   }
+
+
+
+
+
+
 
   // Update user role
   async function updateUserRole(userId, newRole) {
@@ -102,13 +110,13 @@ function UserForm() {
                     <th>البريد الإلكتروني</th>
                     <th>رقم الهاتف</th>
                     <th>حذف المستخدم</th>
-                    <th>تغيير الدور</th> 
+                    <th>تغيير الدور</th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentUsers.map((user) => (
                     <tr key={user.user_id} className="user-row">
-                     
+
                       <td>{user.name}</td>
                       <td>{user.role}</td>
                       <td>{user.email}</td>
@@ -120,7 +128,7 @@ function UserForm() {
                           </svg>
                         </button>
                       </td>
-                      <td> 
+                      <td>
                         <select
                           value={user.role}
                           onChange={(e) => updateUserRole(user.user_id, e.target.value)}

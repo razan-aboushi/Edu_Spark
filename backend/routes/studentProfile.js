@@ -4,7 +4,7 @@ const studentProfileController =require('../controller/studentProfileController'
 
 
 // get the user id in the user profile links for to do input component
-router.get('/getIdFromUserData',studentProfileController.getIdFromUserData );
+router.get('/getIdFromUserData',studentProfileController.getIdFromUserData);
 
 
 // post the data of user bank account into database

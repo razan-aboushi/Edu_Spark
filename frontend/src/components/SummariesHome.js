@@ -132,7 +132,7 @@ function SummariesHome() {
         {summaries.map(summary => (
           <div className="col-lg-4 col-md-6" key={summary.summary_id}>
             {/* Render summary details */}
-            <div className="cardSum" style={{ width: "100%", height: "680px" }}>
+            <div className="cardSum" style={{ width: "100%", height: "705px" }}>
               <Link to="/Summaries" className="icon d-flex align-items-center justify-content-center">
                 <img
                   src={`http://localhost:4000/images/${summary.summary_image}`}

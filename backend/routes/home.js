@@ -21,12 +21,7 @@ router.get('/summaries/latest',homeController.getThreeSummaries);
 
 
 //get the courses and render them in home page
-router.get('/courses/latest',homeController.getCoursesSection );
-
-
-
-// get the three courses and render them in the home page 
-router.get('/courses/latest',homeController.getThreeCoursesInHome);
+router.get('/courses/latestHome',homeController.getCoursesSection);
 
 
 

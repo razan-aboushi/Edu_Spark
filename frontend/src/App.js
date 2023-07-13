@@ -255,9 +255,9 @@ function App() {
                 <UserProfileTeacher />} />)}
 
 
-          {userRole !== 1 && userRole !== 2 && userRole !== 3 && (
+          {/* {userRole !== 1 && userRole !== 2 && userRole !== 3 && (
             <Route path="*" element={<Error404 />} />
-          )}
+          )} */}
           
         </Routes>
 

@@ -136,7 +136,7 @@ const getTodoId = async (req, res) => {
       return res.status(404).json({ error: 'Todo not found' });
     }
 
-    res.json(todo[0]);
+    res.json(todo);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

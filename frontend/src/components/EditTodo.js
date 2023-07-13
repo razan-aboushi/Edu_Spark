@@ -1,121 +1,106 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import jwt_decode from 'jwt-decode';
+// import React, { Fragment, useState } from "react";
+// import axios from "axios";
+// import Swal from "sweetalert2";
 
-function EditTodo() {
-  const [description, setDescription] = useState('');
-  const [todo, setTodo] = useState(null);
+// function EditTodo({ todo, user_id, onUpdate, onClose }) {
+//   const [description, setDescription] = useState('');
 
-  const token = localStorage.getItem('token');
-  const decodedToken = token ? jwt_decode(token) : null;
-  const user_id = decodedToken?.userId;
+//   // const updateTodo = async () => {
+//   //   try {
+//   //     const response = await axios.put(
+//   //       `http://localhost:4000/todos/${todo.todo_id}`,
+//   //       {
+//   //         description: description,
+//   //       }
+//   //     );
+//   //     console.log(response.data);
+//   //     onUpdate(response.data);
+//   //     Swal.fire({
+//   //       icon: "success",
+//   //       title: "تم التعديل",
+//   //       showConfirmButton: false,
+//   //       timer: 1500,
+//   //     });
+//   //     onClose();
+//   //   } catch (error) {
+//   //     console.error("Error updating todo:", error);
+//   //     Swal.fire({
+//   //       icon: "error",
+//   //       title: "خطأ",
+//   //       text: "حدث خطأ أثناء تحديث المهمة",
+//   //     });
+//   //   }
+//   // };
 
-  const { todo_id } = useParams();
+//   // const openEditConfirmation = () => {
+//   //   Swal.fire({
+//   //     title: "هل أنت متأكد؟",
+//   //     text: "سيتم تحديث المهمة",
+//   //     icon: "question",
+//   //     showCancelButton: true,
+//   //     confirmButtonText: "نعم",
+//   //     cancelButtonText: "لا",
+//   //     reverseButtons: true,
+//   //   }).then((result) => {
+//   //     if (result.isConfirmed) {
+//   //       // updateTodo();
+//   //     }
+//   //   });
+//   // };
 
-  useEffect(() => {
-    const fetchTodo = async () => {
-      try {
-        const response = await axios.get(`http://localhost:4000/todos`);
-        console.log(response)
-        setTodo(response.data.todo_id);
-        setDescription(response.data.description);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+//   return (
+//     <Fragment>
+//       <div id={todo.todo_id}>
+//         <div>
+//           <div>
+//             <div>
+//               <h4>تعديل على المهمة</h4>
+//               <button
+//                 type="button"
+//                 className="close"
+//                 onClick={(e) => {
+//                   e.stopPropagation();
+//                   onClose();
+//                 }}
+//               >
+//                 &times;
+//               </button>
+//             </div>
 
-    fetchTodo();
-  }, [todo_id]);
+//             <div className="modal-body">
+//               <input
+//                 type="text"
+//                 className="form-control"
+//                 value={description}
+//                 onChange={(e) => setDescription(e.target.value)}
+//               />
+//             </div>
 
+//             <div>
+//               <button
+//                 type="button"
+//                 className="btn btn-warning"
+//                 // onClick={openEditConfirmation}
+//               >
+//                 تعديل
+//               </button>
+//               <button
+//                 type="button"
+//                 className="btn btn-danger"
+//                 onClick={(e) => {
+//                   e.stopPropagation();
+//                   setDescription(todo.description);
+//                   onClose();
+//                 }}
+//               >
+//                 إغلاق
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </Fragment>
+//   );
+// }
 
-
-  const updateTodo = async () => {
-    try {
-      const response = await axios.put(`http://localhost:4000/todos/${todo.todo_id}`, { description });
-      console.log(response.data);
-
-      setTodo({
-        ...todo,
-        description: description
-      });
-    } catch (error) {
-      console.error('Error updating todo:', error);
-    }
-  };
-
-  return (
-    <Fragment>
-      {todo && (
-        <>
-          <button
-            type="button"
-            className="btn btn-warning"
-            data-toggle="modal"
-            data-target={todo.todo_id}
-          >
-            تعديل
-          </button>
-
-          <div
-            className="modal"
-            id={todo.todo_id}
-            onClick={() => setDescription(todo.description)}
-          >
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h4 className="modal-title">تعديل على المهمة</h4>
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDescription(todo.description);
-                    }}
-                  >
-                    &times;
-                  </button>
-                </div>
-
-                <div className="modal-body">
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </div>
-
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-warning"
-                    data-dismiss="modal"
-                    onClick={updateTodo}
-                  >
-                    تعديل
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    data-dismiss="modal"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDescription(todo.description);
-                    }}
-                  >
-                    إغلاق
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </Fragment>
-  );
-}
-
-export default EditTodo;
+// export default EditTodo;

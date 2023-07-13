@@ -244,7 +244,7 @@ function Summaries() {
         <div className="row">
           {currentSummaries.map((summary) => (
             <div className="col-lg-4 col-md-6 col-sm-12 mt-3" key={summary.summary_id}>
-              <div className="cardSummaries h-100" style={{ maxWidth: '400px', maxHeight: '780px' }}>
+              <div className="cardSummaries h-100" style={{ maxWidth: '430px', maxHeight: '890px' }}>
                 <img
                   src={`http://localhost:4000/images/${summary.summary_image}`}
                   className="card-img-top shadow"

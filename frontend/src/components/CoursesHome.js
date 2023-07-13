@@ -13,7 +13,7 @@ function CoursesHome() {
   useEffect(() => {
     // Fetch latest courses
     axios
-      .get('http://localhost:4000/courses/latest')
+      .get('http://localhost:4000/courses/latestHome')
       .then(response => {
         setCourses(response.data);
       })

@@ -232,7 +232,7 @@ function CoursesAndSummaries() {
       ) : (
         <div className="d-flex flex-wrap justify-content-center mt-5">
           {courses.map((course, index) => (
-            <div className="courseCat-card p-3 shadow mb-4 m-4 mx-3" key={index} style={{ width: '400px', height: '640px' }}>
+            <div className="courseCat-card p-3 shadow mb-4 m-4 mx-3" key={index} style={{ width: '400px', height: '700px' }}>
               <img className="shadow" src={`http://localhost:4000/images/${course.course_image}`} alt="Course" width="100%" height="280px" />
               <h4>{course.course_title}</h4>
               <p>{course.course_brief}</p>
@@ -280,7 +280,7 @@ function CoursesAndSummaries() {
       ) : (
         <div className="d-flex flex-wrap justify-content-center mt-5">
           {summaries.map((summary, index) => (
-            <div className="summary-card p-3 shadow m-4 mb-4 mx-3" key={index} style={{ width: '400px', height: '650px' }}>
+            <div className="summary-card p-3 shadow m-4 mb-4 mx-3" key={index} style={{ width: '400px', height: '660px' }}>
               <img className="shadow" src={`http://localhost:4000/images/${summary.summary_image}`} alt="Summary" width="100%" height="280px" />
               <h4>{summary.summary_title}</h4>
               <p>{summary.summary_brief}</p>

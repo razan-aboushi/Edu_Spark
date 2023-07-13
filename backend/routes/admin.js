@@ -19,10 +19,17 @@ router.put('/Editabout_us',adminController.updateAboutUs);
 
 
 // get all users in the website
-router.get('/usersRegistered',adminController.getAllUsers );
+router.get('/usersRegistered',adminController.getAllUsers);
+
+
+
+
 
 // Delete user from the website
-router.delete('/usersRegistered/:id',adminController.deleteUserFromWS);
+router.put('/usersRegistered/:user_id',adminController.softDeleteUserFromWS);
+
+
+
 
 
 // get all contact us meesages 

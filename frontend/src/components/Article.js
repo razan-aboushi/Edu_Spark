@@ -172,7 +172,7 @@ function Article()
           <div className="col-lg-6 col-md-12" key={article.article_id}>
             <article className="d-flex flex-column">
               <div className="post-img">
-                <img src={`http://localhost:4000/images/${article.article_image}`} alt="an image" className="img-fluid" width="100%" height="270px" />
+                <img src={`http://localhost:4000/images/${article.article_image}`} alt="an image" className="img-fluid" width="100%" height="290px" />
               </div>
               <h2 className="title">{article.article_title}</h2>
               <div className="meta-top">

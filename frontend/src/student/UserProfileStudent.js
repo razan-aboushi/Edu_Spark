@@ -20,7 +20,7 @@ function UserProfileStudent() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/getIdFormUserData');
+        const response = await axios.get('http://localhost:4000/getIdFromUserData');
         const userData = response.data;
         setUserId(userData.userId);
       } catch (error) {
