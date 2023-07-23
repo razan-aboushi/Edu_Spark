@@ -4,8 +4,12 @@ import { Link } from 'react-router-dom';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-function UniversityHome() {
+
+
+function UniversityHome()
+ {
   const [universities, setUniversities] = useState([]);
+
 
   useEffect(() => {
     axios.get('http://localhost:4000/universities')
@@ -17,6 +21,7 @@ function UniversityHome() {
       });
   }, []);
 
+  
   return (
     <section className="ftco-section mb-5" dir="ltr" style={{ marginTop: "120px" }}>
       <div className="container">

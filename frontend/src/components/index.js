@@ -88,7 +88,7 @@ function Index() {
                         <div className="d-flex justify-content-end">
                           <Link to="/Summaries">
                             <button className="btn-primary rounded-pill px-5 py-3 mt-3 animated slideInUp">
-                              الملخصات
+                              المُلخصات
                             </button>
                           </Link>
                         </div>
@@ -98,6 +98,7 @@ function Index() {
                 </div>
               </div>
             </div>
+
 
             <div className="item">
               <div className="header-carousel position-relative">
@@ -154,9 +155,9 @@ function Index() {
               <div className="service-item text-center pt-3">
                 <div className="p-4">
                   <i className="fa fa-3x bi bi-book text-primary mb-4" />
-                  <h5 className="mb-3">الكورسات و الملخصات</h5>
+                  <h5 className="mb-3">الكورسات و المُلخصات</h5>
                   <p>
-                    ملخصات سلسة ومنظمة لموادك الجامعية.
+                    مُلخصات سلسة ومنظمة لموادك الجامعية.
                   </p>
                 </div>
               </div>
@@ -189,7 +190,7 @@ function Index() {
                 <div className="p-4">
                   <i className="fa fa-3x fa-book-open text-primary mb-4" />
                   <h5 className="mb-3">المواد الجامعية</h5>
-                  <p>إشتري الملخصات و الكتب الجامعية بأسعار مميزة عبر الإنرنت</p>
+                  <p>إشتري المُلخصات و الكتب الجامعية بأسعار مميزة عبر الإنترنت</p>
                 </div>
               </div>
             </div>
@@ -197,6 +198,7 @@ function Index() {
         </div>
       </div>
       {/* Features End */}
+
 
 
       {/* About us Start */}
@@ -212,7 +214,7 @@ function Index() {
                 <img
                   className="img-fluid position-absolute w-100 h-100"
                   src={about}
-                  alt="about us image"
+                  alt="about us"
                   style={{ objectFit: "cover" }}
                 />
               </div>
@@ -239,6 +241,7 @@ function Index() {
         </div>
       </div>
       {/* About End */}
+
 
 
 

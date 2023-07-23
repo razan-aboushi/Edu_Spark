@@ -9,14 +9,9 @@ function AddArticleForm() {
     article_title: '',
     article_brief: '',
     article_content: '',
-    article_image: null,
-    textareaStyle: {
-      fontSize: '',
-      color: '',
-      fontWeight: '',
-      fontStyle: '',
-    },
+    article_image: null
   });
+
 
   // Handle input changes and update the articleData state
   function handleInputChange(event) {
@@ -28,7 +23,6 @@ function AddArticleForm() {
   }
 
 
-  
 
   // Handle image changes and update the articleData state
   function handleImageChange(event) {
@@ -40,11 +34,13 @@ function AddArticleForm() {
     }));
   }
 
+
   // Save the article draft
   function saveDraft() {
     localStorage.setItem('articleDraft', JSON.stringify(articleData));
     Swal.fire('نجاح', 'تم حفظ المقال المسودة بنجاح!', 'success');
   }
+
 
   // Submit the article
   async function onSubmit(event) {
@@ -73,18 +69,14 @@ function AddArticleForm() {
         article_brief: '',
         article_content: '',
         article_image: null,
-        textareaStyle: {
-          fontSize: '',
-          color: '',
-          fontWeight: '',
-          fontStyle: '',
-        },
       });
     } catch (error) {
       // Show error message
       Swal.fire('خطأ', 'فشل في إضافة المقال', 'error');
     }
   }
+
+
 
   // Load the saved article draft
   function loadDraft() {
@@ -96,6 +88,11 @@ function AddArticleForm() {
       Swal.fire('خطأ', 'لا توجد مقالة مسودة محفوظة', 'error');
     }
   }
+
+
+
+
+
 
   return (
     <div className={classNames('text-center', 'fadeInUp', 'mt-5', 'mb-5')} data-wow-delay="0.1s">
@@ -142,7 +139,6 @@ function AddArticleForm() {
             name="article_content"
             value={articleData.article_content}
             onChange={handleInputChange}
-            style={articleData.textareaStyle}
           />
 
         </div>

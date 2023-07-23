@@ -24,9 +24,6 @@ function Summaries() {
 
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
-      const token = localStorage.getItem('token');
-      const decodedToken = token ? jwt_decode(token) : null;
-      const user_id = decodedToken?.userId;
 
       try {
         const response = await axios.get(`http://localhost:4000/enrolled-summaries/${user_id}`);
@@ -37,7 +34,7 @@ function Summaries() {
     };
 
     fetchEnrolledSummaries();
-  }, []);
+  }, [user_id]);
 
 
 
@@ -51,6 +48,8 @@ function Summaries() {
   useEffect(() => {
     handleInputChange();
   }, [universityId]);
+
+
 
   const getUniversities = async () => {
     try {
@@ -83,10 +82,11 @@ function Summaries() {
 
   const filteredSummaries = summaries.filter((summary) => {
     const matchName = summary.summary_title && summary.summary_title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchPublisher =
-      summary.summary_publisher && summary.summary_publisher.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchUniversity =
-      summary.university_name && summary.university_name.toLowerCase().includes(universityFilter.toLowerCase());
+
+    const matchPublisher =summary.summary_publisher && summary.summary_publisher.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchUniversity =summary.university_name && summary.university_name.toLowerCase().includes(universityFilter.toLowerCase());
+    
     const matchCategory = summary.category_name && summary.category_name.toLowerCase().includes(categoryFilter.toLowerCase());
 
     return (matchName || matchPublisher) && (matchUniversity || !universityFilter) && (matchCategory || !categoryFilter);
@@ -115,11 +115,35 @@ function Summaries() {
   const navigate = useNavigate();
 
 
+
+  // Handle add to cart function
   const handleAddToCart = async (summary) => {
     const token = localStorage.getItem('token');
+
+
+    if (!token) {
+      // If the user is not logged in, show a pop-up message asking them to log in first.
+      Swal.fire({
+        title: 'سجل الدخول لتتمكن من شراء المُلخص',
+        text: 'هل ترغب في تسجيل الدخول الآن؟',
+        icon: 'info',
+        confirmButtonText: 'تسجيل الدخول',
+        showCancelButton: true,
+        cancelButtonText: 'إلغاء',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/LogIn");
+        }
+      });
+
+      return;
+    }
+
+
+
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
-  
+
     try {
       // Check if the summary already exists in the cart table
       const response = await axios.get(`http://localhost:4000/cart/${user_id}/${summary.summary_id}`);
@@ -131,7 +155,10 @@ function Summaries() {
         });
         return; // Exit the function if the summary is already in the cart
       }
-  
+
+
+
+
       // Send a request to the server to add the summary to the cart table
       await axios.post('http://localhost:4000/cart', {
         user_id: user_id,
@@ -139,9 +166,12 @@ function Summaries() {
         summary_title: summary.summary_title,
         summary_price: summary.summary_price,
         summary_image: summary.summary_image,
-        type:'summary'
+        type: 'summary'
       });
-  
+
+
+
+
       Swal.fire({
         title: 'تمت إضافة المُلخص إلى السلة',
         html: `
@@ -150,7 +180,7 @@ function Summaries() {
           <p className="popup-price">السعر: ${summary.summary_price} JD</p>
         `,
         showCancelButton: true,
-        confirmButtonText: 'متابعة الدفع',
+        confirmButtonText: 'موافق',
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
@@ -159,7 +189,8 @@ function Summaries() {
       }).then((result) => {
         if (result.dismiss === Swal.DismissReason.cancel) {
           // Remove the cart items from the server if the user cancels the payment
-         axios.delete(`http://localhost:4000/cartSummary/${user_id}/${summary.summary_id}`);
+          axios.delete(`http://localhost:4000/cartSummary/${user_id}/${summary.summary_id}`);
+
         }
       });
     } catch (error) {
@@ -171,7 +202,8 @@ function Summaries() {
       });
     }
   };
-  
+
+
 
 
 
@@ -239,12 +271,14 @@ function Summaries() {
         </div>
       </div>
 
+
+
       {/* Summaries */}
       <div className="container">
         <div className="row">
           {currentSummaries.map((summary) => (
             <div className="col-lg-4 col-md-6 col-sm-12 mt-3" key={summary.summary_id}>
-              <div className="cardSummaries h-100" style={{ maxWidth: '430px', maxHeight: '890px' }}>
+              <div className="cardSummaries h-100" style={{ maxWidth: '450px', maxHeight: '890px' }}>
                 <img
                   src={`http://localhost:4000/images/${summary.summary_image}`}
                   className="card-img-top shadow"
@@ -294,6 +328,8 @@ function Summaries() {
           ))}
         </div>
       </div>
+
+
 
 
       {/* Pagination */}

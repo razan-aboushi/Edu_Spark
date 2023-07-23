@@ -147,6 +147,7 @@ function Article()
       </div>
       {/* Header End */}
 
+
       {/* Search */}
       <div className="container mb-5">
         <div className="row justify-content-center mb-3">
@@ -165,6 +166,7 @@ function Article()
         </div>
       </div>
       {/* End Search */}
+
 
       {/* Article posts list */}
       <div className="row gy-4 posts-list">

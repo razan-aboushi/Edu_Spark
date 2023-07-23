@@ -13,6 +13,7 @@ function ListTodos()
   const decodedToken = token ? jwt_decode(token) : null;
   const user_id = decodedToken?.userId;
 
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
@@ -30,6 +31,7 @@ function ListTodos()
       console.error(err.message);
     }
   };
+
 
   const deleteTodo = async (todo_id) => {
     try {
@@ -49,13 +51,16 @@ function ListTodos()
     }
   };
 
+
   useEffect(() => {
     getTodos();
   }, []);
 
+
+
   const handleEditTodoModalOpen = (todo_id) => {
     const selectedTodo = todos.find((todo) => todo.todo_id === todo_id);
-  
+  console.log(selectedTodo)
     if (!selectedTodo) {
       console.error(`Todo with todo_id ${todo_id} not found.`);
       return;
@@ -99,6 +104,9 @@ function ListTodos()
       });
   };
 
+
+
+
   const handleTodoUpdate = (updatedTodo) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
@@ -106,6 +114,10 @@ function ListTodos()
       )
     );
   };
+
+
+
+  
 
   const updateTodo = async () => {
     if (!selectedTodo || !selectedTodo.todo_id) {

@@ -1081,7 +1081,7 @@
 
 .posts-list .col-lg-6 .post-img img {
   width: 100%;
-  height: auto;
+  height: 250px;
   border-radius: 5px;
 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }

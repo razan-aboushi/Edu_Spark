@@ -697,15 +697,6 @@ const getApprovedSummaries = (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
 module.exports = {
   getAllDataInAboutUs,
   updateVisionMission,

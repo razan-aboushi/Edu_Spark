@@ -1,6 +1,7 @@
 import React from 'react';
 
-function TermsOfService() {
+function TermsOfService() 
+{
     return (
         <div className="container">
             <div className="row">

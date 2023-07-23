@@ -37,7 +37,7 @@ const login = (req, res) => {
 
       const token = jwt.sign(
         { userId: user.user_id, email: user.email, role: user.role_id },
-        secretKey
+        secretKey , { expiresIn: '3h' }
       );
 
       res.json({
@@ -49,16 +49,6 @@ const login = (req, res) => {
     });
   });
 };
-
-
-
-
-
-
-
-
-
-
 
 
 

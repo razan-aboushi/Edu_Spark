@@ -2,17 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import '../css/style.css';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 
-function CoursesCategories() {
+
+function CoursesCategories() 
+{
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-
   const { universityId } = useParams();
+
+
 
   useEffect(() => {
     fetchUniversityCategories();
   }, [universityId]);
+
+
 
   const fetchUniversityCategories = async () => {
     try {
@@ -26,9 +30,11 @@ function CoursesCategories() {
     }
   };
 
+
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
+
 
   return (
     <div>
@@ -67,6 +73,7 @@ function CoursesCategories() {
             />
           </div>
 
+
           {/* Categories */}
           <div className="row" dir="ltr" mt-4>
             {categories.map(category => (
@@ -92,10 +99,12 @@ function CoursesCategories() {
             ))}
           </div>
           {/* end Categories */}
+
         </div>
       </div>
       {/* End Category Section */}
     </div>
+    
   );
 }
 

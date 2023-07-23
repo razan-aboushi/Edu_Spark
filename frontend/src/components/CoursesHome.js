@@ -48,8 +48,30 @@ function CoursesHome() {
 
 
 
+  // Handle add course to cart
   const handleAddToCart = async (course) => {
     const token = localStorage.getItem('token');
+
+
+    if (!token) {
+      // If the user is not logged in, show a pop-up message asking them to log in first.
+      Swal.fire({
+        title: 'سجل الدخول لتتمكن من التسجيل في الدورة',
+        text: 'هل ترغب في تسجيل الدخول الآن؟',
+        icon: 'info',
+        confirmButtonText: 'تسجيل الدخول',
+        showCancelButton: true,
+        cancelButtonText: 'إلغاء',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/LogIn");
+        }
+      });
+
+      return;
+    }
+
+
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
 
@@ -66,6 +88,8 @@ function CoursesHome() {
         return; // Exit the function if the course is already in the cart
       }
 
+
+
       // Send a request to the server to add the course to the cart table
       await axios.post('http://localhost:4000/cartCourse', {
         user_id: user_id,
@@ -73,8 +97,10 @@ function CoursesHome() {
         course_title: course.course_title,
         course_price: course.course_price,
         course_image: course.course_image,
-        type:'course'
+        type: 'course'
       });
+
+
 
       Swal.fire({
         title: 'تمت إضافة الدورة إلى السلة',
@@ -84,7 +110,7 @@ function CoursesHome() {
           <p className="popup-price">السعر: ${course.course_price} JD</p>
         `,
         showCancelButton: true,
-        confirmButtonText: 'متابعة الدفع',
+        confirmButtonText: 'موافق',
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
@@ -109,6 +135,10 @@ function CoursesHome() {
 
 
 
+
+
+
+  
 
 
   return (

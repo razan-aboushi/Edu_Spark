@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { HashLink } from "react-router-hash-link";
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
@@ -8,10 +9,6 @@ import jwt_decode from 'jwt-decode';
 function SummariesHome() {
   const [summaries, setSummaries] = useState([]);
   const [enrolledSummaries, setEnrolledSummaries] = useState([]);
-  const { user_id } = useParams();
-
-
-
 
 
 
@@ -53,19 +50,36 @@ function SummariesHome() {
 
   const navigate = useNavigate();
 
-  // const handleContinuePayment = () => {
-  //   navigate('/checkoutPayment');
-  // };
-
 
 
 
 
   const handleAddToCart = async (summary) => {
     const token = localStorage.getItem('token');
+
+
+    if (!token) {
+      // If the user is not logged in, show a pop-up message asking them to log in first.
+      Swal.fire({
+        title: 'سجل الدخول لتتمكن من شراء المُلخص',
+        text: 'هل ترغب في تسجيل الدخول الآن؟',
+        icon: 'info',
+        confirmButtonText: 'تسجيل الدخول',
+        showCancelButton: true,
+        cancelButtonText: 'إلغاء',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/LogIn");
+        }
+      });
+
+      return;
+    }
+
+
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
-  
+
     try {
       // Check if the summary already exists in the cart table
       const response = await axios.get(`http://localhost:4000/cart/${user_id}/${summary.summary_id}`);
@@ -77,7 +91,9 @@ function SummariesHome() {
         });
         return; // Exit the function if the summary is already in the cart
       }
-  
+
+
+
       // Send a request to the server to add the summary to the cart table
       await axios.post('http://localhost:4000/cart', {
         user_id: user_id,
@@ -85,9 +101,12 @@ function SummariesHome() {
         summary_title: summary.summary_title,
         summary_price: summary.summary_price,
         summary_image: summary.summary_image,
-        type:'summary'
+        type: 'summary'
       });
-  
+
+
+
+
       Swal.fire({
         title: 'تمت إضافة المُلخص إلى السلة',
         html: `
@@ -96,7 +115,7 @@ function SummariesHome() {
           <p className="popup-price">السعر: ${summary.summary_price} JD</p>
         `,
         showCancelButton: true,
-        confirmButtonText: 'متابعة الدفع',
+        confirmButtonText: 'موافق',
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
@@ -105,7 +124,8 @@ function SummariesHome() {
       }).then((result) => {
         if (result.dismiss === Swal.DismissReason.cancel) {
           // Remove the cart items from the server if the user cancels the payment
-         axios.delete(`http://localhost:4000/cartSummary/${user_id}/${summary.summary_id}`);
+          axios.delete(`http://localhost:4000/cartSummary/${user_id}/${summary.summary_id}`);
+
         }
       });
     } catch (error) {
@@ -117,8 +137,9 @@ function SummariesHome() {
       });
     }
   };
-  
-  
+
+
+
 
   return (
     <div className="container mb-5" style={{ marginTop: '150px' }}>
@@ -160,9 +181,9 @@ function SummariesHome() {
                     disabled={enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id)}>
                     {enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id) ? 'لقد تمَّ شرائهُ مسبقاً' : 'شراء المُلخص'}
                   </button>
-                  <Link to={`/SummaryDetails/${summary.summary_id}`}>
+                  <HashLink to={`/SummaryDetails/${summary.summary_id}`}>
                     <button className="btn-primary my-button me-1"> تفاصيل أكثر</button>
-                  </Link>
+                  </HashLink>
 
                 </div>
               </div>

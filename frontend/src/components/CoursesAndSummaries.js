@@ -105,6 +105,29 @@ function CoursesAndSummaries() {
 
   const handleAddToCart = async (item, itemType) => {
     const token = localStorage.getItem('token');
+
+
+
+    if (!token) {
+      // If the user is not logged in, show a pop-up message asking them to log in first.
+      Swal.fire({
+        title: 'سجل الدخول لتتمكن من الشراء ',
+        text: 'هل ترغب في تسجيل الدخول الآن؟',
+        icon: 'info',
+        confirmButtonText: 'تسجيل الدخول',
+        showCancelButton: true,
+        cancelButtonText: 'إلغاء',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/LogIn");
+        }
+      });
+
+      return;
+    }
+
+
+
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
 
@@ -127,7 +150,9 @@ function CoursesAndSummaries() {
           type: itemType
         };
 
+
         await axios.post(`http://localhost:4000/addToCart`, newItem);
+
 
         Swal.fire({
           title: `تمت إضافة ${itemType.charAt(0).toUpperCase() + itemType.slice(1)} إلى السلة`,
@@ -140,8 +165,8 @@ function CoursesAndSummaries() {
           confirmButtonText: 'إضافة للسلة',
           showLoaderOnConfirm: true,
           allowOutsideClick: () => !Swal.isLoading(),
-          
-   
+
+
         });
       }
     } catch (error) {

@@ -14,6 +14,7 @@ function LogIn()
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
     const password = localStorage.getItem('password');
@@ -28,7 +29,8 @@ function LogIn()
 
   // remove the remember me from the local storage
   useEffect(() => {
-    if (!rememberMe) {
+    if (!rememberMe) 
+    {
       localStorage.removeItem('email');
       localStorage.removeItem('password');
     }
@@ -56,9 +58,9 @@ function LogIn()
 
       if (response.status === 200) {
         const data = response.data;
-        console.log(data);
 
-        if (rememberMe) {
+        if (rememberMe) 
+        {
           localStorage.setItem('email', email);
           localStorage.setItem('password', password);
         }
@@ -69,11 +71,11 @@ function LogIn()
         // save the token in local storage
         const { token } = response.data;
         localStorage.setItem('token', token);
-        console.log(token);
 
 
-        console.log(role);
-        if (role === 1) {
+     
+        if (role === 1) 
+        {
           navigate('/AdminSideBar');
         } else if (role === 2) {
           navigate('/UserProfileStudent');
@@ -83,7 +85,8 @@ function LogIn()
 
         window.location.reload();
 
-      } else {
+      } else 
+      {
         const errorData = response.data;
         setError(errorData.error);
       }
@@ -93,6 +96,7 @@ function LogIn()
     }
 
   };
+
 
   return (
     <section className="vh-100" style={{ marginTop: '80px' }}>
@@ -135,8 +139,8 @@ function LogIn()
                     className="form-control p-3 form-control-lg"
                     placeholder="أدخل كلمة المرور"
                     value={password}
-                    onChange={handlePasswordChange}
-                  />
+                    onChange={handlePasswordChange}/>
+
                   <button
                     className="btn btn-outline-secondary" style={{ borderRadius: "5px" }}
                     type="button"
@@ -155,8 +159,8 @@ function LogIn()
                     type="checkbox"
                     id="form2Example3"
                     checked={rememberMe}
-                    onChange={() => setRememberMe(!rememberMe)}
-                  />
+                    onChange={() => setRememberMe(!rememberMe)}/>
+
                   <label className="form-check-label" htmlFor="form2Example3">
                     تذكرني
                   </label>
@@ -167,14 +171,13 @@ function LogIn()
               </div>
 
               <div className="text-center text-lg-end mt-4 pt-2">
-                {error && <p className="text-danger mb-3">{error}</p>} {/* Error message */}
+                {error && <p className="text-danger mb-3">{error}</p>} 
 
                 <button
                   className="btnr btn-lg"
                   id="loginButton"
                   style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
-                  type="submit"
-                >
+                  type="submit">
                   تسجيل الدخول
                 </button>
 

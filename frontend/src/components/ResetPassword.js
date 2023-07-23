@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 
-function ResetPassword() {
+function ResetPassword()
+ {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -27,6 +29,9 @@ function ResetPassword() {
     setConfirmPassword(event.target.value);
   };
 
+
+
+  // Handle submit the form for reset password
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -64,6 +69,8 @@ function ResetPassword() {
       console.error(error);
     }
   };
+
+
 
   return (
     <div className="container mt-5">
@@ -106,8 +113,7 @@ function ResetPassword() {
                 style={{ width: '100%' }}
                 placeholder="أدخل كلمة المرور الجديدة"
                 value={password}
-                onChange={handlePasswordChange}
-              />
+                onChange={handlePasswordChange}/>
             </div>
             <div className="form-group">
               <label htmlFor="confirmPassword">تأكيد كلمة المرور:</label>

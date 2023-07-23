@@ -2,21 +2,23 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignInAlt, faSignOutAlt, faUser, faCreditCard, faBook, faGraduationCap, faNewspaper, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faSignInAlt, faSignOutAlt, faUser, faBook, faGraduationCap, faNewspaper, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import jwt_decode from 'jwt-decode';
-
 import logo from '../img/KeepMeOnLogo.png';
 import '../css/style.css';
 
-function Nav() {
+
+function Nav() 
+{
   const [activeTab, setActiveTab] = useState('Home');
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [userRole, setUserRole] = useState(0);
-  const navigate = useNavigate();
   const [itemCount, setItemCount] = useState(0);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const getUserRole = async () => {
       const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = jwt_decode(token);
@@ -25,12 +27,12 @@ function Nav() {
       }
     };
 
-    fetchUserData();
+    getUserRole();
   }, []);
 
 
 
-  // Frontend code
+  // Get the count of items for the user
   useEffect(() => {
     const fetchCartItems = async () => {
       const token = localStorage.getItem('token');
@@ -38,7 +40,7 @@ function Nav() {
       const user_id = decodedToken?.userId;
 
       try {
-        // Make the API request to retrieve cart items count for a specific user
+        // API to retrieve cart items count for a specific user
         const response = await axios.get(`http://localhost:4000/cartItemsLength/${user_id}`);
         setItemCount(response.data);
         fetchCartItems();
@@ -50,6 +52,7 @@ function Nav() {
   }, []);
 
 
+
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
     setIsNavbarOpen(false);
@@ -59,19 +62,26 @@ function Nav() {
     setIsNavbarOpen(!isNavbarOpen);
   };
 
+
+  // Handle when the user click on the LogOut button
   const handleLogout = () => {
     localStorage.removeItem('token');
     setUserRole(0);
     navigate('/LogIn');
   };
 
+
+  // Handle when the user click on the profile button
   const handleProfileClick = () => {
-    if (userRole === 2) {
+    if (userRole === 2) 
+    {
       navigate('/UserProfileStudent');
-    } else if (userRole === 3) {
+    } else if (userRole === 3) 
+    {
       navigate('/UserProfileTeacher');
     }
   };
+
 
   return (
     <div dir="ltr">
@@ -185,7 +195,6 @@ function Nav() {
 
               {userRole !== 0 && (
                 <>
-
                   <button
                     className="btn-primary py-3 px-3 mb-2 mt-2 ms-2"
                     style={{ borderRadius: "25px" }}
@@ -205,6 +214,7 @@ function Nav() {
 
                 </>
               )}
+
               {userRole === 0 && (
                 <>
                   <Link

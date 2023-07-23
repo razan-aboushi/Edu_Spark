@@ -88,6 +88,10 @@ function PublishRequest() {
     window.open(fileUrl, '_blank');
   };
 
+
+
+
+
   return (
     <div className="text-center mt-4 d-flex justify-content-center">
       <div className="table-container">
@@ -104,34 +108,42 @@ function PublishRequest() {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
-              <tr key={item.summary_id}>
-                <td>{item.name}</td>
-                <td>{item.email}</td>
-                <td>{item.summary_title}</td>
-                <td>{item.summary_brief}</td>
-                <td>
+
+            {data.length === 0 ? (
+
+              <div className='text-center mt-5'>لا توجد طلبات مُلخصات مُعلقة حتى الأن</div>
+
+
+            ) :
+              (
+                data.map((item) => (
+                  <tr key={item.summary_id}>
+                    <td>{item.name}</td>
+                    <td>{item.email}</td>
+                    <td>{item.summary_title}</td>
+                    <td>{item.summary_brief}</td>
+                    <td>
                       {item.summary_price === "0" ? (
                         <span style={{ color: 'green' }}>مجاني</span>
                       ) : (
                         <span>{item.summary_price} د.أ</span>
                       )} </td>
-                
-                <td>
-                  <a href="#" onClick={() => viewSummary(`http://localhost:4000/reports/${item.summary_file}`)}>
-                    تحميل ملف PDF
-                  </a>
-                </td>
-                <td>
-                  <button className="approve-btn btn-primary buttonInAddArticle m-3 ms-3" onClick={() => handleApprove(item.summary_id)}>
-                    الموافقة
-                  </button>
-                  <button className="reject-btn btn-primary buttonInAddArticle m-3" onClick={() => handleReject(item.summary_id)} style={{width:"105px"}}> 
-                    رفض
-                  </button>
-                </td>
-              </tr>
-            ))}
+
+                    <td>
+                      <a href="#" onClick={() => viewSummary(`http://localhost:4000/reports/${item.summary_file}`)}>
+                        تحميل ملف PDF
+                      </a>
+                    </td>
+                    <td>
+                      <button className="approve-btn btn-primary buttonInAddArticle m-3 ms-3" onClick={() => handleApprove(item.summary_id)}>
+                        الموافقة
+                      </button>
+                      <button className="reject-btn btn-primary buttonInAddArticle m-3" onClick={() => handleReject(item.summary_id)} style={{ width: "105px" }}>
+                        رفض
+                      </button>
+                    </td>
+                  </tr>
+                )))}
           </tbody>
         </table>
       </div>

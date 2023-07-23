@@ -2,9 +2,10 @@ import React, { useState , useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import Swal from 'sweetalert2';
 
-function SignUp() {
+
+function SignUp()
+ {
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -20,6 +21,9 @@ function SignUp() {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
+
+
+  
   // Handle form sign up submit
   async function handleSubmit(e) {
     e.preventDefault();

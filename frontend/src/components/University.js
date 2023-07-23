@@ -4,8 +4,10 @@ import axios from 'axios';
 import "../css/style.css";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 
-function University() {
+function University()
+ {
   const [universities, setUniversities] = useState([]);
+
 
   useEffect(() => {
     getUniversities();
@@ -14,9 +16,10 @@ function University() {
   const getUniversities = async () => {
     try {
       const response = await axios.get('http://localhost:4000/universities');
-      console.log(response);
       setUniversities(response.data);
-    } catch (error) {
+    } 
+    catch (error)
+     {
       console.error('Error fetching universities:', error);
     }
   };
