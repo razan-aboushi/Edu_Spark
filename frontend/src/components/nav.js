@@ -17,6 +17,9 @@ function Nav()
   const navigate = useNavigate();
 
 
+
+
+
   useEffect(() => {
     const getUserRole = async () => {
       const token = localStorage.getItem('token');
@@ -31,6 +34,7 @@ function Nav()
   }, []);
 
 
+  
 
   // Get the count of items for the user
   useEffect(() => {
@@ -81,6 +85,14 @@ function Nav()
       navigate('/UserProfileTeacher');
     }
   };
+
+
+
+  if (userRole === 1) {
+    return null; // Hide the navigation bar for userRole = 1
+  }
+
+
 
 
   return (
@@ -177,7 +189,7 @@ function Nav()
             </ul>
             <div className="d-flex align-items-end">
 
-              <div className='mb-3 mt-3' style={{ transform: 'scaleX(-1)' }}>
+              <div className='mb-3 mt-3 me-2' style={{ transform: 'scaleX(-1)' }}>
                 <Link
                   to="/checkoutPayment"
                   className="py-2 px-2 mb-2 mt-1 me-5 ms-2"

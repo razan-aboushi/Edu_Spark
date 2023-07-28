@@ -2348,8 +2348,8 @@ margin-top: 5px;
 
 
 .container .cardSummaries {
-  max-width: 400px;
-  height: 150px;
+  max-width: 410px;
+  height: auto;
   margin: 35px 10px;
   padding: 25px;
   box-shadow: 0 3px 12px  #06BBCC;
@@ -3559,18 +3559,23 @@ margin-top: 5px;
 .summaryBuy-title {
   margin-top: 10px;
   font-size: 18px;
+  text-align: right;
+
 }
 
 .summaryBuy-brief {
   margin-top: 10px;
   font-size: 14px;
-  color: #888;
+  color: #000000;
+  text-align: right;
 }
 
 .purchase-date {
   margin-top: 10px;
   font-size: 14px;
-  color: #888;
+  color: #000000;
+  text-align: right;
+
 }
 
 .downloadSummary-button {
@@ -3617,7 +3622,6 @@ margin-top: 5px;
     transform: scale(1);
   }
 }
-
 
 
 

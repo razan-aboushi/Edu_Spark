@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faPlus, faChartBar, faEnvelope, faFileAlt, faHome, faSignOutAlt, faPastafarianism } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPlus, faChartBar, faEnvelope, faFileAlt, faSignOutAlt, faPastafarianism } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import "../css/style.css";
 import logo from '../img/adminLogo.png'
 import AllUsers from "../admin/AllUsers";
@@ -198,12 +198,7 @@ function Sidebar() {
             </button>
           </li>
 
-          <li>
-            <Link to="/" className={`sidebar-link ${activeLink === '/' ? 'active' : ''}`}>
-              <FontAwesomeIcon icon={faHome} className='ms-2' />
-              الصفحة الرئيسية
-            </Link>
-          </li>
+     
           <li>
             <button onClick={handleLogout}>
               <FontAwesomeIcon icon={faSignOutAlt} className='ms-2' />

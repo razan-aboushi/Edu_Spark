@@ -142,7 +142,7 @@ function SummariesHome() {
 
 
   return (
-    <div className="container mb-5" style={{ marginTop: '150px' }}>
+    <div className="container mb-5" style={{ marginTop: '110px' }}>
       {/* Render summaries */}
       <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3 mb-3">
@@ -153,7 +153,7 @@ function SummariesHome() {
         {summaries.map(summary => (
           <div className="col-lg-4 col-md-6" key={summary.summary_id}>
             {/* Render summary details */}
-            <div className="cardSum" style={{ width: "100%", height: "705px" }}>
+            <div className="cardSum">
               <Link to="/Summaries" className="icon d-flex align-items-center justify-content-center">
                 <img
                   src={`http://localhost:4000/images/${summary.summary_image}`}

@@ -102,7 +102,7 @@ function LogIn()
     <section className="vh-100" style={{ marginTop: '80px' }}>
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-12 col-md-5">
+          <div className="col-12 col-md-5 mb-5">
             <img
               src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
               className="img-fluid"

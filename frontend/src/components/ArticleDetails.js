@@ -236,7 +236,7 @@ function ArticleDetails() {
                             <div className="d-flex">
                               <div>
                                 <h5>
-                                  <Link to="">{comment.name}</Link>{" "}
+                                 {comment.name}{" "}
                                   {user_id === comment.user_id && (
                                     <div className="dropdown d-inline">
                                       <button

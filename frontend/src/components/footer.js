@@ -1,9 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import "../css/style.css";
 import { Link } from 'react-router-dom';
 import logo from '../img/KeepMeOnLogo.png'
+import jwt_decode from 'jwt-decode';
 
-function Footer() {
+function Footer() 
+{
+
+  const [userRole, setUserRole] = useState(0);
+
+
+  useEffect(() => {
+    const getUserRole = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        const roleId = decodedToken.role;
+        setUserRole(roleId);
+      }
+    };
+
+    getUserRole();
+  }, []);
+
+
+
+  if (userRole === 1) {
+    return null;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <>
       <div dir='ltr'>
@@ -19,7 +60,7 @@ function Footer() {
           <div className="container-fluid bg-dark text-light footer">
             <div className="container py-5">
               <div className="row g-5">
-                <div className="col-lg-3 col-md-6" style={{ marginTop:"88px"}}>
+                <div className="col-lg-3 col-md-6" style={{ marginTop: "88px" }}>
                   <Link className="btnLinks btn-link" to="/about" target="_blank">
                     معلومات عنا
                   </Link>
@@ -29,9 +70,9 @@ function Footer() {
                   <Link className="btnLinks btn-link" to="/Courses" target="_blank">
                     جميع الدورات
                   </Link>
-                 
+
                 </div>
-                <div className="col-lg-3 col-md-6 d-flex text-end" style={{flexDirection:"column"}}>
+                <div className="col-lg-3 col-md-6 d-flex text-end" style={{ flexDirection: "column" }}>
                   <h4 className="text-white  text-end">روابط سريعة</h4>
                   <Link className="btnLinks btn-link text-right" to="/University" target="_blank">
                     الجامعات
@@ -46,7 +87,7 @@ function Footer() {
                     الأسئلة الشائعة
                   </Link>
                 </div>
-                <div className="col-lg-3 col-md-6 d-flex text-end" style={{flexDirection:"column"}}> 
+                <div className="col-lg-3 col-md-6 d-flex text-end" style={{ flexDirection: "column" }}>
                   <h4 className="text-white mb-3 ">اتصل بنا</h4>
                   <p className="mb-2">
                     120 شارع، الزرقاء، الأردن
@@ -63,7 +104,7 @@ function Footer() {
                     <i className="fa fa-envelope ms-2" />
 
                   </p>
-                  <div className="pt-2 d-flex text-end" style={{flexDirection:"row-reverse"}}>
+                  <div className="pt-2 d-flex text-end" style={{ flexDirection: "row-reverse" }}>
                     <Link
                       className="btnSocial btn-outline-light btn-social"
                       to="https://twitter.com/razanalqadoumi?s=09"

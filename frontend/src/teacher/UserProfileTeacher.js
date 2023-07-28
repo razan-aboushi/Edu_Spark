@@ -6,8 +6,6 @@ import '../css/UserProfile.css';
 import UserProfile from '../student/UserProfile';
 import CourseSummaryForm from './CourseSummaryFormAdd';
 import EditProfileSection from '../student/EditProfileSection';
-import BankAccountData from '../student/BankAccountData';
-import FinancialDuesForUser from './FinancialDuesForUser';
 import ManageCourses from './ManageCourses';
 import CourseCalendar from '../student/CourseCalendar';
 import ListTodos from '../components/ListTodos';
@@ -54,18 +52,6 @@ function UserProfileTeacher() {
           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`}>
             <div className="navbar-nav ms-auto p-4 p-lg-0">
 
-              <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'bank-details' ? 'active' : ''}`}
-                onClick={() => handleSectionClick('bank-details')}
-              >
-                تفاصيل حسابي البنكي
-              </span>
-              <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'financial-dues' ? 'active' : ''}`}
-                onClick={() => handleSectionClick('financial-dues')}
-              >
-                سجل المدفوعات
-              </span>
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('todo-list')}
@@ -124,8 +110,6 @@ function UserProfileTeacher() {
       <main>
         {activeSection === 'profile' && <UserProfile />}
         {activeSection === 'edit-profile' && <EditProfileSection />}
-        {activeSection === 'bank-details' && <BankAccountData />}
-        {activeSection === 'financial-dues' && <FinancialDuesForUser />}
         {activeSection === 'summary-buy' && <SummariesBuy />}
         {activeSection === 'todo-list' && (
           <>

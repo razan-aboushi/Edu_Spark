@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Nav from './components/nav';
 import Footer from './components/footer';
@@ -50,46 +49,189 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Nav />
-                <Index />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <>
-                <Nav />
-                <About />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/faq"
-            element={
-              <>
-                <Nav />
-                <Faq />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <>
-                <Nav />
-                <Contact />
-                <Footer />
-              </>
-            }
-          />
+
+          {(userRole === 0 || userRole === 2 || userRole === 3) && (
+            <>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Nav />
+                    <Index />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <>
+                    <Nav />
+                    <About />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/faq"
+                element={
+                  <>
+                    <Nav />
+                    <Faq />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/contact"
+                element={
+                  <>
+                    <Nav />
+                    <Contact />
+                    <Footer />
+                  </>
+                }
+              />
+
+              <Route
+                path="/signUp"
+                element={
+                  <>
+                    <Nav />
+                    <SignUp />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/Courses"
+                element={
+                  <>
+                    <Nav />
+                    <Courses />
+                    <Footer />
+                  </>
+                }
+              />
+
+
+              <Route
+                path="/CoursesAndSummaries/:university_id/:category_id"
+                element={
+                  <>
+                    <Nav />
+                    <CoursesAndSummaries />
+                    <Footer />
+                  </>
+                }
+              />
+
+
+              <Route
+                path="/University"
+                element={
+                  <>
+                    <Nav />
+                    <University />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/Summaries"
+                element={
+                  <>
+                    <Nav />
+                    <Summaries />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/Article"
+                element={
+                  <>
+                    <Nav />
+                    <Article />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/ArticleDetails/:article_id"
+                element={
+                  <>
+                    <Nav />
+                    <ArticleDetails />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/coursesCategories/:universityId"
+                element={
+                  <>
+                    <Nav />
+                    <CoursesCategories />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/checkoutPayment"
+                element={
+                  <>
+                    <Nav />
+                    <CheckoutPayment />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/TermsOfService"
+                element={
+                  <>
+                    <Nav />
+                    <TermsOfService />
+                    <Footer />
+                  </>
+                }
+              />
+
+              <Route
+                path="/CourseDetails/:course_id"
+                element={
+                  <>
+                    <Nav />
+                    <CourseDetails />
+                    <Footer />
+                  </>
+                }
+              />
+
+              <Route
+                path="/SummaryDetails/:summaryId"
+                element={
+                  <>
+                    <Nav />
+                    <SummaryDetails />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/ResetPassword"
+                element={
+                  <>
+                    <Nav />
+                    <ResetPassword />
+                    <Footer />
+                  </>
+                }
+              />
+            </>
+          )}
+
           <Route
             path="/LogIn"
             element={
@@ -100,142 +242,9 @@ function App() {
               </>
             }
           />
-          <Route
-            path="/signUp"
-            element={
-              <>
-                <Nav />
-                <SignUp />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/Courses"
-            element={
-              <>
-                <Nav />
-                <Courses />
-                <Footer />
-              </>
-            }
-          />
 
 
-          <Route
-            path="/CoursesAndSummaries/:university_id/:category_id"
-            element={
-              <>
-                <Nav />
-                <CoursesAndSummaries />
-                <Footer />
-              </>
-            }
-          />
 
-
-          <Route
-            path="/University"
-            element={
-              <>
-                <Nav />
-                <University />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/Summaries"
-            element={
-              <>
-                <Nav />
-                <Summaries />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/Article"
-            element={
-              <>
-                <Nav />
-                <Article />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/ArticleDetails/:article_id"
-            element={
-              <>
-                <Nav />
-                <ArticleDetails />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/coursesCategories/:universityId"
-            element={
-              <>
-                <Nav />
-                <CoursesCategories />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/checkoutPayment"
-            element={
-              <>
-                <Nav />
-                <CheckoutPayment />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/TermsOfService"
-            element={
-              <>
-                <Nav />
-                <TermsOfService />
-                <Footer />
-              </>
-            }
-          />
-
-          <Route
-            path="/CourseDetails/:course_id"
-            element={
-              <>
-                <Nav />
-                <CourseDetails />
-                <Footer />
-              </>
-            }
-          />
-
-          <Route
-            path="/SummaryDetails/:summaryId"
-            element={
-              <>
-                <Nav />
-                <SummaryDetails />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/ResetPassword"
-            element={
-              <>
-                <Nav />
-                <ResetPassword />
-                <Footer />
-              </>
-            }
-          />
 
           {/* Routes for admin roles */}
           {userRole === 1 && (
@@ -252,13 +261,24 @@ function App() {
             <Route
               path="/UserProfileTeacher"
               element={
-                <UserProfileTeacher />} />)}
+                <UserProfileTeacher />}
+
+            />)}
 
 
-          {/* {userRole !== 1 && userRole !== 2 && userRole !== 3 && (
+
+
+
+
+          {userRole !== 1 && userRole !== 2 && userRole !== 3 && (
             <Route path="*" element={<Error404 />} />
-          )} */}
-          
+          )}
+
+
+
+
+
+
         </Routes>
 
       </BrowserRouter>

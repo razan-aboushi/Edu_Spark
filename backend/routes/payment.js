@@ -33,7 +33,6 @@ router.delete('/removeCartItemsFromCart/:user_id/:item_id', paymentsController.d
 
 
 
-router.get('/userAccountInfo/:user_id',paymentsController.getUserAccountInfo);
 
 
 module.exports = router;

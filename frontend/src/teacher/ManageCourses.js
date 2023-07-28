@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { useParams } from 'react-router-dom';
 
-function ManageCourses() {
+function ManageCourses() 
+{
   const [courses, setCourses] = useState([]);
   const [summaries, setSummaries] = useState([]);
   const [subscriberCounts, setSubscriberCounts] = useState({});
@@ -225,9 +225,8 @@ function ManageCourses() {
                     )}
                   </p>
 
-                  <p style={{ fontSize: '14px', marginBottom: '5px' }}>{summary.summary_description}</p>
                   <p style={{ fontSize: '14px', marginBottom: '5px' }}>
-                    وصف المُلخص : {summary.summary_description}
+                    وصف المُلخص : {summary.summary_brief}
                   </p>
                   {summary.summary_status === 'مرفوض' && (
                     <p style={{ fontSize: '14px', marginBottom: '5px', marginTop: '10px', color: 'red' }}>

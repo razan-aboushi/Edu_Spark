@@ -48,8 +48,8 @@ function ArticlesHome() {
               0: { items: 1 },
               768: { items: 3 },
               992: { items: 4 }
-            }}
-          >
+            }}>
+              
             {articles.length > 0 ? (
               articles.map((article) => (
                 <div className="item" key={article.article_id}>

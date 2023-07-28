@@ -19,7 +19,8 @@ import SummariesHome from './SummariesHome';
 import CoursesHome from './CoursesHome';
 import Swal from 'sweetalert2';
 
-function Index() {
+function Index()
+ {
 
   const [aboutUsData, setAboutUsData] = useState({});
  
@@ -245,10 +246,7 @@ function Index() {
 
 
 
-
-
       {/* قسم الملخصات */}
-
       <SummariesHome />
       {/* انتهى قسم الملخصات */}
 
@@ -259,7 +257,7 @@ function Index() {
       {/* قسم الدورات الدراسية ينتهي */}
 
 
-      <div dir="rtl" style={{ marginTop: "120px", textAlign: "center" }}>
+      <div dir="rtl" style={{ marginTop: "110px", textAlign: "center" }}>
         <section className="card123">
           <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
             <h6 className="section-title bg-white text-center text-primary px-3 mb-5">
@@ -314,7 +312,7 @@ function Index() {
 
 
       {/* ======= قسم الأسئلة المتكررة ======= */}
-      < section id="faq" className="faq" style={{ marginTop: "120px" }}>
+      < section id="faq" className="faq" style={{ marginTop: "110px" }}>
         <div className="container" data-aos="fade-up">
           <div className="row gy-4">
             <div className="col-lg-8 order-lg-1 order-2">
@@ -465,7 +463,7 @@ function Index() {
 
 
       {/* Some articles */}
-      <section className="ftco-section mb-5" dir="ltr" style={{ marginTop: "120px" }}>
+      <section className="ftco-section mb-5" dir="ltr" style={{ marginTop: "110px" }}>
         <ArticlesHome />
       </section>
       {/* End articles section */}

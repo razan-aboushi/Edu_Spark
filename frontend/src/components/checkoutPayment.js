@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link
+ } from 'react-router-dom';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
-function CheckoutPayment() {
+function CheckoutPayment() 
+{
   const [tab, setTab] = useState('creditCard');
   const [focus, setFocus] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,6 +58,7 @@ function CheckoutPayment() {
           const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
           // Fill in the name and email with the user's data
           setFormDataOrange(response.data.phone_number);
+        
         }
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -67,9 +70,7 @@ function CheckoutPayment() {
 
 
 
-  function handleInputChangePaymentOrangeAmount(event) {
-    setFormOrangeAmount(event.target.value);
-  }
+
 
   
   async function fetchCartItems() {
@@ -112,16 +113,12 @@ function CheckoutPayment() {
   
 
 
-
-
   // Calculate sub-total
   const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price), 0);
   // Calculate fees (15%)
   const fees = subtotal * 0.15;
   const total = subtotal + fees;
 
-
-  const [amount, setFormOrangeAmount] = useState(total);
 
 
 
@@ -199,8 +196,7 @@ function CheckoutPayment() {
         const user_id = decodedToken?.userId;
 
         // Retrieve payment method ID based on the slug
-        axios
-          .get('http://localhost:4000/getPaymentMethodId', {
+        axios.get('http://localhost:4000/getPaymentMethodId', {
             params: {
               paymentMethodName: 'credit-card'
             }
@@ -282,7 +278,6 @@ function CheckoutPayment() {
     event.preventDefault();
 
     setFormDataOrange(phone_number);
-
     // Check if all required fields are filled
     if (!phone_number) {
       Swal.fire({
@@ -473,36 +468,9 @@ function CheckoutPayment() {
   
   }
   
-  const [userAccountInfo, setUserAccountInfo] = useState([]);
-
-  useEffect(() => {
-    const getUserAccountInfo = async () => {
-      const token = localStorage.getItem('token');
-  
-      if (!token) {
-        console.log('Token not available');
-        // Handle the case when the token is missing
-        return;
-      }
-  
-      try {
-        const decodedToken = jwt_decode(token);
-        const user_id = decodedToken.userId;
-  
-        const response = await axios.get(`http://localhost:4000/userAccountInfo/${user_id}`);
-        setUserAccountInfo(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.log('Error while trying to get the user account info:', error);
-        // Handle the error case appropriately
-      }
-    };
-  
-    getUserAccountInfo();
-  }, []);
-  
 
 
+  
 
   return (
     <>
@@ -789,8 +757,7 @@ function CheckoutPayment() {
                               type="text"
                               name="amount"
                               placeholder="المبلغ الذي ستقوم بدفعه"
-                              value={amount}
-                              onChange={handleInputChangePaymentOrangeAmount}
+                              value={total}
                               required
                               disabled
                             />
