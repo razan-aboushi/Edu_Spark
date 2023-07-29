@@ -29,6 +29,8 @@ function UserProfileStudent() {
     fetchUserData();
   }, []);
 
+
+  // get active tab from the local storage
   useEffect(() => {
     const activeTabFromLocalStorage = localStorage.getItem('activeTab');
     if (activeTabFromLocalStorage) {
@@ -99,6 +101,7 @@ function UserProfileStudent() {
           </div>
         </nav>
       </header>
+      
       {/* Main content */}
       <main>
         {/* Render the active section */}

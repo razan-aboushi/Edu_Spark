@@ -49,17 +49,17 @@ function ArticlesHome() {
               768: { items: 3 },
               992: { items: 4 }
             }}>
-              
+
             {articles.length > 0 ? (
               articles.map((article) => (
                 <div className="item" key={article.article_id}>
-                  <div className="work">                                                                         
-                    <div className="img d-flex align-items-center justify-content-center rounded" style={{ backgroundImage:`url(http://localhost:4000/images/${article.article_image})` }}>
+                  <div className="work">
+                    <div className="img d-flex align-items-center justify-content-center rounded" style={{ backgroundImage: `url(http://localhost:4000/images/${article.article_image})` }}>
                       <Link to={`/ArticleDetails/${article.article_id}`} className="icon d-flex align-items-center justify-content-center">
                         <span className="bi bi-search" />
                       </Link>
                     </div>
-                    <div className="text pt-3 w-100 text-center">
+                    <div className="pt-3 w-100 text-end">
                       <h5>
                         <Link to={`/ArticleDetails/${article.article_id}`}>{article.article_title}</Link>
                       </h5>
@@ -70,8 +70,10 @@ function ArticlesHome() {
                 </div>
               ))
             ) : (
-              <div>Loading articles...</div>
-            )}
+              <div>
+              يتم تحميل المقالات الأن ... طابَ يومك
+            </div>    
+                    )}
           </OwlCarousel>
         </div>
       </div>

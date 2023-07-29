@@ -110,7 +110,7 @@
     font-size: 15px;
     text-transform: uppercase;
     outline: none;
-    text-align: end;
+    text-align: right;
 }
 
 .navbar-light .navbar-nav .nav-link:hover,

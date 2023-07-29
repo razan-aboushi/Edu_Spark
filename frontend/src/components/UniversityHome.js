@@ -6,10 +6,8 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 
-function UniversityHome()
- {
+function UniversityHome() {
   const [universities, setUniversities] = useState([]);
-
 
   useEffect(() => {
     axios.get('http://localhost:4000/universities')
@@ -21,9 +19,10 @@ function UniversityHome()
       });
   }, []);
 
-  
+
+
   return (
-    <section className="ftco-section mb-5" dir="ltr" style={{ marginTop: "120px" }}>
+    <section className="ftco-section mb-5" dir="ltr" style={{ marginTop: "110px" }}>
       <div className="container">
         <div className="row">
           <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -46,33 +45,42 @@ function UniversityHome()
                 992: { items: 4 }
               }}
             >
-                                   
-              {universities.map(university => (
-                <div className="item" key={university.university_id}>
-                  <div className="work">
-                    <div
-                      className="img d-flex align-items-center justify-content-center rounded"
-                      style={{ backgroundImage: `url(http://localhost:4000/images/${university.university_image})` }}
+
+              {universities.length > 0 ? (
+
+                universities.map(university => (
+                  <div className="item" key={university.university_id}>
+                    <div className="work">
+                      <div
+                        className="img d-flex align-items-center justify-content-center rounded"
+                        style={{ backgroundImage: `url(http://localhost:4000/images/${university.university_image})` }}
                       >
-                      <Link
-                        to={`/coursesCategories/${university.university_id}`}
-                        className="icon d-flex align-items-center justify-content-center"
-                      >
-                        <span className="bi bi-search" />
-                      </Link>
-                    </div>
-                    <div className="text pt-3 w-100 text-center">
-                      <h5>
-                      <Link
-                      to={`/coursesCategories/${university.university_id}`}
-                    >
-                      {university.university_name}
-                    </Link>
-                      </h5>
+                        <Link
+                          to={`/coursesCategories/${university.university_id}`}
+                          className="icon d-flex align-items-center justify-content-center"
+                        >
+                          <span className="bi bi-search" />
+                        </Link>
+                      </div>
+                      <div className="text pt-3 w-100 text-center">
+                        <h5>
+                          <Link
+                            to={`/coursesCategories/${university.university_id}`}
+                          >
+                            {university.university_name}
+                          </Link>
+                        </h5>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )))
+                : (
+
+                  <div>
+                    يتم تحميل الجامعات الأن ... طابَ يومك
+                  </div>
+
+                )}
             </OwlCarousel>
           </div>
         </div>

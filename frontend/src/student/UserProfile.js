@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import "../css/UserProfile.css";
 
+
 function UserProfile() {
   const [userProfile, setUserProfile] = useState([]);
-  const { user_id } = useParams();
 
   useEffect(() => {
     const getUserProfile = async () => {
@@ -36,7 +35,7 @@ function UserProfile() {
 
   return (
     <section id="UserProfile" className="mt-5">
-      <div className="container d-flex justify-content-center mb-2">
+      <div className="container-fluid d-flex justify-content-center mb-2">
         <div className="row">
           <div className="panel panel-defaultProfile p-0">
             <div className="panel-headingProfile text-center">
@@ -44,7 +43,7 @@ function UserProfile() {
             </div>
             <div className="panel-bodyUserProfile">
               
-              <div className="col-md-12 col-xs-8 col-sm-12 col-lg-8" style={{width:"500px"}}>
+              <div className="col-md-12 col-xs-8 col-sm-12 col-lg-8" style={{width:"350px"}}>
                 <div className="ContainerProfileSection"></div>
                 <hr />
                 <ul className="ContainerProfileSection details" style={{fontSize:"18px"}}>

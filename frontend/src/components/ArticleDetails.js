@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import "../css/style.css";
 
-function ArticleDetails() {
+function ArticleDetails() 
+{
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState('');
@@ -49,8 +50,6 @@ function ArticleDetails() {
 
 
 
-
-
   // handle the comment form when submitting
   const handleCommentSubmit = async (event) => {
     event.preventDefault();
@@ -90,6 +89,8 @@ function ArticleDetails() {
     });
   };
 
+
+
   // when submit the comment 
   const submitComment = async () => {
     try {
@@ -98,9 +99,7 @@ function ArticleDetails() {
         user_id: user_id,
         article_id: article_id,
       });
-
       // Clear the comment form
-
       setMessage('');
 
       // Refresh the comments
@@ -126,17 +125,6 @@ function ArticleDetails() {
 
 
 
-  // just when you click on the rply for any comment , you will make tag for this person as @user1 or @user2
-  const handleReplyClick = (commentId) => {
-    // Update the message with the reply format
-    const replyFormat = `@user${commentId} `;
-    setMessage(replyFormat);
-  };
-
-
-  if (!article) {
-    return <div className='m-5'>جارٍ التحميل...</div>;
-  }
 
   // Toggle the display of comments
   const toggleComments = () => {
@@ -174,6 +162,12 @@ function ArticleDetails() {
     }
   };
 
+
+  
+
+  if (!article) {
+    return <div className='m-5'>جارٍ التحميل...</div>;
+  }
 
 
   return (

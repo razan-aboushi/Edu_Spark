@@ -17,12 +17,12 @@ import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
 
-const CourseDetails = () => {
+function CourseDetails()
+ {
   const [course, setCourse] = useState([]);
   const { course_id } = useParams();
   const [subscriberCount, setSubscriberCount] = useState(0);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
-  const { user_id } = useParams();
 
 
   const navigate = useNavigate();
@@ -241,6 +241,6 @@ const CourseDetails = () => {
       </Card>
     </div>
   );
-};
+}
 
 export default CourseDetails;

@@ -4,7 +4,8 @@ import '../css/style.css';
 import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
-function SummariesBuy() {
+function SummariesBuy()
+ {
   const [summaries, setSummaries] = useState([]);
   const { user_id } = useParams();
 
@@ -25,25 +26,15 @@ function SummariesBuy() {
     getSummaries();
   }, [user_id]);
 
-  // const handleDownload = (summaryFile) => {
-  //   if (summaryFile) {
-  //     const fileUrl = `http://localhost:4000/reports/${summaryFile}`;
-  //     window.download(fileUrl);
-  //   }
-  // };
 
 
+// to open the pdf file
   const handleDownload = (summaryFile) => {
     if (summaryFile) {
       const fileUrl = `http://localhost:4000/reports/${summaryFile}`;
-      const link = document.createElement('a');
-      link.href = fileUrl;
-      link.download = summaryFile;
-      link.click();
+      window.open(fileUrl);
     }
   };
-
-
 
 
 
@@ -58,10 +49,11 @@ function SummariesBuy() {
 
       <div className='text-center'>
         <h6 className="section-title bg-white text-center text-primary px-3 mt-5">
-          "مُلخصاتي"        </h6>
+          "مُلخصاتي"
+        </h6>
       </div>
 
-      {summaries.length === 0 ? (<div className="summary-cards-container" style={{ marginTop: "200px" }}>
+      {summaries.length === 0 ? (<div className="summary-cards-container" style={{ marginTop: "100px" }}>
         <div className="no-summaries-message">
           <p>لا توجد مُلخصات مُشتراة حتى الأن، سارع في الحصول على واحد و قُد تُعلمك نحو الأفضل.</p>
         </div>

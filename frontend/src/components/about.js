@@ -16,10 +16,10 @@ function About() {
     const getAboutData = async () => {
       try {
         const response = await axios.get('http://localhost:4000/aboutUsGet');
-        console.log(response.data);
         setAboutUsData(response.data);
         setVisionData(response.data);
-        setMissionData(response.data);      }
+        setMissionData(response.data);     
+       }
       catch (error)
        {
         console.error('Error fetching data:', error);

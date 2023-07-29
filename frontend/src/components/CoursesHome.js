@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
@@ -9,7 +9,6 @@ function CoursesHome() {
   const [courses, setCourses] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
 
-  const { user_id } = useParams();
   useEffect(() => {
     // Fetch latest courses
     axios
@@ -149,7 +148,7 @@ function CoursesHome() {
           الدورات الدراسية
         </h6>
       </div>
-      <div className="row g-4 justify-content-center mt-3">
+      <div className="d-flex row g-3 justify-content-center mt-3">
         {courses.map(course => (
           <div
             className="col-lg-4 col-md-6 course-card wow fadeInUp"

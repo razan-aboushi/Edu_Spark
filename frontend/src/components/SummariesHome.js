@@ -142,7 +142,7 @@ function SummariesHome() {
 
 
   return (
-    <div className="container mb-5" style={{ marginTop: '110px' }}>
+    <div className="container mb-5" style={{ marginTop: '120px' }}>
       {/* Render summaries */}
       <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3 mb-3">

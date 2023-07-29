@@ -14,6 +14,7 @@ function ListTodos()
   const user_id = decodedToken?.userId;
 
 
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
@@ -33,6 +34,7 @@ function ListTodos()
   };
 
 
+  // delete to do
   const deleteTodo = async (todo_id) => {
     try {
       await axios.delete(`http://localhost:4000/todos/${todo_id}`);
@@ -42,6 +44,7 @@ function ListTodos()
     }
   };
 
+// get spesific to do
   const getTodos = async () => {
     try {
       const response = await axios.get(`http://localhost:4000/todos/${user_id}`);
@@ -58,52 +61,60 @@ function ListTodos()
 
 
 
-  const handleEditTodoModalOpen = (todo_id) => {
+  const handleEditTodoModalOpen = async (todo_id) => {
     const selectedTodo = todos.find((todo) => todo.todo_id === todo_id);
-  console.log(selectedTodo)
+    console.log(selectedTodo);
     if (!selectedTodo) {
       console.error(`Todo with todo_id ${todo_id} not found.`);
       return;
     }
-  
 
     setSelectedTodo(selectedTodo);
 
-    Swal.fire({
-      title: "تعديل على المهمة",
-      html: `
-        <input
-          type="text"
-          class="swal2-input"
-          value="${selectedTodo.description}"
-          id="swal-description"
-        />
-      `,
-      showCancelButton: true,
-      cancelButtonText: "إلغاء",
-      confirmButtonText: "تعديل",
-      focusConfirm: false,
-      preConfirm: () => {
-        const updatedDescription = document.getElementById("swal-description").value;
-        if (!updatedDescription) {
-          Swal.showValidationMessage("يجب إدخال وصف المهمة");
-        }
-        return updatedDescription;
-      },
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          const updatedDescription = result.value;
-          const updatedTodo = { ...selectedTodo, description: updatedDescription };
-          setSelectedTodo(updatedTodo);
-          updateTodo();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
+    try {
+      const result = await Swal.fire({
+        title: "تعديل على المهمة",
+        html: `
+          <input
+            type="text"
+            class="swal2-input"
+            value="${selectedTodo.description}"
+            id="swal-description"
+          />
+        `,
+        showCancelButton: true,
+        cancelButtonText: "إلغاء",
+        confirmButtonText: "تعديل",
+        focusConfirm: false,
+        preConfirm: () => {
+          const updatedDescription = document.getElementById("swal-description").value;
+          if (!updatedDescription) {
+            Swal.showValidationMessage("يجب إدخال وصف المهمة");
+          }
+          return updatedDescription;
+        },
       });
-  };
 
+      if (result.isConfirmed) {
+        const updatedDescription = result.value;
+        const updatedTodo = { ...selectedTodo, description: updatedDescription };
+        setSelectedTodo(updatedTodo);
+        await axios.put(`http://localhost:4000/todos/${selectedTodo.todo_id}`, {
+          description: updatedDescription,
+        });
+        handleTodoUpdate(updatedTodo);
+        getTodos();
+        Swal.fire({
+          icon: "success",
+          title: "تم التعديل",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
 
@@ -117,38 +128,6 @@ function ListTodos()
 
 
 
-  
-
-  const updateTodo = async () => {
-    if (!selectedTodo || !selectedTodo.todo_id) {
-      console.error("Selected todo or todo_id is null");
-      return;
-    }
-
-    try {
-      const response = await axios.put(`http://localhost:4000/todos/${selectedTodo.todo_id}`,
-        {
-          description: selectedTodo.description,
-        }
-      );
-      console.log(response.data);
-      handleTodoUpdate(response.data);
-      getTodos();
-      Swal.fire({
-        icon: "success",
-        title: "تم التعديل",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } catch (error) {
-      console.error("Error updating todo:", error);
-      Swal.fire({
-        icon: "error",
-        title: "خطأ",
-        text: "حدث خطأ أثناء تحديث المهمة",
-      });
-    }
-  };
 
   return (
     <Fragment>
