@@ -15,6 +15,8 @@ function UserProfileStudent() {
   const [userId, setUserId] = useState('');
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
+
+  
   useEffect(() => {
     const fetchUserData = async () => {
       try {

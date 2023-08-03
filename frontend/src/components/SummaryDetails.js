@@ -155,7 +155,7 @@ function SummaryDetails()
         <Card className="course-card p-1">
           <Row>
             <Col md={8}>
-              <Card.Body className="summaryDe-body ">
+              <Card.Body className="summaryDe-body">
                 <Card.Title className="course-title">{summary.summary_title}</Card.Title>
                 <Card.Text className="course-publisher">
                   <FaInfoCircle /> الناشر: {summary.summary_publisher}

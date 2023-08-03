@@ -31,6 +31,8 @@ router.get('/getAllCartItems/:user_id',paymentsController.getAllCartItems);
 router.delete('/removeCartItemsFromCart/:user_id/:item_id', paymentsController.deleteCartItem);
 
 
+// Delete the cart items after payment
+router.delete('/clearCartItems/:user_id', paymentsController.deleteCartsAfterPayment);
 
 
 

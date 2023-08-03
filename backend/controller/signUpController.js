@@ -54,7 +54,7 @@ const SignUpRegister = (req, res) => {
           try {
             const token = jwt.sign(
               { userId, email, role },
-              secretKey
+              secretKey , { expiresIn: '3h' }
             );
 
             const tokenSql = 'INSERT INTO user_access_tokens (user_id, token) VALUES (?, ?)';

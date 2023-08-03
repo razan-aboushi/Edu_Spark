@@ -11,9 +11,7 @@ function CoursesHome() {
 
   useEffect(() => {
     // Fetch latest courses
-    axios
-      .get('http://localhost:4000/courses/latestHome')
-      .then(response => {
+    axios.get('http://localhost:4000/courses/latestHome').then(response => {
         setCourses(response.data);
       })
       .catch(error => {

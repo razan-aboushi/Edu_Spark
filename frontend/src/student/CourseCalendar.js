@@ -44,6 +44,7 @@ function CourseCalendar() {
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
   const currentCourses = sortedCourses.slice(indexOfFirstCourse, indexOfLastCourse);
 
+  
   // Function to handle page change
   function paginate(pageNumber) {
     setCurrentPage(pageNumber);

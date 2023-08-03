@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+
 import Nav from './components/nav';
 import Footer from './components/footer';
 import CoursesAndSummaries from './components/CoursesAndSummaries';
@@ -270,7 +271,7 @@ function App() {
 
 
 
-          {userRole !== 1 && userRole !== 2 && userRole !== 3 && (
+          {userRole !== 1 || userRole !== 2 || userRole !== 3 || (
             <Route path="*" element={<Error404 />} />
           )}
 

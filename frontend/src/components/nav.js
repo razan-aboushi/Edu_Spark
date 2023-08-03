@@ -106,8 +106,7 @@ function Nav()
           <button
             className="navbar-toggler"
             type="button"
-            onClick={handleNavbarToggle}
-          >
+            onClick={handleNavbarToggle}>
             <span className="navbar-toggler-icon"></span>
           </button>
 

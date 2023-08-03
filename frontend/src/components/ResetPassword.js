@@ -13,21 +13,6 @@ function ResetPassword()
   const [success, setSuccess] = useState('');
 
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePhoneChange = (event) => {
-    setPhone(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
-  };
 
 
 
@@ -77,8 +62,6 @@ function ResetPassword()
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="text-center">إعادة تعيين كلمة المرور</h2>
-          {success && <p className="text-success">{success}</p>}
-          {error && <p className="text-danger">{error}</p>}
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">البريد الإلكتروني:</label>
@@ -89,9 +72,9 @@ function ResetPassword()
                 style={{ width: '100%' }}
                 placeholder="أدخل البريد الإلكتروني"
                 value={email}
-                onChange={handleEmailChange}
-              />
+                onChange={(event)=> setEmail(event.target.value)}/>
             </div>
+
             <div className="form-group">
               <label htmlFor="phone">رقم الهاتف:</label>
               <input
@@ -101,9 +84,9 @@ function ResetPassword()
                 style={{ width: '100%' }}
                 placeholder="أدخل رقم الهاتف"
                 value={phone}
-                onChange={handlePhoneChange}
-              />
+                onChange={(event)=>setPhone(event.target.value)}/>
             </div>
+
             <div className="form-group">
               <label htmlFor="password">كلمة المرور الجديدة:</label>
               <input
@@ -113,8 +96,9 @@ function ResetPassword()
                 style={{ width: '100%' }}
                 placeholder="أدخل كلمة المرور الجديدة"
                 value={password}
-                onChange={handlePasswordChange}/>
+                onChange={(event)=>setPassword(event.target.value)}/>
             </div>
+
             <div className="form-group">
               <label htmlFor="confirmPassword">تأكيد كلمة المرور:</label>
               <input
@@ -124,18 +108,24 @@ function ResetPassword()
                 style={{ width: '100%' }}
                 placeholder="أدخل تأكيد كلمة المرور"
                 value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-              />
+                onChange={(event)=>setConfirmPassword(event.target.value)}/>
             </div>
+
+            {success && <p className="text-success text-center mt-3">{success}</p>}
+            {error && <p className="text-danger text-center mt-3">{error}</p>}
+
             <div className="text-center">
               <button type="submit" className="btn btn-primary rounded-pill">
                 إعادة تعيين كلمة المرور
               </button>
             </div>
+
           </form>
+
           <p className="mt-3 text-center">
             <Link to="/login">تسجيل الدخول</Link>
           </p>
+
         </div>
       </div>
     </div>

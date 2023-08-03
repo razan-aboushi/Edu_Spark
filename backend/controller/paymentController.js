@@ -25,6 +25,40 @@ const postSummariesIdEnrollment = (req, res) => {
 
 
 
+// const postSummariesIdEnrollment = (req, res) => {
+//   const { user_id } = req.params;
+//   const { summariesId } = req.body;
+
+//   if (!summariesId || summariesId.length === 0) {
+//       return res.status(400).json({ message: 'Invalid or empty summariesId array' });
+//   }
+
+//   // Store summariesId in the summary enrollment table for the user with user_id
+//   const query = `INSERT INTO summary_enrollments (user_id, summary_id, enrollment_date) VALUES ?`;
+//   const values = summariesId.map((summaryId) => [user_id, summaryId, new Date()]);
+
+//   connection.query(query, [values], (err, result) => {
+//       if (err) {
+//           console.error(err);
+//           return res.status(500).json({ message: 'Failed to store summaries enrollment' });
+//       }
+
+//       console.log('Summaries enrollment stored successfully');
+//       res.status(200).json({ message: 'Summaries enrollment stored successfully' });
+//   });
+// }
+
+
+
+
+
+
+
+
+
+
+
+
 // Store courses enrollment
 const postCourseIdEnrollment = (req, res) => {
     const { user_id } = req.params;
@@ -162,16 +196,31 @@ const deleteCartItem = async (req, res) => {
   
 
 
+// delete the items from the cart after payment process
+const deleteCartsAfterPayment=async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const [result] = await connection.promise().query(
+      'DELETE FROM cart WHERE user_id = ?',
+      [user_id]
+    );
 
-
-
-
-
-
+    if (result.affectedRows === 0) {
+      // No matching cart item found
+      res.status(404).json({ message: 'Cart item not found' });
+    } else {
+      // Cart item(s) deleted successfully
+      res.json({ message: 'Cart item deleted' });
+    }
+  } catch (error) {
+    console.error('Error removing item from cart:', error);
+    res.status(500).json({ error: 'Failed to remove item from cart' });
+  }
+};
 
 
 module.exports = {
     postSummariesIdEnrollment,
     postCourseIdEnrollment, postTransaction,
-     getPaymentIdOfCreditCard,getAllCartItems,deleteCartItem
+     getPaymentIdOfCreditCard,getAllCartItems,deleteCartItem,deleteCartsAfterPayment
 };

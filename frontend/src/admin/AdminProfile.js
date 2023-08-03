@@ -37,12 +37,11 @@ function AdminProfile() {
       name,
       email,
       phone_number,
-      password: hashedPassword, // Use the hashed password
+      password: hashedPassword, 
     };
   
     // Perform save action using Axios
-    axios
-      .put('http://localhost:4000/adminDataUpdate', updatedProfile)
+    axios.put('http://localhost:4000/adminDataUpdate', updatedProfile)
       .then((response) => {
         console.log('Profile updated successfully:', response.data);
   
@@ -110,8 +109,7 @@ function AdminProfile() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            disabled={!isEditMode}
-          />
+            disabled/>
         </div>
         <div className="form-groupAdmin">
           <label className='LabelAdminProfile' htmlFor="phoneNumber">رقم الهاتف</label>
@@ -120,8 +118,7 @@ function AdminProfile() {
             id="phoneNumber"
             value={phone_number}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            disabled={!isEditMode}
-          />
+            disabled={!isEditMode}/>
         </div>
         <div className="form-groupAdmin">
           <label className='LabelAdminProfile' htmlFor="password">الرقم السري</label>
@@ -130,9 +127,9 @@ function AdminProfile() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            disabled={!isEditMode}
-          />
+            disabled={!isEditMode}/>
         </div>
+        
         {isEditMode ? (
           <button className="edit-button save-button" onClick={handleSave}>حفظ</button>
         ) : (

@@ -5,7 +5,8 @@ import "../css/UserProfile.css";
 import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
-function SummaryForm() {
+function SummaryForm()
+ {
     const [summaryData, setSummaryData] = useState({
         summary_title: "",
         summary_image: "",

@@ -19,11 +19,10 @@ import SummariesHome from './SummariesHome';
 import CoursesHome from './CoursesHome';
 import Swal from 'sweetalert2';
 
-function Index()
- {
+function Index() {
 
   const [aboutUsData, setAboutUsData] = useState({});
- 
+
   useEffect(() => {
     const hasVisited = sessionStorage.getItem('hasVisited');
     if (!hasVisited) {
@@ -38,14 +37,14 @@ function Index()
       sessionStorage.setItem('hasVisited', true);
     }
   }, []);
-  
+
 
   useEffect(() => {
     const getAboutUsData = async () => {
       try {
         const response = await axios.get('http://localhost:4000/aboutUsGet');
         setAboutUsData(response.data);
-      
+
       }
       catch (error) {
         console.error('Error fetching data:', error);
@@ -306,7 +305,7 @@ function Index()
         {/* University section */}
         <UniversityHome />
         {/* End of university section */}
-      </div >
+      </div>
 
 
 
@@ -449,9 +448,9 @@ function Index()
                   <br />
                   <HashLink
                     to={"/contact/#"}
-                    style={{ color: "blue", fontWeight: "bold" }}
-                  >
-                    تواصل معنا الآن                  </HashLink>
+                    style={{ color: "blue", fontWeight: "bold" }}>
+                    تواصل معنا الآن
+                  </HashLink>
                 </p>
               </div>
             </div>

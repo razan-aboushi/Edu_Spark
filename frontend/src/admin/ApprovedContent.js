@@ -31,7 +31,7 @@ const ApprovedContent = () => {
   };
 
   return (
-    <div className="container mt-5 text-center mb-5" style={{ borderRadius: "5px", backgroundColor: "#06BBCC" }}>
+    <div className="container mt-5 text-center mb-5" style={{ borderRadius: "5px" }}>
       <div className="tabs mb-4" style={{ fontSize: "18px", fontWeight: "bold" }}>
         <button
           className={`tab mt-2 shadow ms-5 ${activeTab === 1 ? 'active' : ''}`}
@@ -41,11 +41,10 @@ const ApprovedContent = () => {
         </button>
         <button
           className={`tab shadow mt-2 ${activeTab === 2 ? 'active' : ''}`} style={{border:"1px solid gray", padding:"15px" , borderRadius:"15px"}}
-          onClick={() => handleTabChange(2)}
-        >
+          onClick={() => handleTabChange(2)}>
           المُلخصات المعتمدة
         </button>
-      </div >
+      </div>
 
       <div className="content">
         {activeTab === 1 && (

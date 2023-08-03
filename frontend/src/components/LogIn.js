@@ -5,8 +5,7 @@ import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../css/style.css';
 
-function LogIn()
- {
+function LogIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -14,7 +13,7 @@ function LogIn()
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-
+  // Save the email and password in local storage
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
     const password = localStorage.getItem('password');
@@ -29,8 +28,7 @@ function LogIn()
 
   // remove the remember me from the local storage
   useEffect(() => {
-    if (!rememberMe) 
-    {
+    if (!rememberMe) {
       localStorage.removeItem('email');
       localStorage.removeItem('password');
     }
@@ -46,10 +44,11 @@ function LogIn()
     setPassword(e.target.value);
   };
 
-  const togglePasswordVisibility = () => {
+  const PasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  // Handle log in form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,8 +58,7 @@ function LogIn()
       if (response.status === 200) {
         const data = response.data;
 
-        if (rememberMe) 
-        {
+        if (rememberMe) {
           localStorage.setItem('email', email);
           localStorage.setItem('password', password);
         }
@@ -73,9 +71,8 @@ function LogIn()
         localStorage.setItem('token', token);
 
 
-     
-        if (role === 1) 
-        {
+        if (role === 1)
+         {
           navigate('/AdminSideBar');
         } else if (role === 2) {
           navigate('/UserProfileStudent');
@@ -85,8 +82,7 @@ function LogIn()
 
         window.location.reload();
 
-      } else 
-      {
+      } else {
         const errorData = response.data;
         setError(errorData.error);
       }
@@ -123,8 +119,7 @@ function LogIn()
                   className="form-control p-3 form-control-lg"
                   placeholder="أدخل عنوان بريد إلكتروني صحيح"
                   value={email}
-                  onChange={handleEmailChange}
-                />
+                  onChange={handleEmailChange} />
               </div>
               {/* حقل كلمة المرور */}
               <div className="form-outline mb-3">
@@ -139,13 +134,12 @@ function LogIn()
                     className="form-control p-3 form-control-lg"
                     placeholder="أدخل كلمة المرور"
                     value={password}
-                    onChange={handlePasswordChange}/>
+                    onChange={handlePasswordChange} />
 
                   <button
                     className="btn btn-outline-secondary" style={{ borderRadius: "5px" }}
                     type="button"
-                    onClick={togglePasswordVisibility}
-                  >
+                    onClick={PasswordVisibility}>
                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                   </button>
                 </div>
@@ -159,7 +153,7 @@ function LogIn()
                     type="checkbox"
                     id="form2Example3"
                     checked={rememberMe}
-                    onChange={() => setRememberMe(!rememberMe)}/>
+                    onChange={() => setRememberMe(!rememberMe)} />
 
                   <label className="form-check-label" htmlFor="form2Example3">
                     تذكرني
@@ -171,7 +165,7 @@ function LogIn()
               </div>
 
               <div className="text-center text-lg-end mt-4 pt-2">
-                {error && <p className="text-danger mb-3">{error}</p>} 
+                {error && <p className="text-danger mb-3">{error}</p>}
 
                 <button
                   className="btnr btn-lg"

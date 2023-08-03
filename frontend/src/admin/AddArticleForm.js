@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-function AddArticleForm() {
+function AddArticleForm() 
+{
   const [articleData, setArticleData] = useState({
     article_title: '',
     article_brief: '',
@@ -14,7 +15,8 @@ function AddArticleForm() {
 
 
   // Handle input changes and update the articleData state
-  function handleInputChange(event) {
+  function handleInputChange(event) 
+  {
     const { name, value } = event.target;
     setArticleData((prevState) => ({
       ...prevState,
@@ -35,15 +37,10 @@ function AddArticleForm() {
   }
 
 
-  // Save the article draft
-  function saveDraft() {
-    localStorage.setItem('articleDraft', JSON.stringify(articleData));
-    Swal.fire('نجاح', 'تم حفظ المقال المسودة بنجاح!', 'success');
-  }
-
 
   // Submit the article
-  async function onSubmit(event) {
+  async function onSubmit(event) 
+  {
     event.preventDefault();
 
     try {
@@ -77,19 +74,26 @@ function AddArticleForm() {
   }
 
 
+  // Save the article draft
+  function saveDraft() 
+  {
+    localStorage.setItem('articleDraft', JSON.stringify(articleData));
+    Swal.fire('نجاح', 'تم حفظ المقال المسودة بنجاح!', 'success');
+  }
+
 
   // Load the saved article draft
-  function loadDraft() {
+  function loadDraft() 
+  {
     const savedDraft = localStorage.getItem('articleDraft');
-    if (savedDraft) {
+    if (savedDraft) 
+    {
       setArticleData(JSON.parse(savedDraft));
       Swal.fire('نجاح', 'تم استعادة المقال المسودة بنجاح!', 'success');
     } else {
       Swal.fire('خطأ', 'لا توجد مقالة مسودة محفوظة', 'error');
     }
   }
-
-
 
 
 
@@ -112,8 +116,7 @@ function AddArticleForm() {
             id="title"
             name="article_title"
             value={articleData.article_title}
-            onChange={handleInputChange}
-          />
+            onChange={handleInputChange}/>
         </div>
         <div className="form-group">
           <label htmlFor="description" className="mt-3 mb-3">

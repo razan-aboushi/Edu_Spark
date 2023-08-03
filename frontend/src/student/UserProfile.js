@@ -75,7 +75,7 @@ function UserProfile() {
                   <li>
                     <p>
                       <span className="fa fa-mars-double one" style={{ width: 50 }} />
-                      {userProfile.gender}
+                      {userProfile.gender==="female"?"أنثى" : "ذكر"}
                     </p>
                   </li>
                 </ul>

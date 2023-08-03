@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
@@ -23,7 +23,7 @@ function SignUp()
 
 
 
-  
+
   // Handle form sign up submit
   async function handleSubmit(e) {
     e.preventDefault();
@@ -31,7 +31,8 @@ function SignUp()
     const validationErrors = validateForm(values);
     setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
+    if (Object.keys(validationErrors).length === 0) 
+    {
       try {
         const response = await axios.post('http://localhost:4000/SignUpRegister', {
           name: values.name,
@@ -57,7 +58,6 @@ function SignUp()
 
           const { token } = response.data;
           localStorage.setItem('token', token);
-          console.log(response.data);
 
 
           if (values.role === '3') {
@@ -68,6 +68,8 @@ function SignUp()
             navigate('/AdminSideBar');
           }
 
+          window.location.reload();
+
         }
       } catch (error) {
         console.error('Error registering user:', error);
@@ -76,8 +78,9 @@ function SignUp()
     }
   }
 
+
   useEffect(() => {
-    // Fetch all data from the database
+    // Fetch the email of the users from the database to check if is exists or not
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:4000/usersEmailCheck');
@@ -99,8 +102,10 @@ function SignUp()
 
 
 
+
   // Form validation
-  function validateForm(data) {
+  function validateForm(data) 
+  {
     const errors = {};
 
     if (!data.name) {
@@ -139,7 +144,7 @@ function SignUp()
     if (!data.password) {
       errors.password = 'كلمة المرور مطلوبة';
     } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(data.password)) {
-      errors.password = 'يجب أن تحتوي كلمة المرور على الأقل على 8 أحرف وتحتوي على حرف كبير وحرف صغير ورقم';
+      errors.password = ' يجب أن تحتوي كلمة المرور على الأقل على 8 أحرف بالإضافة لوجود حرف كبير و أحرف صغيرة و رقم من ضمنها';
     }
 
     if (data.password !== data.re_pass) {
@@ -152,6 +157,7 @@ function SignUp()
 
     return errors;
   }
+
 
   return (
     <div className="main mt-5">
@@ -332,7 +338,7 @@ function SignUp()
                       الشروط والأحكام
                     </Link>
                   </label>
-                  {errors.agreeTerm && <span className="error me-3">{errors.agreeTerm}</span>}
+                  {errors.agreeTerm && <div className="error mt-2 mb-4">{errors.agreeTerm}</div>}
                 </div>
 
                 <div className="form-group12 mb-3">

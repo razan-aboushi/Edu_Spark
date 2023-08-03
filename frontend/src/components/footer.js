@@ -78,7 +78,7 @@ function Footer()
                     الجامعات
                   </Link>
                   <Link className="btnLinks btn-link" to="/Article" target="_blank">
-                    مقال
+                    مقالات
                   </Link>
                   <Link className="btnLinks btn-link" to="/Summaries" target="_blank">
                     ملخصات
@@ -145,10 +145,10 @@ function Footer()
               <div className="copyright">
                 <div className="row">
                   <div className="col-md-9 text-center text-md-end mb-3 mb-md-0">
-                    <Link className="border-bottom" to="#">
+                    <Link to="/">
                       حقوق الطبع والنشر © EduSpark 2023
                     </Link>
-                    ، جميع الحقوق محفوظة. تم تطويره بواسطة{" "}
+                    {" "}    ،  جميع الحقوق محفوظة. تم تطويره بواسطة{" "}
                     <Link
                       style={{ color: "#06BBCC" }}
                       to="https://github.com/razan-aboushi" target='_blank'

@@ -33,6 +33,8 @@ function Contact() {
     getUserProfile();
   }, []);
 
+
+  // Handle form submittion
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -69,23 +71,17 @@ function Contact() {
           text: 'حدث خطأ أثناء عملية إرسال رسالتك ، من فضلك أعد المحاولة'
         });
       });
+
+
+    setName("");
+    setEmail("");
+    setSubject("");
+    setMessage("");
+
+
   }
 
-  function handleNameChange(e) {
-    setName(e.target.value);
-  }
 
-  function handleEmailChange(e) {
-    setEmail(e.target.value);
-  }
-
-  function handleSubjectChange(e) {
-    setSubject(e.target.value);
-  }
-
-  function handleMessageChange(e) {
-    setMessage(e.target.value);
-  }
 
   return (
     <div>
@@ -129,7 +125,7 @@ function Contact() {
                       id="name"
                       placeholder="اسمك"
                       value={name}
-                      onChange={handleNameChange}
+                      onChange={(e) => setName(e.target.value)}
                     />
                     <label htmlFor="name">اسمك</label>
                   </div>
@@ -142,7 +138,7 @@ function Contact() {
                       id="email"
                       placeholder="example@gmail.com"
                       value={email}
-                      onChange={handleEmailChange}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <label htmlFor="email">بريدك الإلكتروني</label>
                   </div>
@@ -155,7 +151,7 @@ function Contact() {
                       id="subject"
                       placeholder="الموضوع"
                       value={subject}
-                      onChange={handleSubjectChange}
+                      onChange={(e) => setSubject(e.target.value)}
                     />
                     <label htmlFor="subject">الموضوع</label>
                   </div>
@@ -168,7 +164,7 @@ function Contact() {
                       id="message"
                       style={{ height: 150 }}
                       value={message}
-                      onChange={handleMessageChange}
+                      onChange={(e) => setMessage(e.target.value)}
                     />
                     <label htmlFor="message">الرسالة</label>
                   </div>

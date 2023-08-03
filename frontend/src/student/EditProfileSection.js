@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import "../css/UserProfile.css";
@@ -12,8 +11,7 @@ function EditProfileSection() {
   const [password, setPassword] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
   const [birthdate, setBirthdate] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const { user_id } = useParams();
+
   // To get the user data
   useEffect(() => {
     const getUserProfile = async () => {
@@ -115,14 +113,7 @@ function EditProfileSection() {
   };
 
 
-  const handleCancel = () => {
-    // Reset the form fields
-    setName(userProfile.name);
-    setPhoneNumber(userProfile.phone_number);
-    setBirthdate(userProfile.birthdate);
-    setPassword(userProfile.password);
-  };
-
+  
   return (
     <>
       <section id="EditProfile" className="text-right mt-5">

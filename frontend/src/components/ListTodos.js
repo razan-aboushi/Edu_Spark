@@ -14,13 +14,14 @@ function ListTodos()
   const user_id = decodedToken?.userId;
 
 
-
+// Add to do in the list
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
     if (!description) {
       return;
     }
+
     try {
       const body = { description, user_id };
       await axios.post("http://localhost:4000/todos", body, {
@@ -34,15 +35,30 @@ function ListTodos()
   };
 
 
-  // delete to do
-  const deleteTodo = async (todo_id) => {
-    try {
-      await axios.delete(`http://localhost:4000/todos/${todo_id}`);
-      getTodos();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    // delete to do
+    const deleteTodo = async (todo_id) => {
+      try {
+        const result = await Swal.fire({
+          title: "تأكيد الحذف",
+          text: "هل أنت متأكد أنك تريد حذف هذه المهمة؟",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "نعم",
+          cancelButtonText: "لا",
+          confirmButtonColor: "#dc3545", 
+          cancelButtonColor: "#06BBCC", 
+        });
+  
+        if (result.isConfirmed) {
+          await axios.delete(`http://localhost:4000/todos/${todo_id}`);
+          getTodos();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+
 
 // get spesific to do
   const getTodos = async () => {
@@ -60,11 +76,12 @@ function ListTodos()
   }, []);
 
 
-
+// Edit on the to do "description"
   const handleEditTodoModalOpen = async (todo_id) => {
     const selectedTodo = todos.find((todo) => todo.todo_id === todo_id);
-    console.log(selectedTodo);
-    if (!selectedTodo) {
+
+    if (!selectedTodo) 
+    {
       console.error(`Todo with todo_id ${todo_id} not found.`);
       return;
     }

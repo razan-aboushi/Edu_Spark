@@ -99,29 +99,31 @@ function PublishRequestCourse() {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
-              <tr key={item.course_id}>
-                <td>{item.name}</td>
-                <td>{item.email}</td>
-                <td>{item.course_title}</td>
-                <td>{item.course_description}</td>
-                <td>
-                  {item.course_price === "0" ? (
-                    <span style={{ color: 'green' }}>مجاني</span>
-                  ) : (
-                    <span>{item.course_price} د.أ</span>
-                  )} </td>
+            {data.length === 0 ? (<div className='text-center mt-5'>لا توجد طلبات دورات مُعلقة حتى الأن</div>
+            ) : (
+              data.map((item) => (
+                <tr key={item.course_id}>
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
+                  <td>{item.course_title}</td>
+                  <td>{item.course_description}</td>
+                  <td>
+                    {item.course_price === "0" ? (
+                      <span style={{ color: 'green' }}>مجاني</span>
+                    ) : (
+                      <span>{item.course_price} د.أ</span>
+                    )} </td>
 
-                <td>
-                  <button className="approve-btn btn-primary buttonInAddArticle m-3 ms-3" onClick={() => handleApprove(item.course_id)}>
-                    الموافقة
-                  </button>
-                  <button className="reject-btn btn-primary buttonInAddArticle m-3" onClick={() => handleReject(item.course_id)} style={{ width: "105px" }}>
-                    الرفض
-                  </button>
-                </td>
-              </tr>
-            ))}
+                  <td>
+                    <button className="approve-btn btn-primary buttonInAddArticle m-3 ms-3" onClick={() => handleApprove(item.course_id)}>
+                      الموافقة
+                    </button>
+                    <button className="reject-btn btn-primary buttonInAddArticle m-3" onClick={() => handleReject(item.course_id)} style={{ width: "105px" }}>
+                      الرفض
+                    </button>
+                  </td>
+                </tr>
+              )))}
           </tbody>
         </table>
       </div>

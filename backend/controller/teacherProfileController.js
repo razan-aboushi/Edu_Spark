@@ -1,8 +1,6 @@
 const connection = require('../models/dbConnect');
 const multer = require('multer');
 const path = require('path');
-const router = require('../routes/teacherProfile');
-const { pdf2img } = require('pdf-poppler');
 
 // Configure Multer to specify the destination and filename
 const storage = multer.diskStorage({
@@ -87,17 +85,6 @@ const postSummaryForm = (req, res) => {
     );
   });
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -253,12 +240,6 @@ const getUserSummaries =(req, res) => {
     res.json(results);
   });
 }
-
-
-
-
-
-
 
 
 

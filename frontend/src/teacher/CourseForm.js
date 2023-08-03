@@ -9,8 +9,6 @@ function CourseForm() {
     const [categories, setCategories] = useState([]);
     const [universities, setUniversities] = useState([]);
 
-
-
     const [courseData, setCourseData] = useState({
         course_title: "",
         course_image: "",
@@ -19,7 +17,7 @@ function CourseForm() {
         connection_channel: "",
         course_type: "",
         sell_or_free: "",
-        course_price:0,
+        course_price: 0,
         course_duration: "",
         start_date: "",
         end_date: "",
@@ -41,7 +39,6 @@ function CourseForm() {
 
 
     useEffect(() => {
-
         // get universities
         axios.get("http://localhost:4000/universities")
             .then((response) => {
@@ -61,17 +58,13 @@ function CourseForm() {
         // get the categories based on selected university to render them in dropdown list
         if (name === "course_university") {
             const universityId = value;
-            axios.get(`http://localhost:4000/universities/${universityId}/categories`)
-                .then((response) => {
-                    console.log(response)
-                    setCategories(response.data);
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+            axios.get(`http://localhost:4000/universities/${universityId}/categories`).then((response) => {
+                console.log(response)
+                setCategories(response.data);
+            }).catch((error) => {
+                console.error(error);
+            });
         }
-
-
     };
 
 
@@ -82,12 +75,10 @@ function CourseForm() {
 
 
 
-    // submit the form
+    // submit the course form
     const handleSubmitCourseForm = (event) => {
         event.preventDefault();
 
-
-       
 
         const formData = new FormData();
 
@@ -101,37 +92,35 @@ function CourseForm() {
             const user_id = decodedToken.userId;
             console.log(user_id)
 
-            axios
-                .post(`http://localhost:4000/addCourseForm/${user_id}`, formData)
-                .then((response) => {
-                    console.log(response.data);
-                    setCourseData({
-                        course_title: "",
-                        course_image: "",
-                        course_brief: "",
-                        course_description: "",
-                        connection_channel: "",
-                        course_type: "",
-                        sell_or_free: "",
-                        course_price: "",
-                        course_duration: "",
-                        start_date: "",
-                        end_date: "",
-                        start_time: "",
-                        end_time: "",
-                        course_category: "",
-                        course_university: "",
-                        facebook_link: "",
-                        linkedin_link: ""
+            axios.post(`http://localhost:4000/addCourseForm/${user_id}`, formData).then((response) => {
+                console.log(response.data);
+                setCourseData({
+                    course_title: "",
+                    course_image: "",
+                    course_brief: "",
+                    course_description: "",
+                    connection_channel: "",
+                    course_type: "",
+                    sell_or_free: "",
+                    course_price: "",
+                    course_duration: "",
+                    start_date: "",
+                    end_date: "",
+                    start_time: "",
+                    end_time: "",
+                    course_category: "",
+                    course_university: "",
+                    facebook_link: "",
+                    linkedin_link: ""
 
-                    });
-                    Swal.fire({
-                        title: "تم إضافة الدورة بنجاح!",
-                        text: " سيتم إرسال الدورة للمشرف للمراجعة والموافقة عليها ، شكراً لك",
-                        icon: "success",
-                        button: "حسناً",
-                    });
-                })
+                });
+                Swal.fire({
+                    title: "تم إضافة الدورة بنجاح!",
+                    text: " سيتم إرسال الدورة للمشرف للمراجعة والموافقة عليها ، شكراً لك",
+                    icon: "success",
+                    button: "حسناً",
+                });
+            })
                 .catch((error) => {
                     console.log(error);
                     Swal.fire({
@@ -153,7 +142,7 @@ function CourseForm() {
 
 
 
-
+    // Mark the inputs as required
     const isRequiredField = (field) => {
         return (
             field === "course_title" ||
@@ -161,24 +150,19 @@ function CourseForm() {
             field === "course_brief" ||
             field === "course_description" ||
             field === "sell_or_free" ||
-            field === "course_category" ||
-            field === "course_university" ||
             field === "course_file" ||
-            field === "facebook_link" ||
-            field === "linkedin_link" ||
             field === "connection_channel" ||
             field === "course_type" ||
             field === "sell_or_free" ||
-            field === "start_date"  ||
-            field === "end_date"  ||
-            field === "start_time"  ||
-            field === "end_time"  ||
-            field === "course_duration"  ||
-            field === "course_category"  ||
-            field === "course_university"  ||
-            field === "facebook_link"  ||
-            field === "linkedin_link"  
-
+            field === "start_date" ||
+            field === "end_date" ||
+            field === "start_time" ||
+            field === "end_time" ||
+            field === "course_duration" ||
+            field === "course_category" ||
+            field === "course_university" ||
+            field === "facebook_link" ||
+            field === "linkedin_link"
 
         );
     };
@@ -186,6 +170,7 @@ function CourseForm() {
     const isFilledField = (field) => {
         return courseData[field] !== "";
     };
+
 
     const getInputClass = (field) => {
         if (isRequiredField(field) && !isFilledField(field)) {
@@ -201,12 +186,6 @@ function CourseForm() {
 
 
 
-
-
-
-
-
-
     return (
         <div className="page-wrapper p-t-100 p-b-50">
             <div className="container">
@@ -216,7 +195,7 @@ function CourseForm() {
                     </div>
                     <div className="card-body">
                         <form id="courseForm" onSubmit={handleSubmitCourseForm}>
-                        <div className={`form-group mt-3 ${getInputClass("course_title")}`}>
+                            <div className={`form-group mt-3 ${getInputClass("course_title")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_title">عنوان الدورة:</label>
                                 <input
                                     className="form-control"
@@ -239,9 +218,7 @@ function CourseForm() {
                                             name="course_image"
                                             id="course_image"
                                             onChange={handleFileChangeCourseImage}
-                                            required
-                                        />
-
+                                            required />
                                     </div>
                                 </div>
                                 <small className="form-text text-muted">
@@ -387,8 +364,7 @@ function CourseForm() {
                                         id="end_date"
                                         value={courseData.end_date}
                                         onChange={handleInputChange}
-                                        required
-                                    />
+                                        required />
                                 </div>
                             </div>
 
@@ -429,8 +405,7 @@ function CourseForm() {
                                     name="course_university"
                                     id="course_university"
                                     value={courseData.course_university}
-                                    onChange={(e) => handleInputChange(e)}
-                                >
+                                    onChange={(e) => handleInputChange(e)}>
                                     <option value="">اختر الجامعة</option>
                                     {universities.map((university) => (
                                         <option key={university.university_id} value={university.university_id}>
@@ -475,8 +450,7 @@ function CourseForm() {
                                     id="facebook_link"
                                     value={courseData.facebook_link}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required />
                             </div>
 
                             <div className={`form-group mt-3 mb-3 ${getInputClass("linkedin_link")}`}>
@@ -489,8 +463,7 @@ function CourseForm() {
                                     id="linkedin_link"
                                     value={courseData.linkedin_link}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required />
                             </div>
 
 
@@ -498,17 +471,16 @@ function CourseForm() {
                                 <button
                                     className="mb-2 mt-2 AddCourseSummary btn-primary btn-block mt-2"
                                     type="submit"
-                                    id="AddCourseButton"
-                                >
+                                    id="AddCourseButton">
                                     إضافة الدورة
                                 </button>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
-        </div >)
+        </div>
+    )
 }
 
 export default CourseForm;

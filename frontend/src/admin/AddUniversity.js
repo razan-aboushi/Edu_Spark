@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
-function AddUniversity() {
+function AddUniversity() 
+{
   const [universityName, setUniversityName] = useState('');
   const [universityImage, setUniversityImage] = useState([]);
   const [categoryName, setCategoryName] = useState('');
@@ -61,7 +62,7 @@ function AddUniversity() {
   };
 
 
-  // add university
+  // add new university
   const handleSubmitUniversity = (event) => {
     event.preventDefault();
   
@@ -89,9 +90,7 @@ function AddUniversity() {
     formData.append('university_name', universityName);
     formData.append('university_image', universityImage);
   
-    axios
-      .post('http://localhost:4000/add-university', formData)
-      .then((response) => {
+    axios.post('http://localhost:4000/add-university', formData).then((response) => {
         console.log(response.data);
         Swal.fire({
           title: 'نجاح',
@@ -133,8 +132,7 @@ function AddUniversity() {
     formData.append('category_image', categoryImage);
     formData.append('university_id', selectedUniversity);
 
-    axios
-      .post('http://localhost:4000/add-category', formData)
+    axios.post('http://localhost:4000/add-category', formData)
       .then((response) => {
         console.log(response.data);
         Swal.fire({
@@ -179,8 +177,7 @@ function AddUniversity() {
             id="universityImage"
             name="university_image"
             onChange={handleUniversityImageChange}
-            className="input-field"
-          />
+            className="input-field"/>
         </div>
         <button className="btn-primary buttonInAddArticle" type="submit">
           إضافة

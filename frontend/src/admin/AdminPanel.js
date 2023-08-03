@@ -179,8 +179,9 @@ function AdminPanel() {
                                 id="formMissionContent"
                                 rows="3"
                                 onChange={(e) => updateMissionContent(e.target.value)}
-                                value={mission}
-                            ></textarea>
+                                value={mission}>
+
+                            </textarea>
                         </div>
 
                         <button className="ButtonDashBordPanel btn-primary buttonSaveDash" type="submit">
@@ -210,7 +211,7 @@ function AdminPanel() {
                                 rows="3"
                                 onChange={(e) => updateAboutUsParagraph(e.target.value)}
                                 value={aboutParagraph1 + " " + aboutParagraph2}
-                                ></textarea>
+                            ></textarea>
                         </div>
 
                         <button className="ButtonDashBordPanel btn-primary buttonSaveDash" type="submit">
