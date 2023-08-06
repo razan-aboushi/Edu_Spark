@@ -4,16 +4,21 @@ import Swal from "sweetalert2";
 import "../css/style.css";
 
 
-function UserForm() {
+function UserForm()
+ {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
 
+  
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  async function fetchUsers() {
+
+  // get all the registered users in the website
+  async function fetchUsers() 
+  {
     try {
       const response = await axios.get("http://localhost:4000/usersRegistered");
       setUsers(response.data);
@@ -24,7 +29,7 @@ function UserForm() {
 
 
 
-
+// delete the user from the website "soft delete"
   async function deleteUser(user_id) {
     try {
       const result = await Swal.fire({
@@ -54,10 +59,6 @@ function UserForm() {
 
 
 
-
-
-
-
   // Update user role
   async function updateUserRole(userId, newRole) {
     const result = await Swal.fire({
@@ -72,19 +73,20 @@ function UserForm() {
 
     if (result.isConfirmed) {
       try {
-        await axios.put(`http://localhost:4000/usersRegistered/${userId}`, { role: newRole });
-        fetchUsers();
+        await axios.put(`http://localhost:4000/usersRegistered/updateUserRole/${userId}`, { newRole });
         Swal.fire({
-          icon: "success",
-          title: "تم التحديث",
-          text: "تم تحديث دور المستخدم بنجاح!",
-          confirmButtonText: "موافق",
+          icon: 'success',
+          title: 'تم التحديث',
+          text: 'تم تحديث دور المستخدم بنجاح!',
+          confirmButtonText: 'موافق',
         });
+        fetchUsers();
       } catch (error) {
         console.log(error);
       }
     }
   }
+
 
   // Pagination
   const indexOfLastUser = currentPage * usersPerPage;
@@ -118,7 +120,7 @@ function UserForm() {
                     <tr key={user.user_id} className="user-row">
 
                       <td>{user.name}</td>
-                      <td>{user.role}</td>
+                      <td>{user.role === "admin"? "أدمن" : user.role==="student"?"طالب" : user.role==="teacher" ? "معلم" : null}</td>
                       <td>{user.email}</td>
                       <td>{user.phone_number}</td>
                       <td className="text-center">
@@ -129,13 +131,13 @@ function UserForm() {
                         </button>
                       </td>
                       <td>
-                        <select
+                        <select className="text-center"
                           value={user.role}
-                          onChange={(e) => updateUserRole(user.user_id, e.target.value)}
-                        >
-                          <option value="1">Admin</option>
-                          <option value="2">Student</option>
-                          <option value="3">Teacher</option>
+                          onChange={(e) => updateUserRole(user.user_id, e.target.value)}>
+                          <option>إختر الدور</option>
+                          <option value="1">أدمن</option>
+                          <option value="2">طالب</option>
+                          <option value="3">مُعلم</option>
                         </select>
                       </td>
                     </tr>

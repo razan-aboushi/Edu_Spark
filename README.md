@@ -79,7 +79,7 @@
 
 3. Configuration :
 
-   - Create a MySQL database for the project. You can refer to the database tables structure with the files above and [EduSpark Database](EduSpark_Database.pdf).
+   - Create a MySQL database for the project.
 
    - Copy the sample configuration file and update it with the necessary database credentials.
 

@@ -1,5 +1,7 @@
 const connection = require('../models/dbConnect');
 
+
+
 // Add summary to cart
 const postToCart = (req, res) => {
     const { user_id, summary_id } = req.body;
@@ -21,7 +23,8 @@ const postToCart = (req, res) => {
 
 
 
-// Get cart items for a user
+
+// Get cart items for a user "check if the summary exists in the user cart or not"
 const getCartItems = (req, res) => {
     const { user_id, summary_id } = req.params;
 
@@ -62,8 +65,7 @@ const deleteCartItems = async (req, res) => {
 
 
 
-
-// GET route to check if a course exists in the cart table
+// GET route to check if a course exists in the cart table "if the user add this course in the cart or not"
 const getCourseFromCart = (req, res) => {
     const { user_id, course_id } = req.params;
 
@@ -84,7 +86,7 @@ const getCourseFromCart = (req, res) => {
 
 
 
-// POST route to add a course to the cart table
+// Add a course to the cart table
 const postToCartCourse = (req, res) => {
     const { user_id, course_id } = req.body;
 
@@ -106,7 +108,7 @@ const postToCartCourse = (req, res) => {
 
 
 
-// DELETE route to remove the specific course from cart items for a specific user
+// DELETE the specific course from cart items for a specific user
 const deleteCourseCart = (req, res) => {
   const { user_id, course_id } = req.params;
   const query = 'DELETE FROM cart WHERE user_id = ? AND course_id = ?';
@@ -122,16 +124,14 @@ const deleteCourseCart = (req, res) => {
 
 
 
-// in the courses and summaries page 
 
-// Endpoint to check if an item exists in the cart
+// in the courses and summaries page 
+// Check if an item exists in the cart
 const getItemsCourseSummary = (req, res) => {
     const { user_id, itemType, item_id } = req.params;
   
-    // Construct the query to check if the item exists in the cart
     const query = `SELECT COUNT(*) AS count FROM cart WHERE user_id = ? AND ${itemType}_id = ?`;
   
-    // Execute the query
     connection.query(query, [user_id, item_id], (error, results) => {
       if (error) {
         console.error('Error checking cart item:', error);
@@ -146,14 +146,12 @@ const getItemsCourseSummary = (req, res) => {
 
 
 
-  // Endpoint to add an item to the cart
+  // Add an item to the cart "add course and summary" to cart
   const addToCartItems = (req, res) => {
     const { user_id, summary_id, course_id, type } = req.body;
   
-    // Construct the query to insert the item into the cart
     const query = 'INSERT INTO cart (user_id, summary_id, course_id, type) VALUES (?, ?, ?, ?)';
   
-    // Execute the query
     connection.query(query, [user_id, summary_id, course_id, type], (error, results) => {
       if (error) {
         console.error('Error adding item to cart:', error);
@@ -164,15 +162,6 @@ const getItemsCourseSummary = (req, res) => {
     });
   };
   
-
-
- 
-  
-
-
-
-
-
 
 
 

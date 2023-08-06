@@ -5,7 +5,8 @@ import { HashLink } from 'react-router-hash-link';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
-function CoursesHome() {
+function CoursesHome() 
+{
   const [courses, setCourses] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
 
@@ -53,7 +54,7 @@ function CoursesHome() {
     if (!token) {
       // If the user is not logged in, show a pop-up message asking them to log in first.
       Swal.fire({
-        title: 'سجل الدخول لتتمكن من التسجيل في الدورة',
+        title: 'من فضلك ، قُم بتسجيل الدخول لتتمكن من التسجيلِ في الدورة',
         text: 'هل ترغب في تسجيل الدخول الآن؟',
         icon: 'info',
         confirmButtonText: 'تسجيل الدخول',
@@ -82,7 +83,7 @@ function CoursesHome() {
           icon: 'info',
           confirmButtonText: 'موافق',
         });
-        return; // Exit the function if the course is already in the cart
+        return;
       }
 
 

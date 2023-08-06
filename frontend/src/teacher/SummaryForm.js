@@ -5,8 +5,7 @@ import "../css/UserProfile.css";
 import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
-function SummaryForm()
- {
+function SummaryForm() {
     const [summaryData, setSummaryData] = useState({
         summary_title: "",
         summary_image: "",
@@ -23,7 +22,11 @@ function SummaryForm()
 
     const [categories, setCategories] = useState([]);
     const [university, setUniversity] = useState([]);
+    const { universityId } = useParams();
 
+
+
+    // Handle the add and change the PDF file of the summary
     const handleFilePDFChange = (event) => {
         setSummaryData({
             ...summaryData,
@@ -31,6 +34,7 @@ function SummaryForm()
         });
     };
 
+    // Handle the add and change the image of the summary
     const handleFileimageChange = (event) => {
         setSummaryData({
             ...summaryData,
@@ -38,23 +42,24 @@ function SummaryForm()
         });
     };
 
-    const { universityId } = useParams();
 
     useEffect(() => {
         handleInputChange();
     }, [universityId]);
 
+
+
+    // get universities
     useEffect(() => {
-        // get universities
-        axios.get("http://localhost:4000/universities")
-            .then((response) => {
-                setUniversity(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        axios.get("http://localhost:4000/universities").then((response) => {
+            setUniversity(response.data);
+        }).catch((error) => {
+            console.error(error);
+        });
     }, []);
 
+
+// Handle the change of the inputs 
     const handleInputChange = (event) => {
         if (event && event.target) {
             const { name, value } = event.target;
@@ -63,19 +68,18 @@ function SummaryForm()
 
                 if (name === "summary_university") {
                     const universityId = value;
-                    axios
-                        .get(`http://localhost:4000/universities/${universityId}/categories`)
-                        .then((response) => {
-                            setCategories(response.data);
-                        })
-                        .catch((error) => {
-                            console.error(error);
-                        });
+                    axios.get(`http://localhost:4000/universities/${universityId}/categories`).then((response) => {
+                        setCategories(response.data);
+                    }).catch((error) => {
+                        console.error(error);
+                    });
                 }
             }
         }
     };
 
+
+    // Handle the submit of the add summary form
     const handleFormSubmitSummary = (event) => {
         event.preventDefault();
 
@@ -113,42 +117,37 @@ function SummaryForm()
                 formData.append('facebook_link', facebook_link);
                 formData.append('linkedin_link', linkedin_link);
 
-                axios.post(`http://localhost:4000/submitSummaryForm/${user_id}`, formData)
-                    .then((response) => {
-                        console.log(response.data);
-                        // Reset form fields
-                        setSummaryData({
-                            summary_title: "",
-                            summary_image: null,
-                            summary_brief: "",
-                            summary_description: "",
-                            sell_or_free: "",
-                            summary_price: "",
-                            summary_category: "",
-                            summary_university: "",
-                            summary_file: null,
-                            facebook_link: "",
-                            linkedin_link: "",
-                        });
-
-                        // Show success message
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'تم إرسال الدورة بنجاح!',
-                            text: 'سيتم إرسال المُلخص إلى للمُشرف للمراجعة والموافقة عليه.',
-                        });
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        // Show error message
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'حدث خطأ أثناء إرسال الدورة',
-                            text: 'يرجى المحاولة مرة أخرى.',
-                        });
+                axios.post(`http://localhost:4000/submitSummaryForm/${user_id}`, formData).then((response) => {
+                    console.log(response.data);
+                    // Reset form fields
+                    setSummaryData({
+                        summary_title: "",
+                        summary_image: null,
+                        summary_brief: "",
+                        summary_description: "",
+                        sell_or_free: "",
+                        summary_price: "",
+                        summary_category: "",
+                        summary_university: "",
+                        summary_file: null,
+                        facebook_link: "",
+                        linkedin_link: "",
                     });
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم إرسال الدورة بنجاح!',
+                        text: 'سيتم إرسال المُلخص إلى للمُشرف للمراجعة والموافقة عليه.',
+                    });
+                }).catch((error) => {
+                    console.error(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'حدث خطأ أثناء إرسال الدورة',
+                        text: 'يرجى المحاولة مرة أخرى.',
+                    });
+                });
             } else {
-                // Show error message
                 Swal.fire({
                     icon: 'error',
                     title: 'يجب إدخال جميع الحقول',
@@ -199,8 +198,7 @@ function SummaryForm()
                             method="POST"
                             id="summaryForm"
                             encType="multipart/form-data"
-                            onSubmit={handleFormSubmitSummary}
-                        >
+                            onSubmit={handleFormSubmitSummary}>
                             {/* Summary Title */}
                             <div className={`form-group mt-3 ${getInputClass("summary_title")}`}>
                                 <label className="control-label" htmlFor="summary_title">
@@ -214,8 +212,7 @@ function SummaryForm()
                                     id="summary_title"
                                     value={summaryData.summary_title}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required />
                             </div>
 
                             {/* Summary Image */}
@@ -230,8 +227,7 @@ function SummaryForm()
                                     id="summary_image"
                                     accept="image/*"
                                     onChange={handleFileimageChange}
-                                    required
-                                />
+                                    required />
                             </div>
 
                             {/* Summary Description */}
@@ -246,8 +242,7 @@ function SummaryForm()
                                     id="summary_brief"
                                     value={summaryData.summary_brief}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required />
                             </div>
 
                             {/* Summary Details */}
@@ -262,8 +257,7 @@ function SummaryForm()
                                     id="summary_description"
                                     value={summaryData.summary_description}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required />
                             </div>
 
                             {/* Sell or Free */}
@@ -280,8 +274,7 @@ function SummaryForm()
                                         value="free"
                                         checked={summaryData.sell_or_free === 'free'}
                                         onChange={handleInputChange}
-                                        required
-                                    />
+                                        required />
                                     <label className="form-check-label" htmlFor="summary_sell_free">
                                         مجاني
                                     </label>
@@ -294,8 +287,7 @@ function SummaryForm()
                                         id="summary_sell_paid"
                                         value="paid"
                                         checked={summaryData.sell_or_free === 'paid'}
-                                        onChange={handleInputChange}
-                                    />
+                                        onChange={handleInputChange}/>
                                     <label className="form-check-label" htmlFor="summary_sell_paid">
                                         مدفوع
                                     </label>
@@ -314,8 +306,7 @@ function SummaryForm()
                                     name="summary_price"
                                     id="summary_price"
                                     value={summaryData.summary_price}
-                                    onChange={handleInputChange}
-                                />
+                                    onChange={handleInputChange}/>
                             </div>
 
 
@@ -355,8 +346,7 @@ function SummaryForm()
                                     value={summaryData.summary_category}
                                     onChange={handleInputChange}
                                     disabled={!summaryData.summary_university}
-                                    required
-                                >
+                                    required>
                                     <option value="">اختر التخصص</option>
                                     {categories.map((category) => (
                                         <option key={category.category_id} value={category.category_id}>
@@ -366,7 +356,6 @@ function SummaryForm()
                                 </select>
 
                             </div>
-
 
 
 
@@ -382,8 +371,7 @@ function SummaryForm()
                                     id="summary_file"
                                     accept=".pdf"
                                     onChange={handleFilePDFChange}
-                                    required
-                                />
+                                    required/>
                             </div>
 
 
@@ -400,8 +388,7 @@ function SummaryForm()
                                     id="summary_facebook"
                                     value={summaryData.facebook_link}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required/>
                             </div>
 
                             {/* LinkedIn Link */}
@@ -417,8 +404,7 @@ function SummaryForm()
                                     id="summary_linkedin"
                                     value={summaryData.linkedin_link}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required/>
                             </div>
 
 
@@ -427,8 +413,7 @@ function SummaryForm()
                                 <button
                                     className="mb-2 mt-2 AddCourseSummary btn-primary btn-block mt-2"
                                     id="addSummaryButton"
-                                    type="submit"
-                                >
+                                    type="submit">
                                     إضافة الملخص
                                 </button>
                             </div>

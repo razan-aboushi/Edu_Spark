@@ -12,17 +12,14 @@ function EditProfileSection() {
   const [phone_number, setPhoneNumber] = useState('');
   const [birthdate, setBirthdate] = useState('');
 
-  // To get the user data
+  // To get the user data and fill them in the inputs
   useEffect(() => {
     const getUserProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        console.log(token);
         if (token) {
           const decodedToken = jwt_decode(token);
-          console.log(decodedToken);
           const user_id = decodedToken.userId;
-          console.log(user_id);
           const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
 
           const passwordFromInput = password;
@@ -52,14 +49,10 @@ function EditProfileSection() {
 
 
 
-
+// Handle edit user profile
   const handleUpdateProfile = async () => {
 
-
     try {
-      const response = await axios.get('http://localhost:4000/getAllUserInfoData');
-      const users = response.data;
-      console.log(users);
 
       // Show a confirmation pop-up message
       Swal.fire({
@@ -76,6 +69,7 @@ function EditProfileSection() {
             name,
             phone_number,
             birthdate,
+            
           };
 
           if (password) {
@@ -86,19 +80,13 @@ function EditProfileSection() {
           }
 
           const token = localStorage.getItem('token');
-          console.log(token);
           if (token) {
             const decodedToken = jwt_decode(token);
-            console.log(decodedToken);
             const user_id = decodedToken.userId;
-            console.log(user_id);
 
-            axios
-              .put(`http://localhost:4000/userUpdateInfo/${user_id}`, updatedUserData)
-              .then((response) => {
+            axios.put(`http://localhost:4000/userUpdateInfo/${user_id}`, updatedUserData).then((response) => {
                 Swal.fire('نجاح', 'تم تحديث الملف الشخصي بنجاح!', 'success');
-              })
-              .catch((error) => {
+              }).catch((error) => {
                 console.error('حدث خطأ أثناء تحديث ملف المستخدم:', error);
                 Swal.fire('خطأ', 'فشل تحديث الملف الشخصي.', 'error');
               });
@@ -137,6 +125,7 @@ function EditProfileSection() {
               </div>
             </div>
           </div>
+
           <div className="row gutters d-flex justify-content-center">
             <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
               <div className="card11">
@@ -154,8 +143,7 @@ function EditProfileSection() {
                             id="FullUname"
                             placeholder="إسمك"
                             value={name}
-                            onChange={(e) => setName(e.target.value)}
-                          />
+                            onChange={(e) => setName(e.target.value)}/>
                         </div>
                        
 
@@ -169,8 +157,7 @@ function EditProfileSection() {
                             id="phone"
                             placeholder="70577727 962+"
                             value={phone_number}
-                            onChange={(e) => setPhoneNumber(e.target.value)}
-                          />
+                            onChange={(e) => setPhoneNumber(e.target.value)}/>
                         </div>
                         <div className="form-groupAdd">
                           <label htmlFor="birthdate" className="text-left">
@@ -181,8 +168,7 @@ function EditProfileSection() {
                             className="form-control"
                             id="birthdate"
                             value={birthdate}
-                            onChange={(e) => setBirthdate(e.target.value)}
-                          />
+                            onChange={(e) => setBirthdate(e.target.value)}/>
                         </div>
                         <div className="form-groupAdd">
                           <label htmlFor="password" className="text-left">
@@ -194,8 +180,7 @@ function EditProfileSection() {
                             id="password"
                             placeholder="أدخل كلمة المرور"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                          />
+                            onChange={(e) => setPassword(e.target.value)}/>
                         </div>
 
                         <div className="text-right mt-5 d-flex justify-content-center">
@@ -205,8 +190,7 @@ function EditProfileSection() {
                             name="submit"
                             className="btn btn-primary mb-2 me-4 ms-2"
                             onClick={handleUpdateProfile}
-                            style={{ minWidth: 120 }}
-                          >
+                            style={{ minWidth: 120 }}>
                             تحديث
                           </button>
                         </div>

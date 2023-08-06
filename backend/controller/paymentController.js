@@ -1,58 +1,26 @@
 const connection = require('../models/dbConnect');
-const router = require('../routes/payment');
 
 
 
 // Store summaries enrollment
 const postSummariesIdEnrollment = (req, res) => {
-    const { user_id } = req.params;
-    const { summariesId } = req.body;
+  const { user_id } = req.params;
+  const { summariesId } = req.body;
 
-    // Store summariesId in the summary enrollment table for the user with user_id
-    const query = `INSERT INTO summary_enrollments (user_id, summary_id, enrollment_date) VALUES ?`;
-    const values = summariesId.map((summaryId) => [user_id, summaryId, new Date()]);
+  // Store summariesId in the summary enrollment table for the user with user_id
+  const query = `INSERT INTO summary_enrollments (user_id, summary_id, enrollment_date) VALUES ?`;
+  const values = summariesId.map((summaryId) => [user_id, summaryId, new Date()]);
 
-    connection.query(query, [values], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ message: 'Failed to store summaries enrollment' });
-        }
+  connection.query(query, [values], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Failed to store summaries enrollment' });
+    }
 
-        console.log('Summaries enrollment stored successfully');
-        res.status(200).json({ message: 'Summaries enrollment stored successfully' });
-    });
+    console.log('Summaries enrollment stored successfully');
+    res.status(200).json({ message: 'Summaries enrollment stored successfully' });
+  });
 }
-
-
-
-// const postSummariesIdEnrollment = (req, res) => {
-//   const { user_id } = req.params;
-//   const { summariesId } = req.body;
-
-//   if (!summariesId || summariesId.length === 0) {
-//       return res.status(400).json({ message: 'Invalid or empty summariesId array' });
-//   }
-
-//   // Store summariesId in the summary enrollment table for the user with user_id
-//   const query = `INSERT INTO summary_enrollments (user_id, summary_id, enrollment_date) VALUES ?`;
-//   const values = summariesId.map((summaryId) => [user_id, summaryId, new Date()]);
-
-//   connection.query(query, [values], (err, result) => {
-//       if (err) {
-//           console.error(err);
-//           return res.status(500).json({ message: 'Failed to store summaries enrollment' });
-//       }
-
-//       console.log('Summaries enrollment stored successfully');
-//       res.status(200).json({ message: 'Summaries enrollment stored successfully' });
-//   });
-// }
-
-
-
-
-
-
 
 
 
@@ -61,55 +29,47 @@ const postSummariesIdEnrollment = (req, res) => {
 
 // Store courses enrollment
 const postCourseIdEnrollment = (req, res) => {
-    const { user_id } = req.params;
-    const { coursesId } = req.body;
+  const { user_id } = req.params;
+  const { coursesId } = req.body;
 
-    // Store coursesId in the course enrollment table for the user with user_id
-    const query = `INSERT INTO course_enrollments (user_id, course_id, enrollment_date) VALUES ?`;
-    const values = coursesId.map((courseId) => [user_id, courseId, new Date()]);
+  // Store coursesId in the course enrollment table for the user with user_id
+  const query = `INSERT INTO course_enrollments (user_id, course_id, enrollment_date) VALUES ?`;
+  const values = coursesId.map((courseId) => [user_id, courseId, new Date()]);
 
-    connection.query(query, [values], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ message: 'Failed to store courses enrollment' });
-        }
+  connection.query(query, [values], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Failed to store courses enrollment' });
+    }
 
-        console.log('Courses enrollment stored successfully');
-        res.status(200).json({ message: 'Courses enrollment stored successfully' });
-    });
+    console.log('Courses enrollment stored successfully');
+    res.status(200).json({ message: 'Courses enrollment stored successfully' });
+  });
 }
 
 
 
 
-// Route for inserting a transaction into the 'transactions' table
+// Insert a transaction into the 'transactions' table
 const postTransaction = (req, res) => {
-    const { payment_methods_id, date } = req.body;
-    const { user_id } = req.params;
-    const {amount} =req.body;
-
-    connection.getConnection((err, connection) => {
-        if (err) {
-            console.error('Error connecting to the database: ', err);
-            res.status(500).json({ error: 'Failed to connect to the database' });
-            return;
-        }
-
-        const query = 'INSERT INTO transactions (payment_methods_id, date, user_id,amount) VALUES (?, ?, ?,?)';
-        const values = [payment_methods_id, new Date(date).toISOString().slice(0, 19).replace('T', ' '), user_id,amount];
+  const { payment_methods_id, date } = req.body;
+  const { user_id } = req.params;
+  const { amount } = req.body;
 
 
-        connection.query(query, values, (error, results) => {
-            connection.release();
+    const query = 'INSERT INTO transactions (payment_methods_id, date, user_id,amount) VALUES (?, ?, ?,?)';
+    const values = [payment_methods_id, new Date(), user_id, amount];
 
-            if (error) {
-                console.error('Error executing the query: ', error);
-                res.status(500).json({ error: 'Failed to insert the transaction' });
-                return;
-            }
 
-            res.status(200).json({ message: 'Transaction inserted successfully' });
-        });
+    connection.query(query, values, (error, results) => {
+
+      if (error) {
+        console.error('Error executing the query: ', error);
+        res.status(500).json({ error: 'Failed to insert the transaction' });
+        return;
+      }
+
+      res.status(200).json({ message: 'Transaction inserted successfully' });
     });
 }
 
@@ -118,49 +78,49 @@ const postTransaction = (req, res) => {
 
 
 
-// Route to get the payment method ID based on the slug
+// Get the payment method ID based on the slug
 const getPaymentIdOfCreditCard = (req, res) => {
-    const { paymentMethodName } = req.query;
+  const { paymentMethodName } = req.query;
 
-    // Query the database to retrieve the payment method ID
-    connection.query('SELECT id FROM payment_methods WHERE slug = ?', [paymentMethodName], (error, results) => {
-        if (error) {
-            console.error('Error querying the database: ', error);
-            res.status(500).json({ error: 'An error occurred' });
-            return;
-        }
+  // Retrieve the payment method ID
+  connection.query('SELECT id FROM payment_methods WHERE slug = ?', [paymentMethodName], (error, results) => {
+    if (error) {
+      console.error('Error querying the database: ', error);
+      res.status(500).json({ error: 'An error occurred' });
+      return;
+    }
 
-        if (results.length > 0) {
-            const paymentMethodId = results[0].id;
-            res.json({ id: paymentMethodId });
-        } else {
-            res.status(404).json({ error: 'Payment method not found' });
-        }
-    });
+    if (results.length > 0) {
+      const paymentMethodId = results[0].id;
+      res.json({ id: paymentMethodId });
+    } else {
+      res.status(404).json({ error: 'Payment method not found' });
+    }
+  });
 }
 
 
 
 
-// Define the route to fetch cart items
+// Get cart items
 const getAllCartItems = async (req, res) => {
-    const { user_id } = req.params;
-    try {
-      const [cartItems] = await connection.promise().query(`
+  const { user_id } = req.params;
+  try {
+    const [cartItems] = await connection.promise().query(`
         SELECT c.course_id, c.course_title, c.course_price, s.summary_id, s.summary_title, s.summary_price, cart.type
         FROM cart
         LEFT JOIN courses c ON cart.course_id = c.course_id
         LEFT JOIN summaries s ON cart.summary_id = s.summary_id
         WHERE cart.user_id = ?
       `, [user_id]);
-  
-      res.json(cartItems);
-    } catch (error) {
-      console.error('Error fetching cart items:', error);
-      res.status(500).json({ error: 'Failed to fetch cart items' });
-    }
-  };
-  
+
+    res.json(cartItems);
+  } catch (error) {
+    console.error('Error fetching cart items:', error);
+    res.status(500).json({ error: 'Failed to fetch cart items' });
+  }
+};
+
 
 
 
@@ -189,15 +149,17 @@ const deleteCartItem = async (req, res) => {
     }
   } catch (error) {
     console.error('Error removing item from cart:', error);
-    res.status(500).json({ error: 'Failed to remove item from cart'});
+    res.status(500).json({ error: 'Failed to remove item from cart' });
   }
 };
 
-  
+
+
+
 
 
 // delete the items from the cart after payment process
-const deleteCartsAfterPayment=async (req, res) => {
+const deleteCartsAfterPayment = async (req, res) => {
   const { user_id } = req.params;
   try {
     const [result] = await connection.promise().query(
@@ -220,7 +182,7 @@ const deleteCartsAfterPayment=async (req, res) => {
 
 
 module.exports = {
-    postSummariesIdEnrollment,
-    postCourseIdEnrollment, postTransaction,
-     getPaymentIdOfCreditCard,getAllCartItems,deleteCartItem,deleteCartsAfterPayment
+  postSummariesIdEnrollment,
+  postCourseIdEnrollment, postTransaction,
+  getPaymentIdOfCreditCard, getAllCartItems, deleteCartItem, deleteCartsAfterPayment
 };

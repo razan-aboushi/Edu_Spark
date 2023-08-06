@@ -18,13 +18,12 @@ import ApprovedContent from './ApprovedContent';
 import axios from 'axios';
 
 
-function Sidebar() {
+function Sidebar({fetchUserData}) 
+{
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeLink, setActiveLink] = useState('/DashBoard');
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
   const navigate = useNavigate();
-
-
 
 
   function handleLinkClick(link) {
@@ -37,29 +36,30 @@ function Sidebar() {
   }
 
 
-
-
-  function handleLogout() {
-    Swal.fire({
-      title: 'تسجيل الخروج',
-      text: 'هل تريد تسجيل الخروج؟',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'تسجيل الخروج',
-      cancelButtonText: 'إلغاء'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate('/LogIn');
-      }
-    });
-  }
+// Handle when the admin click to log out from the dashboard
+function handleLogout() {
+  Swal.fire({
+    title: 'تسجيل الخروج',
+    text: 'هل تريد تسجيل الخروج؟',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'تسجيل الخروج',
+    cancelButtonText: 'إلغاء'
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      localStorage.removeItem('token');
+      navigate('/LogIn');
+      fetchUserData();
+    }
+  });
+}
 
 
   function toggleSidebar() {
     setIsSidebarOpen(!isSidebarOpen);
   }
 
-
+// Store the active link in the local storage
   useEffect(() => {
     const storedActiveLink = localStorage.getItem('activeLink');
     if (storedActiveLink) {
@@ -69,7 +69,10 @@ function Sidebar() {
     getUnreadMessagesCount();
   }, []);
 
-  async function getUnreadMessagesCount() {
+
+  // get the count of unread messages of the contact us messages on side bar 
+  async function getUnreadMessagesCount() 
+  {
     try {
       const response = await axios.get('http://localhost:4000/unreadMessagesCount');
       const count = response.data.count;
@@ -80,7 +83,10 @@ function Sidebar() {
     }
   }
 
-  async function markMessagesAsRead() {
+
+  // When click on the contact messages update the count as read
+  async function markMessagesAsRead()
+   {
     try {
       await axios.put('http://localhost:4000/markMessagesAsRead');
       console.log('Messages marked as read');
@@ -92,6 +98,7 @@ function Sidebar() {
   return (
     <div className="row m-0" style={{ overflowX: "hidden" }}>
       <div className={`col-2 sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
+        
         <div className="logo">
           <img src={logo} alt="Logo" width="100%" height="119px" />
         </div>
@@ -99,8 +106,7 @@ function Sidebar() {
         <div className="profile">
           <button
             className={`sidebar-link ${activeLink === '/AdminProfile' ? 'active' : ''}`}
-            onClick={() => handleLinkClick('/AdminProfile')}
-          >
+            onClick={() => handleLinkClick('/AdminProfile')}>
             <FontAwesomeIcon icon={faUser} className='ms-2' />
             صفحة الحساب
           </button>
@@ -110,8 +116,7 @@ function Sidebar() {
           <li>
             <button
               className={`sidebar-link ${activeLink === '/DashBoard' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/DashBoard')}
-            >
+              onClick={() => handleLinkClick('/DashBoard')}>
               <FontAwesomeIcon icon={faChartBar} className='ms-2' />
               لوحة التحكم
             </button>
@@ -120,8 +125,7 @@ function Sidebar() {
           <li>
             <button
               className={`sidebar-link ${activeLink === '/AdminPanel' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/AdminPanel')}
-            >
+              onClick={() => handleLinkClick('/AdminPanel')}>
               <FontAwesomeIcon icon={faPastafarianism} className='ms-2' />
               لوحة الإدارة
             </button>
@@ -163,7 +167,7 @@ function Sidebar() {
               onClick={() => handleLinkClick('/PublishRequest')}
             >
               <FontAwesomeIcon icon={faFileAlt} className='ms-2' />
-              طلبات إضافة ملخص
+              طلبات إضافة مُلخص
             </button>
           </li>
 
@@ -198,7 +202,7 @@ function Sidebar() {
             </button>
           </li>
 
-     
+
           <li>
             <button onClick={handleLogout}>
               <FontAwesomeIcon icon={faSignOutAlt} className='ms-2' />

@@ -76,18 +76,18 @@ function Index() {
                   <div className="container">
                     <div className="row justify-content-end">
                       <div className="col-sm-10 col-lg-8">
-                        <h5 className="text-primary text-uppercase mb-3 animated slideInDown">
+                        <h5 className="text-primary text-uppercase mb-3 mt-2 animated slideInDown">
                           أفضل ملخصات الجامعات
                         </h5>
-                        <h1 className="display-3 text-white animated slideInDown">
+                        <h2 className="display-5 text-white animated slideInDown">
                           علامتك الكاملة علينا
-                        </h1>
-                        <p className="fs-5 text-white mb-4 pb-2" style={{ fontSize: "1.6rem" }}>
-                          احصل على ملخصات مواد الجامعة الخاصة بك للحصول على درجات عالية
+                        </h2>
+                        <p className="text-white mb-3 pb-2">
+                          احصل على مُلخصات مواد الجامعة الخاصة بك للحصول على درجات عالية
                         </p>
                         <div className="d-flex justify-content-end">
                           <Link to="/Summaries">
-                            <button className="btn-primary rounded-pill px-5 py-3 mt-3 animated slideInUp">
+                            <button className="btn-primary rounded-pill px-5 py-3 animated slideInUp">
                               المُلخصات
                             </button>
                           </Link>
@@ -106,27 +106,25 @@ function Index() {
                   className="img-fluid"
                   src={slider2}
                   alt="صورة"
-                  style={{ backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
-                />
+                  style={{ backgroundRepeat: "no-repeat", backgroundSize: "cover" }}/>
                 <div
                   className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end"
-                  style={{ background: "rgba(24, 29, 56, .7)" }}
-                >
+                  style={{ background: "rgba(24, 29, 56, .7)" }}>
                   <div className="container">
                     <div className="row justify-content-end">
                       <div className="col-sm-10 col-lg-8">
-                        <h5 className="text-primary text-uppercase mb-3 animated slideInDown">
-                          أفضل مراجعات عبر الإنترنت
+                        <h5 className="text-primary text-uppercase mb-3 mt-2 animated slideInDown">
+                          أفضل المراجعات لموادك
                         </h5>
-                        <h1 className="display-3 text-white animated slideInDown">
-                          تعلم دوراتك عبر الإنترنت من منزلك
-                        </h1>
-                        <p className="fs-5 text-white mb-4 pb-2" style={{ fontSize: "1.6rem" }}>
-                          أفضل طريقة للتعلم هي تعليم الآخرين بما تعلمته
+                        <h2 className="display-5 text-white animated slideInDown">
+                          تعلم دوراتك عبر الإنترنت  
+                        </h2>
+                        <p className="text-white mb-3 pb-2">
+                          أفضل طريقة للتعلم هي تعليم الآخرين ما قُمتَ بتعمله
                         </p>
                         <div className="d-flex justify-content-end">
                           <Link to={"/Courses"}>
-                            <button className="btn-primary rounded-pill px-5 py-3 mt-3 animated slideInUp">
+                            <button className="btn-primary rounded-pill px-5 py-3 animated slideInUp">
                               الدورات
                             </button>
                           </Link>

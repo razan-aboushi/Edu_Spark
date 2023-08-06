@@ -8,23 +8,20 @@ const ApprovedContent = () => {
 
   useEffect(() => {
     // Fetch approved courses
-    axios.get('http://localhost:4000/approvedCourses')
-      .then(response => {
+    axios.get('http://localhost:4000/approvedCourses').then(response => {
         setApprovedCourses(response.data);
-      })
-      .catch(error => {
+      }).catch(error => {
         console.log(error);
       });
 
     // Fetch approved summaries
-    axios.get('http://localhost:4000/approvedSummaries')
-      .then(response => {
+    axios.get('http://localhost:4000/approvedSummaries').then(response => {
         setApprovedSummaries(response.data);
-      })
-      .catch(error => {
+      }).catch(error => {
         console.log(error);
       });
   }, []);
+
 
   const handleTabChange = (tabNumber) => {
     setActiveTab(tabNumber);
@@ -73,7 +70,7 @@ const ApprovedContent = () => {
             <thead>
               <tr>
                 <th>الاسم</th>
-                <th>عنوان الملخص</th>
+                <th>عنوان المُلخص</th>
                 <th>موجز المُلخص</th>
               </tr>
             </thead>

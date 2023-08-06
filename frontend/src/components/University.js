@@ -90,7 +90,7 @@ function University()
                     <img
                       src={`http://localhost:4000/images/${university.university_image}`}
                       alt="صورة للجامعة"
-                      width="70%" height="175px"/>
+                      width="65%" height="175px"/>
                   </div>
 
                   <div className="rounded p-4 pt-3 mt-2" style={{fontSize:"20px"}}>

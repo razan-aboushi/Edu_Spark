@@ -1,5 +1,5 @@
 const connection = require('../models/dbConnect');
-const router = require('../routes/payment');
+
 
 // Get the last 6 articles for the home page
 const getArticlesHome = (req, res) => {
@@ -125,7 +125,7 @@ const enrolledSummaries = async (req, res) => {
 
 
 
-// retrieve cart items count
+// Retrieve cart items count
 const getTheCountOfItems = async (req, res) => {
   const { user_id } = req.params;
   try {

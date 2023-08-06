@@ -10,11 +10,12 @@ function ArticleDetails()
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState('');
+  const [showComments, setShowComments] = useState(false);
+
   const { article_id } = useParams();
   const token = localStorage.getItem('token');
   const decodedToken = token ? jwt_decode(token) : null;
   const user_id = decodedToken ? decodedToken.userId : null;
-  const [showComments, setShowComments] = useState(false);
 
 
   // get article by article id to display it here in the article details page
@@ -166,7 +167,7 @@ function ArticleDetails()
   
 
   if (!article) {
-    return <div className='m-5'>جارٍ التحميل...</div>;
+    return <div className='m-5'>جارٍ تحميل المقالات...</div>;
   }
 
 

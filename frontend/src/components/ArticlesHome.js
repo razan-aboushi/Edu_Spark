@@ -8,6 +8,7 @@ import axios from 'axios';
 function ArticlesHome() {
   const [articles, setArticles] = useState([]);
 
+  // Get six articles in the home page
   useEffect(() => {
     async function getSomeArticles() {
       try {
@@ -21,18 +22,14 @@ function ArticlesHome() {
     getSomeArticles();
   }, []);
 
-  // Function to convert timestamp to date format
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString();
-  };
+
 
   return (
     <div className="container">
       <div className="row">
         <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
           <h6 className="section-title bg-white text-center text-primary px-3 mb-5">
-            مقالات متنوعة
+            مقالاتُنا الحديثة
           </h6>
         </div>
         <div className="col-md-12">

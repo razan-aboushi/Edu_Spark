@@ -7,11 +7,6 @@ const studentProfileController =require('../controller/studentProfileController'
 router.get('/getIdFromUserData',studentProfileController.getIdFromUserData);
 
 
-// post the data of user bank account into database
-router.post('/UsersBankAccountsData/:userId',studentProfileController.postUserBankAccounts);
-
-
-
 
 // get the student information in the student profile
 router.get('/user-profile/:id', studentProfileController.getStudentProfileInfo);
@@ -30,8 +25,5 @@ router.get('/buySummaries/:user_id',studentProfileController.getUserBuySummaries
 router.get('/reservationCourses/:user_id',studentProfileController.getCourseTheUserJoined);
 
 
-
-
-router.get('/getAllUserInfoData',studentProfileController.getAllUserInfoData);
 
 module.exports = router;

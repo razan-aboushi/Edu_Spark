@@ -10,13 +10,11 @@ import '../css/style.css';
 
 function Nav() 
 {
-  const [activeTab, setActiveTab] = useState('Home');
+  const [activeTab, setActiveTab] = useState('');
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [userRole, setUserRole] = useState(0);
   const [itemCount, setItemCount] = useState(0);
   const navigate = useNavigate();
-
-
 
 
 
@@ -44,7 +42,7 @@ function Nav()
       const user_id = decodedToken?.userId;
 
       try {
-        // API to retrieve cart items count for a specific user
+        // Get cart items count for a specific user
         const response = await axios.get(`http://localhost:4000/cartItemsLength/${user_id}`);
         setItemCount(response.data);
         fetchCartItems();
@@ -86,11 +84,6 @@ function Nav()
     }
   };
 
-
-
-  if (userRole === 1) {
-    return null; // Hide the navigation bar for userRole = 1
-  }
 
 
 

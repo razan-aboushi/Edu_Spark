@@ -1,16 +1,10 @@
 const connection = require('../models/dbConnect');
 
 
-
+// Insert new message into contact us table
 const PostContactMessages = (req, res) => {
   const { name, email, subject, message } = req.body;
 
-  const newMessage = {
-    name: name,
-    email: email,
-    subject: subject,
-    message: message
-  };
 
   const sql = 'INSERT INTO contact_us (name, email, subject, message) VALUES (?, ?, ?, ?)';
   const values = [name, email, subject, message];
@@ -29,7 +23,7 @@ const PostContactMessages = (req, res) => {
 
 
 
-// Handle GET request to get the users data
+// Handle to get the users data
 const getUsersDataInContactUsPage = (req, res) => {
   connection.query('SELECT * FROM users', (error, results) => {
     if (error) {
@@ -41,18 +35,6 @@ const getUsersDataInContactUsPage = (req, res) => {
     }
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

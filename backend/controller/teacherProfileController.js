@@ -2,6 +2,7 @@ const connection = require('../models/dbConnect');
 const multer = require('multer');
 const path = require('path');
 
+
 // Configure Multer to specify the destination and filename
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -22,6 +23,12 @@ const storage = multer.diskStorage({
 
 
 const upload = multer({ storage: storage });
+
+
+
+
+
+
 
 
 // post summary form
@@ -196,8 +203,7 @@ const postCourseForm = (req, res) => {
 
 
 
-
-// get the courses that related to specific user
+// get the courses that related to specific user in "manage courses page"
 const getUserCourses = (req, res) => {
   const { user_id } = req.params;
 
@@ -210,7 +216,6 @@ const getUserCourses = (req, res) => {
     WHERE courses.user_id = ?
   `;
 
-  // Execute the query
   connection.query(query, [user_id], (error, results) => {
     if (error) {
       console.error('Error executing the query:', error);

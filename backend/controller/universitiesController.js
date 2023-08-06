@@ -23,7 +23,6 @@ const getAllUniversities = (req, res) => {
 const getAllCategoriesInUniversity = (req, res) => {
   const { universityId } = req.params;
 
-  // Execute the SQL query to retrieve categories
   connection.query(
     'SELECT * FROM categories WHERE university_id = ?',
     [universityId],

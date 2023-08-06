@@ -18,7 +18,6 @@ function Courses() {
   const { universityId } = useParams();
   const [enrolledCourses, setEnrolledCourses] = useState([]);
 
-  const { user_id } = useParams();
 
 
   useEffect(() => {
@@ -40,7 +39,7 @@ function Courses() {
 
 
   useEffect(() => {
-    // Fetch enrolled courses
+    // get enrolled courses
     const fetchEnrolledCourses = async () => {
       const token = localStorage.getItem('token');
       const decodedToken = token ? jwt_decode(token) : null;
@@ -67,8 +66,7 @@ function Courses() {
       setUniversityFilter(value);
 
       const universityId = parseInt(value);
-      axios.get(`http://localhost:4000/universities/${universityId}/categories`)
-        .then((response) => {
+      axios.get(`http://localhost:4000/universities/${universityId}/categories`).then((response) => {
           console.log(response)
           setCategories(response.data);
         })
@@ -84,15 +82,14 @@ function Courses() {
 
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/courses')
-      .then((response) => {
+    axios.get('http://localhost:4000/courses').then((response) => {
         setCourses(response.data);
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.error('Error fetching courses:', error);
       });
   }, []);
+
+
 
   const filteredCourses = courses.filter((course) => {
     const matchName = course.course_title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -145,7 +142,7 @@ function Courses() {
     if (!token) {
       // If the user is not logged in, show a pop-up message asking them to log in first.
       Swal.fire({
-        title: 'سجل الدخول لتتمكن من التسجيل في الدورة',
+        title: 'من فضلك ، قُم بتسجيل الدخول لتتمكن من التسجيلِ في الدورة',
         text: 'هل ترغب في تسجيل الدخول الآن؟',
         icon: 'info',
         confirmButtonText: 'تسجيل الدخول',

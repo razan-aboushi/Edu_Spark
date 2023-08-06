@@ -227,7 +227,7 @@ function CheckoutPayment() {
             timer: 3000,
           });
 
-         
+
           // Clear the cart items from the database
           axios.delete(`http://localhost:4000/clearCartItems/${user_id}`).then((response) => {
             // Handle success response
@@ -389,7 +389,7 @@ function CheckoutPayment() {
     setFormDataOrange('');
   }
 
-  
+
 
   // Values for the cards form
   function handleInputChangePayment(event) {
@@ -580,165 +580,171 @@ function CheckoutPayment() {
 
         </div>
       ) : (
-        <section className="h-100 h-custom" style={{ backgroundColor: "#ffffff" }}>
-          <div className="container py-4 h-100">
-            <div className="row d-flex justify-content-center align-items-center h-100">
-              <div className="col-lg-12 col-md-8 mx-auto">
-                <h6 className="text-center fw-bold mb-3 mt-2">
-                  يمكنك إتمام عملية الدفع من خلال إحدى طرق الدفع التالية
-                </h6>
-                <div className="btn-group d-flex justify-content-center">
-                  <button
-                    className="PayTab btn-primary p-2 m-2"
-                    onClick={() => handleTabChange("creditCard")}
-                  >
+        <>
+          {cartItems.length > 0 ? (
+            <section className="h-100 h-custom" style={{ backgroundColor: "#ffffff" }}>
+              <div className="container py-4 h-100">
+                <div className="row d-flex justify-content-center align-items-center h-100">
+                  <div className="col-lg-12 col-md-8 mx-auto">
+                    <h6 className="text-center fw-bold mb-3 mt-2">
+                      يمكنك إتمام عملية الدفع من خلال إحدى طرق الدفع التالية
+                    </h6>
+                    <div className="btn-group d-flex justify-content-center">
+                      <button
+                        className="PayTab btn-primary p-2 m-2"
+                        onClick={() => handleTabChange("creditCard")}
+                      >
 
-                    بطاقة الماستر أو  بطاقة الفيزا
-                  </button>
+                        بطاقة الماستر أو  بطاقة الفيزا
+                      </button>
 
-                  <button
-                    className="PayTab btn-primary p-2 m-2"
-                    onClick={() => handleTabChange("orangeMoney")}
-                  >
+                      <button
+                        className="PayTab btn-primary p-2 m-2"
+                        onClick={() => handleTabChange("orangeMoney")}
+                      >
 
-                    محفظة أورانج
-                  </button>
-                </div>
-
-                <div className="mt-3">
-                  {tab === "creditCard" && (
-                    <div className="cardPayment">
-                      <div className="card-body">
-                        <Cards
-                          cvv={formData.cvv}
-                          expiry={formData.expiry}
-                          name={formData.name}
-                          number={formData.number}
-                          focused={focus}
-                        />
-                        <form onSubmit={handleFormSubmit} id="cardForm">
-                          <input type='hidden' name="payment_method" value="credit-card" />
-                          <div className="mb-3">
-                            <label className="form-label">رقم البطاقة</label>
-                            <input
-                              className="form-control"
-                              type="tel"
-                              name="number"
-                              placeholder="رقم البطاقة"
-                              value={formData.number}
-                              minLength="16"
-                              maxLength="16"
-                              onChange={handleInputChangePayment}
-                              onFocus={(e) => setFocus(e.target.name)}
-                            />
-                          </div>
-                          <div className="mb-3">
-                            <label className="form-label">إسم صاحب البطاقة</label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              name="name"
-                              placeholder="رزان عبوشي"
-                              value={formData.name}
-                              pattern="[A-Za-zء-ي\s]+"
-                              title="يرجى إدخال أحرف فقط"
-                              onChange={handleInputChangePayment}
-                              onFocus={(e) => setFocus(e.target.name)}
-                            />
-                          </div>
-                          <div className="row mb-3">
-                            <div className="col-lg-6 col-md-6 col-sm-12">
-                              <label className="form-label">تاريخ إنتهاء البطاقة (MM/YYYY)</label>
-                              <input
-                                type="tel"
-                                name="expiry"
-                                className="form-control"
-                                placeholder="Expiration Date (MM/YYYY)"
-                                maxLength="7"
-                                pattern="(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})"
-                                onChange={handleInputChangePayment}
-                                onFocus={(e) => setFocus(e.target.name)}
-                                required
-                              />
-
-
-                            </div>
-                            <div className="col-lg-6 col-md-6 col-sm-12">
-                              <label className="form-label">CVV</label>
-                              <input
-                                className="form-control"
-                                type="tel"
-                                name="cvv"
-                                placeholder="CVV"
-                                value={formData.cvv}
-                                minLength="3"
-                                maxLength="3"
-                                onChange={handleInputChangePayment}
-                                onFocus={(e) => setFocus(e.target.name)}
-                              />
-                            </div>
-                          </div>
-
-                          <button
-                            type="submit"
-                            className="btn-dark PayNow mt-3 col-12 p-2">
-                            ادفع الآن
-                          </button>
-                        </form>
-                      </div>
+                        محفظة أورانج
+                      </button>
                     </div>
 
-                  )}
-                  {/* Orange money */}
-                  {tab === "orangeMoney" && (
-                    <div className="cardPayment">
-                      <div className="card-body">
-                        <h6 className="text-center">الدفع عن طريق محفظة أورانج  </h6>
-
-                        <form onSubmit={handleOrangeMoneyFormSubmit}>
-                          <div className="mb-3">
-                            <label className="form-label">رقم الهاتف</label>
-                            <input type='hidden' name="payment_method" value="orange-money" />
-
-                            <input
-                              className="form-control"
-                              type="text"
-                              name="phone_number"
-                              placeholder="أدخل رقم هاتفك"
-                              value={phone_number}
-                              onChange={(e)=>setFormDataOrange(e.target.value)}
+                    <div className="mt-3">
+                      {tab === "creditCard" && (
+                        <div className="cardPayment">
+                          <div className="card-body">
+                            <Cards
+                              cvv={formData.cvv}
+                              expiry={formData.expiry}
+                              name={formData.name}
+                              number={formData.number}
+                              focused={focus}
                             />
+                            <form onSubmit={handleFormSubmit} id="cardForm">
+                              <input type='hidden' name="payment_method" value="credit-card" />
+                              <div className="mb-3">
+                                <label className="form-label">رقم البطاقة</label>
+                                <input
+                                  className="form-control"
+                                  type="tel"
+                                  name="number"
+                                  placeholder="رقم البطاقة"
+                                  value={formData.number}
+                                  minLength="16"
+                                  maxLength="16"
+                                  onChange={handleInputChangePayment}
+                                  onFocus={(e) => setFocus(e.target.name)}
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">إسم صاحب البطاقة</label>
+                                <input
+                                  className="form-control"
+                                  type="text"
+                                  name="name"
+                                  placeholder="رزان عبوشي"
+                                  value={formData.name}
+                                  pattern="[A-Za-zء-ي\s]+"
+                                  title="يرجى إدخال أحرف فقط"
+                                  onChange={handleInputChangePayment}
+                                  onFocus={(e) => setFocus(e.target.name)}
+                                />
+                              </div>
+                              <div className="row mb-3">
+                                <div className="col-lg-6 col-md-6 col-sm-12">
+                                  <label className="form-label">تاريخ إنتهاء البطاقة (MM/YYYY)</label>
+                                  <input
+                                    type="tel"
+                                    name="expiry"
+                                    className="form-control"
+                                    placeholder="Expiration Date (MM/YYYY)"
+                                    maxLength="7"
+                                    pattern="(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})"
+                                    onChange={handleInputChangePayment}
+                                    onFocus={(e) => setFocus(e.target.name)}
+                                    required
+                                  />
+
+
+                                </div>
+                                <div className="col-lg-6 col-md-6 col-sm-12">
+                                  <label className="form-label">CVV</label>
+                                  <input
+                                    className="form-control"
+                                    type="tel"
+                                    name="cvv"
+                                    placeholder="CVV"
+                                    value={formData.cvv}
+                                    minLength="3"
+                                    maxLength="3"
+                                    onChange={handleInputChangePayment}
+                                    onFocus={(e) => setFocus(e.target.name)}
+                                  />
+                                </div>
+                              </div>
+
+                              <button
+                                type="submit"
+                                className="btn-dark PayNow mt-3 col-12 p-2">
+                                ادفع الآن
+                              </button>
+                            </form>
                           </div>
+                        </div>
 
-                          <div className="mb-3">
-                            <label className="form-label">المبلغ</label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              name="amount"
-                              placeholder="المبلغ الذي ستقوم بدفعه"
-                              value={total}
-                              required
-                              disabled
-                            />
+                      )}
+                      {/* Orange money */}
+                      {tab === "orangeMoney" && (
+                        <div className="cardPayment">
+                          <div className="card-body">
+                            <h6 className="text-center">الدفع عن طريق محفظة أورانج  </h6>
 
+                            <form onSubmit={handleOrangeMoneyFormSubmit}>
+                              <div className="mb-3">
+                                <label className="form-label">رقم الهاتف</label>
+                                <input type='hidden' name="payment_method" value="orange-money" />
+
+                                <input
+                                  className="form-control"
+                                  type="text"
+                                  name="phone_number"
+                                  placeholder="أدخل رقم هاتفك"
+                                  value={phone_number}
+                                  onChange={(e) => setFormDataOrange(e.target.value)}
+                                />
+                              </div>
+
+                              <div className="mb-3">
+                                <label className="form-label">المبلغ</label>
+                                <input
+                                  className="form-control"
+                                  type="text"
+                                  name="amount"
+                                  placeholder="المبلغ الذي ستقوم بدفعه"
+                                  value={total}
+                                  required
+                                  disabled
+                                />
+
+                              </div>
+
+                              <button
+                                type="submit"
+                                className="btn-dark PayNow mt-3 col-12 p-2">
+                                ادفع الآن
+                              </button>
+                            </form>
                           </div>
-
-                          <button
-                            type="submit"
-                            className="btn-dark PayNow mt-3 col-12 p-2">
-                            ادفع الآن
-                          </button>
-                        </form>
-                      </div>
+                        </div>
+                      )}
+                      {/* End payment by Orange */}
                     </div>
-                  )}
-                  {/* End payment by Orange */}
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section >
+            </section >
+          ) : null}
+
+        </>
+
       )}
 
     </>

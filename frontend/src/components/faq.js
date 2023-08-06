@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import "../css/style.css";
 
 
-function Faq() {
+function Faq() 
+{
   return (
     <div>
       <main>
@@ -30,8 +31,7 @@ function Faq() {
                   <br />
                   <Link
                     to={"/contact"}
-                    style={{ color: "blue", fontWeight: "bold" }}
-                  >
+                    style={{ color: "blue", fontWeight: "bold" }}>
                     اتصل بنا الآن!
                   </Link>
                 </p>
@@ -47,8 +47,7 @@ function Faq() {
                         className="accordion-button collapsed"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#faq-content-1"
-                      >
+                        data-bs-target="#faq-content-1">
                         <span className="num">1.</span>
                         كيف يمكنني الدفع لشراء الملخصات والكتب؟
                       </button>
@@ -56,8 +55,7 @@ function Faq() {
                     <div
                       id="faq-content-1"
                       className="accordion-collapse collapse"
-                      data-bs-parent="#faqlist"
-                    >
+                      data-bs-parent="#faqlist">
                       <div className="accordion-body mt-4">
                         يمكنك الدفع للمواد والملخصات من خلال صفحة الدفع في الموقع عند النقر على المادة المطلوبة.
                       </div>

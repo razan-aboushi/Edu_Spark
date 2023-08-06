@@ -23,12 +23,8 @@ router.get('/usersRegistered',adminController.getAllUsers);
 
 
 
-
-
 // Delete user from the website
 router.put('/usersRegistered/:user_id',adminController.softDeleteUserFromWS);
-
-
 
 
 
@@ -37,10 +33,10 @@ router.get('/messagesContactUs',adminController.allContactUsMessages);
 
 
 // get the admin data profile
-router.get('/adminData',adminController.getAdminDataProfile);
+router.get('/adminData/:user_id',adminController.getAdminDataProfile);
 
 // Update admin profile
-router.put('/adminDataUpdate',adminController.updateAdminProfileData);
+router.put('/adminDataUpdate/:user_id',adminController.updateAdminProfileData);
 
 
 // Add a new article
@@ -52,10 +48,9 @@ router.post('/AddArticle',adminController.writeAndPostArticles);
  router.get('/unreadMessagesCount',adminController.getAllContactsCounts);
   
   
-// Send reply to user contact us message from the dashboard
 
 // update the user role in the website
- router.put("/usersRegistered/:userId", adminController.updateUserRole);
+ router.put("/usersRegistered/updateUserRole/:userId",adminController.updateUserRole);
 
 
 // get the count of student number in the website

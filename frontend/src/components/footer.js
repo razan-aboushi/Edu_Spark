@@ -1,48 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import "../css/style.css";
 import { Link } from 'react-router-dom';
 import logo from '../img/KeepMeOnLogo.png'
-import jwt_decode from 'jwt-decode';
 
 function Footer() 
 {
-
-  const [userRole, setUserRole] = useState(0);
-
-
-  useEffect(() => {
-    const getUserRole = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const decodedToken = jwt_decode(token);
-        const roleId = decodedToken.role;
-        setUserRole(roleId);
-      }
-    };
-
-    getUserRole();
-  }, []);
-
-
-
-  if (userRole === 1) {
-    return null;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   return (

@@ -60,5 +60,4 @@ const getSummaryDetails = (req, res) => {
 module.exports = {
   getAllSummaries, getSummaryDetails
 
-
 }

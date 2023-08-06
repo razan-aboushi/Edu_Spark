@@ -27,8 +27,6 @@ const checkUserRole = (req, res) => {
             phone_number: result[0].phone_number,
             birthdate: result[0].birthdate,
             password: result[0].password,
-            flags: result[0].flags,
-            avatar: result[0].avatar,
             role_id: result[0].role_id,
             role_name: result[0].role_name,
             created_at: result[0].created_at,

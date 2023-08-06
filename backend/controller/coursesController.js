@@ -1,5 +1,4 @@
 const connection = require('../models/dbConnect');
-const router = require('../routes/courses');
 
 
 // get all courses in courses page
@@ -13,16 +12,7 @@ const getAllCourses = (req, res) => {
     WHERE courses.course_status = 'مقبول'
 
   `;
-
-  connection.getConnection((err, connection) => {
-    if (err) {
-      console.error('Error connecting to the database:', err);
-      res.status(500).json({ error: 'Failed to connect to the database' });
-      return;
-    }
-
     connection.query(query, (error, results) => {
-      connection.release();
 
       if (error) {
         console.error('Error fetching courses:', error);
@@ -32,7 +22,6 @@ const getAllCourses = (req, res) => {
 
       res.json(results);
     });
-  });
 };
 
 
@@ -53,7 +42,6 @@ const getCourseDetails = (req, res) => {
 `;
 
 
-  // Execute the query
   connection.query(query, [course_id], (error, results) => {
     if (error) {
       console.error('Error executing the query:', error);
@@ -88,8 +76,6 @@ const getCountOfSubsucribers = (req, res) => {
     }
   });
 }
-
-
 
 
 

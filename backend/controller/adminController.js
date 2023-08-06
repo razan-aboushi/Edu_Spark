@@ -1,8 +1,7 @@
-const dotenv = require('dotenv');
 const connection = require('../models/dbConnect');
 const multer = require('multer');
 const path = require('path');
-const router = require('../routes/admin');
+
 
 // Configure Multer to specify the destination and filename
 const storage = multer.diskStorage({
@@ -28,21 +27,19 @@ const upload = multer({ storage: storage });
 
 
 
-/////////////////////////////////////
+/////////////////////////////////////////////////////
 
 
 
 const getAllDataInAboutUs = async (req, res) => {
-  // Execute the query to retrieve the data from the database
-  connection.promise().query('SELECT * FROM about_us')
-    .then(([rows]) => {
-      console.log(rows)
-      res.json(rows);
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error);
-      res.status(500).json({ error: 'An error occurred while fetching data' });
-    });
+
+  connection.promise().query('SELECT * FROM about_us').then(([rows]) => {
+    console.log(rows)
+    res.json(rows);
+  }).catch((error) => {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'An error occurred while fetching data' });
+  });
 }
 
 
@@ -66,12 +63,12 @@ const updateVisionMission = async (req, res) => {
 
 
 
+
 // Update about us
 const updateAboutUs = async (req, res) => {
   const { aboutus_title, aboutpargraph1, aboutpargraph2 } = req.body;
 
   try {
-    // Execute the query to update the "about us" data in the database
     await connection.promise().query(
       'UPDATE about_us SET aboutus_title = ?, aboutpargraph1 = ?, aboutpargraph2 = ?',
       [aboutus_title, aboutpargraph1, aboutpargraph2]
@@ -83,7 +80,6 @@ const updateAboutUs = async (req, res) => {
     res.status(500).json({ error: 'An error occurred while saving data' });
   }
 };
-// end update and save the edition
 
 
 
@@ -105,7 +101,7 @@ const getAllUsers = (req, res) => {
 
 
 
-// Soft delete one user in the database
+// Soft delete one user in the database (remain the user in DB) and remove him from the website
 const softDeleteUserFromWS = (req, res) => {
   const { user_id } = req.params;
   const { is_deleted } = req.body;
@@ -143,17 +139,24 @@ const allContactUsMessages = async (req, res) => {
 
 // get all the admin data profile
 const getAdminDataProfile = (req, res) => {
-  // Retrieve the admin's data from the database
-  connection.query('SELECT * FROM users WHERE role_id = 1', (error, results) => {
+  const { user_id } = req.params;
+
+  // Retrieve the admin's data from the database based on the user_id
+  connection.query('SELECT * FROM users WHERE role_id = 1 AND user_id = ?', [user_id], (error, results) => {
     if (error) {
       console.error('Error fetching admin data:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
-      const adminData = results[0];
-      res.json(adminData);
+      if (results.length === 0) {
+        // If no admin with the specified user_id is found
+        res.status(404).json({ error: 'Admin user not found' });
+      } else {
+        const adminData = results[0];
+        res.json(adminData);
+      }
     }
   });
-}
+};
 
 
 
@@ -161,17 +164,23 @@ const getAdminDataProfile = (req, res) => {
 // Update the admin profile data
 const updateAdminProfileData = (req, res) => {
   const updatedProfile = req.body;
+  const { user_id } = req.params;
 
   // Update the admin's profile data in the database
-  connection.query('UPDATE users SET ? WHERE role_id = 1', [updatedProfile], (error, results) => {
+  connection.query('UPDATE users SET ? WHERE role_id = 1 AND user_id = ?', [updatedProfile, user_id], (error, results) => {
     if (error) {
       console.error('Error updating admin profile:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
-      res.json({ message: 'Profile updated successfully' });
+      if (results.affectedRows === 0) {
+        // If no admin with the specified user_id and role_id was found
+        res.status(404).json({ error: 'Admin user not found' });
+      } else {
+        res.json({ message: 'Profile updated successfully' });
+      }
     }
   });
-}
+};
 
 
 
@@ -193,8 +202,6 @@ const writeAndPostArticles = (req, res) => {
     if (!article_image) {
       return res.status(400).json({ success: false, message: 'No image file provided' });
     }
-
-    // Assuming you have a database connection named "connection" established
 
     const sql = 'INSERT INTO articles (article_title, article_brief, article_content, article_image) VALUES (?, ?, ?, ?)';
     connection.query(sql, [article_title, article_brief, article_content, article_image.filename], (err, result) => {
@@ -247,106 +254,76 @@ const readMessagesContactUs = (req, res) => {
 
 
 // update the user role
-updateUserRole = (req, res) => {
-  const { userId } = req.params;
-  const { role } = req.body;
+const updateUserRole = (req, res) => {
+  const userId = req.params.userId;
+  const newRoleId = req.body.newRole; 
 
-  const sql = "UPDATE users SET role_id = ? WHERE user_id = ?";
-  const values = [role, userId];
-
-  connection.query(sql, values, (error, result) => {
-    if (error) {
-      console.log("Error updating user role: " + error.message);
-      res.status(500).json({ error: "Failed to update user role" });
-    } else {
-      res.status(200).json({ message: "User role updated successfully" });
-    }
-  });
+  try {
+     connection.query('UPDATE users SET role_id = ? WHERE user_id = ?', [newRoleId, userId]);
+    res.status(200).json({ message: 'User role updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while updating the user role' });
+  }
 }
 
 
 
-// in the admin dashboard stat
+// in the admin dashboard 
 // get the number of students
 const getStudentNumberInWebsite = (req, res) => {
   const query = 'SELECT COUNT(*) AS count FROM users WHERE role_id = 2';
 
-  connection.getConnection((err, connection) => {
-    if (err) {
-      console.error('Error connecting to the database:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
 
     connection.query(query, (err, results) => {
       if (err) {
         console.error('Error executing the query:', err);
         res.status(500).json({ error: 'Internal server error' });
-        connection.release();
-        return;
+        
       }
 
       const count = results[0].count;
       res.json({ count });
 
-      connection.release();
     });
-  });
 }
 
 
-// API endpoint to fetch the number of explainers
+// Get the number of explainers
 const getExplainerNumberInWebsite = (req, res) => {
   const query = 'SELECT COUNT(*) AS count FROM users WHERE role_id = 3';
 
-  connection.getConnection((err, connection) => {
-    if (err) {
-      console.error('Error connecting to the database:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
 
     connection.query(query, (err, results) => {
       if (err) {
         console.error('Error executing the query:', err);
         res.status(500).json({ error: 'Internal server error' });
-        connection.release();
-        return;
+      
       }
 
       const count = results[0].count;
       res.json({ count });
 
-      connection.release();
     });
-  });
 }
+
+
 
 // get the number of contact messages
 const getContactUsMessagesNumber = (req, res) => {
   const query = 'SELECT COUNT(*) AS count FROM contact_us';
 
-  connection.getConnection((err, connection) => {
-    if (err) {
-      console.error('Error connecting to the database:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-
     connection.query(query, (err, results) => {
       if (err) {
         console.error('Error executing the query:', err);
         res.status(500).json({ error: 'Internal server error' });
-        connection.release();
-        return;
+      
       }
 
       const count = results[0].count;
       res.json({ count });
 
-      connection.release();
     });
-  });
 }
 
 
@@ -355,28 +332,17 @@ const getContactUsMessagesNumber = (req, res) => {
 const getRevenueOfTheWebSite = (req, res) => {
   const query = 'SELECT SUM(amount * 0.15) AS revenue FROM transactions';
 
-  connection.getConnection((err, connection) => {
-    if (err) {
-      console.error('Error connecting to the database:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-
     connection.query(query, (err, results) => {
       if (err) {
         console.error('Error executing the query:', err);
         res.status(500).json({ error: 'Internal server error' });
-        connection.release();
-        return;
       }
 
       const revenue = results[0].revenue || 0;
       const roundedRevenue = Math.round(revenue);
       res.json({ revenue: roundedRevenue });
 
-      connection.release();
     });
-  });
 };
 
 
@@ -384,27 +350,16 @@ const getRevenueOfTheWebSite = (req, res) => {
 const getSalesInTheWebSite = (req, res) => {
   const query = 'SELECT ROUND(SUM(amount)) AS sales FROM transactions';
 
-  connection.getConnection((err, connection) => {
-    if (err) {
-      console.error('Error connecting to the database:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-
     connection.query(query, (err, results) => {
       if (err) {
         console.error('Error executing the query:', err);
         res.status(500).json({ error: 'Internal server error' });
-        connection.release();
-        return;
       }
 
       const sales = results[0].sales || 0;
       res.json({ sales });
 
-      connection.release();
     });
-  });
 };
 
 
@@ -413,39 +368,22 @@ const getSalesInTheWebSite = (req, res) => {
 const getUniversityNumberInTheWebSite = (req, res) => {
   const query = 'SELECT COUNT(*) AS numberOfUniversity FROM universities';
 
-  connection.getConnection((err, connection) => {
-    if (err) {
-      console.error('Error connecting to the database:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-
     connection.query(query, (err, results) => {
       if (err) {
         console.error('Error executing the query:', err);
         res.status(500).json({ error: 'Internal server error' });
-        connection.release();
-        return;
       }
-
       const count = results[0].numberOfUniversity;
       res.json({ count });
 
-      connection.release();
     });
-  });
 };
 
 
 
 
 
-
-
-
-
-
-// Handle POST request to add a university
+// Add new university
 const postUniversity = (req, res) => {
   upload.single('university_image')(req, res, (err) => {
     if (err) {
@@ -470,7 +408,10 @@ const postUniversity = (req, res) => {
   });
 };
 
-// Handle POST request to add a category
+
+
+
+// Add new category
 const postCategories = (req, res) => {
   upload.single('category_image')(req, res, (err) => {
     if (err) {
@@ -482,8 +423,7 @@ const postCategories = (req, res) => {
     const category_image = req.file ? req.file.filename : null;
 
     // Save the category details to the database
-    const sql =
-      'INSERT INTO categories (category_name, category_image, university_id) VALUES (?, ?, ?)';
+    const sql ='INSERT INTO categories (category_name, category_image, university_id) VALUES (?, ?, ?)';
 
     const values = [category_name, category_image, university_id];
     connection.query(sql, values, (error, results) => {
@@ -501,19 +441,14 @@ const postCategories = (req, res) => {
 
 
 
-
-
-
-// Backend API route for fetching pending summaries
+// Get the pending summaries
 const getPendingSumaries = (req, res) => {
   const query = `
     SELECT summaries.*, users.email , users.name
     FROM summaries
     INNER JOIN users ON summaries.user_id = users.user_id
-    WHERE summaries.summary_status = 'قيد الإنتظار'
-  `;
+    WHERE summaries.summary_status = 'قيد الإنتظار'`;
 
-  // Execute the query
   connection.query(query, (error, results) => {
     if (error) {
       console.error('Error executing the query:', error);
@@ -550,9 +485,7 @@ const updateSummaryApproveStatus = (req, res) => {
 
 
 
-
-
-// Endpoint to reject a summary
+// Update the summary status to reject summary
 const updateSummarRejectStatus = (req, res) => {
   const { id } = req.params;
   const { reason } = req.body;
@@ -648,7 +581,7 @@ const updateCourseStatusReject = (req, res) => {
 
 
 
-// Endpoint to get approved courses
+// Get approved courses where the course status = "مقبول"
 const getApprovedCourses = (req, res) => {
   const query = `
     SELECT courses.course_id, courses.course_title, courses.course_brief, users.name
@@ -668,7 +601,9 @@ const getApprovedCourses = (req, res) => {
   });
 }
 
-// Endpoint to get approved summaries
+
+
+// Get approved summaries
 const getApprovedSummaries = (req, res) => {
   const query = `
     SELECT summaries.summary_id, summaries.summary_title, summaries.summary_brief, users.name
@@ -687,7 +622,6 @@ const getApprovedSummaries = (req, res) => {
     res.json(results);
   });
 }
-
 
 
 

@@ -6,7 +6,7 @@ const coursesController =require('../controller/coursesController')
 
 
 // get the data of the courses from the database
-router.get('/courses',coursesController.getAllCourses );
+router.get('/courses',coursesController.getAllCourses);
 
 
 // get the course details

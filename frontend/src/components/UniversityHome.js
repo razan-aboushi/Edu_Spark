@@ -6,15 +6,14 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 
-function UniversityHome() {
+function UniversityHome() 
+{
   const [universities, setUniversities] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:4000/universities')
-      .then(response => {
+    axios.get('http://localhost:4000/universities').then(response => {
         setUniversities(response.data);
-      })
-      .catch(error => {
+      }).catch(error => {
         console.error(error);
       });
   }, []);
@@ -43,8 +42,7 @@ function UniversityHome() {
                 0: { items: 1 },
                 768: { items: 3 },
                 992: { items: 4 }
-              }}
-            >
+              }}>
 
               {universities.length > 0 ? (
 
@@ -53,12 +51,10 @@ function UniversityHome() {
                     <div className="work">
                       <div
                         className="img d-flex align-items-center justify-content-center rounded"
-                        style={{ backgroundImage: `url(http://localhost:4000/images/${university.university_image})` }}
-                      >
+                        style={{ backgroundImage: `url(http://localhost:4000/images/${university.university_image})` }}>
                         <Link
                           to={`/coursesCategories/${university.university_id}`}
-                          className="icon d-flex align-items-center justify-content-center"
-                        >
+                          className="icon d-flex align-items-center justify-content-center">
                           <span className="bi bi-search" />
                         </Link>
                       </div>

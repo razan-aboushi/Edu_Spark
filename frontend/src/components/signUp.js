@@ -4,8 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 
 
-function SignUp()
- {
+function SignUp({ fetchUserData }) {
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -31,8 +30,7 @@ function SignUp()
     const validationErrors = validateForm(values);
     setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) 
-    {
+    if (Object.keys(validationErrors).length === 0) {
       try {
         const response = await axios.post('http://localhost:4000/SignUpRegister', {
           name: values.name,
@@ -67,8 +65,7 @@ function SignUp()
           } else if (values.role === '1') {
             navigate('/AdminSideBar');
           }
-
-          window.location.reload();
+          fetchUserData();
 
         }
       } catch (error) {
@@ -104,12 +101,13 @@ function SignUp()
 
 
   // Form validation
-  function validateForm(data) 
-  {
+  function validateForm(data) {
     const errors = {};
 
     if (!data.name) {
       errors.name = 'الاسم مطلوب';
+    } else if (data.name.length < 6) {
+      errors.name = 'الاسم يجب أن يتكون على الأقل من 6 أحرف';
     }
 
     if (!data.email) {
@@ -157,6 +155,8 @@ function SignUp()
 
     return errors;
   }
+
+
 
 
   return (
@@ -351,10 +351,16 @@ function SignUp()
                   />
                 </div>
 
+                <div className="ms-3 term-service">
 
-                <HashLink to="/login#login" className="ms-3 term-service">
-                  لديك حساب بالفعل؟ قم بتسجيل الدخول من هنا
-                </HashLink>
+                  لديك حساب بالفعل؟
+                  <HashLink to="/login#login" className='me-1'>
+                    قُم بتسجيل الدخول من هنا
+                  </HashLink>
+
+
+                </div>
+
               </form>
             </div>
           </div>

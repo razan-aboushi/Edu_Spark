@@ -5,7 +5,6 @@ const connection = require('../models/dbConnect');
 const articlesAll = (req, res) => {
   const query = 'SELECT * FROM articles';
 
-  // Execute the MySQL query
   connection.query(query, (err, results) => {
     if (err) {
       console.error('Error fetching articles:', err);
@@ -54,19 +53,13 @@ const getCountOfComments = (req, res) => {
 
 
 
-
-
-
-
-
-
 //  get the article in articles details page by id 
 const getarticlesbyID = (req, res) => {
   const { article_id } = req.params;
-  const query = 'SELECT * FROM articles WHERE article_id = ?';
-  const values = [article_id];
 
-  connection.query(query, values, (err, results) => {
+  const query = 'SELECT * FROM articles WHERE article_id = ?';
+
+  connection.query(query, article_id, (err, results) => {
     if (err) {
       console.error('Error fetching article:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -82,10 +75,10 @@ const getarticlesbyID = (req, res) => {
 
 
 
-
 // Get comments for an article
 const getAllCommentsForArticle = (req, res) => {
   const { article_id } = req.params;
+
   const query = `
     SELECT comments.*, users.name
     FROM comments
@@ -133,14 +126,7 @@ const InsertComments = (req, res) => {
 
 
 
-
-
-
-
-
-
-
-// Edit a comment
+// Edit the comment
 const editUserComment = async (req, res) => {
   const { commentId } = req.params;
   const { comment_content } = req.body;
@@ -177,19 +163,6 @@ const deleteUserComment = async (req, res) => {
     res.sendStatus(500);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

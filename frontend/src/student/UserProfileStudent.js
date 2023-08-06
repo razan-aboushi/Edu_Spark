@@ -16,7 +16,7 @@ function UserProfileStudent() {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
 
-  
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -58,15 +58,17 @@ function UserProfileStudent() {
         {/* Navigation bar */}
         <nav className="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
           {/* Navigation links */}
-          <Link to="/" className="nav-item nav-link scrollto">
-            الصفحة الرئيسية
-          </Link>
+
           <button type="button" className="navbar-toggler me-4" onClick={handleNavbarToggle}>
             <span className="navbar-toggler-icon pointer-link" />
           </button>
           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`}>
             <div className="navbar-nav ms-auto p-4 p-lg-0">
-           
+
+              <Link to="/" className="nav-item nav-link scrollto">
+                الصفحة الرئيسية
+              </Link>
+
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('todo-list')}
@@ -103,7 +105,7 @@ function UserProfileStudent() {
           </div>
         </nav>
       </header>
-      
+
       {/* Main content */}
       <main>
         {/* Render the active section */}

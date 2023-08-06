@@ -6,6 +6,7 @@ const connection = require('../models/dbConnect');
 const postTodoTasks = (req, res) => {
   try {
     const { description, user_id } = req.body;
+
     connection.query(
       "INSERT INTO todos (description, user_id) VALUES (?, ?)",
       [description, user_id],
@@ -66,27 +67,6 @@ const deleteTodo = (req, res) => {
 
 
 
-// Get a specific to-do
-const getTodoTask = (req, res) => {
-  try {
-    const { id, user_id } = req.params;
-
-    connection.query("SELECT * FROM todos WHERE todo_id = ? AND user_id = ?", [id, user_id], (err, result) => {
-      if (err) {
-        console.error(err.message);
-        res.status(500).json({ error: 'An error occurred while retrieving the todo.' });
-      } else if (result.length === 0) {
-        res.status(404).json({ error: 'Todo not found or unauthorized.' });
-      } else {
-        res.json(result[0]);
-      }
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: 'An error occurred while retrieving the todo.' });
-  }
-};
-
 
 
 
@@ -117,36 +97,6 @@ const getAllTodoTasks = (req, res) => {
 
 
 
-// GET /todos/:id - Retrieve a specific todo by its ID
-// Use the connection pool to execute queries
-const getTodoId = async (req, res) => {
-  try {
-    const todo = await new Promise((resolve, reject) => {
-      // Use the connection object to execute the query
-      connection.query('SELECT * FROM todos', (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      });
-    });
-
-    if (todo.length === 0) {
-      return res.status(404).json({ error: 'Todo not found' });
-    }
-
-    res.json(todo);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-
-
-
-
 
 
 
@@ -155,7 +105,6 @@ const getTodoId = async (req, res) => {
 module.exports = {
   updateTodo,
   deleteTodo,
-  getTodoTask,
   getAllTodoTasks,
-  postTodoTasks, getTodoId
+  postTodoTasks, 
 };

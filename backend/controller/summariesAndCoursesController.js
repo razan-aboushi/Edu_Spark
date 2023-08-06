@@ -1,5 +1,4 @@
 const connection = require('../models/dbConnect');
-const router = require('../routes/summaryAndCourses');
 
 
 

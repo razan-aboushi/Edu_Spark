@@ -30,18 +30,21 @@ import UserProfileStudent from './student/UserProfileStudent';
 
 import UserProfileTeacher from './teacher/UserProfileTeacher';
 
-function App() {
+function App() 
+{
   const [userRole, setUserRole] = useState(0);
 
+  const fetchUserData = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwt_decode(token);
+      const roleId = decodedToken.role;
+      setUserRole(roleId);
+    }
+  };
+
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const decodedToken = jwt_decode(token);
-        const roleId = decodedToken.role;
-        setUserRole(roleId);
-      }
-    };
     fetchUserData();
   }, []);
 
@@ -99,7 +102,7 @@ function App() {
                 element={
                   <>
                     <Nav />
-                    <SignUp />
+                    <SignUp fetchUserData={fetchUserData} />
                     <Footer />
                   </>
                 }
@@ -238,20 +241,18 @@ function App() {
             element={
               <>
                 <Nav />
-                <LogIn />
+                <LogIn fetchUserData={fetchUserData} />
                 <Footer />
               </>
-            }
-          />
-
-
+            } />
 
 
           {/* Routes for admin roles */}
           {userRole === 1 && (
             <Route
               path="/AdminSideBar"
-              element={<AdminSideBar />} />)}
+              element={<AdminSideBar fetchUserData={fetchUserData}/>} />
+              )}
 
           {/* Routes for student profile */}
           {userRole === 2 && (
@@ -263,10 +264,7 @@ function App() {
               path="/UserProfileTeacher"
               element={
                 <UserProfileTeacher />}
-
-            />)}
-
-
+          />)}
 
 
 
@@ -274,9 +272,6 @@ function App() {
           {userRole !== 1 || userRole !== 2 || userRole !== 3 || (
             <Route path="*" element={<Error404 />} />
           )}
-
-
-
 
 
 

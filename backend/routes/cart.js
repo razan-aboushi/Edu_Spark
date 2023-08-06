@@ -3,9 +3,11 @@ const router = express.Router();
 const cartController = require('../controller/cartController');
 
 
+// Add summary to cart
 router.post('/cart',cartController.postToCart);
 
 
+// Check the summary if found in the user cart
 router.get('/cart/:user_id/:summary_id',cartController.getCartItems);
 
 
@@ -20,6 +22,7 @@ router.post('/cartCourse',cartController.postToCartCourse);
 
 // delete the course from the cart
 router.delete('/cartItemCourse/:user_id/:course_id',cartController.deleteCourseCart);
+
 
 // get the course from the cart to check if exists or not ?
 router.get('/cartCourse/:user_id/:course_id',cartController.getCourseFromCart);

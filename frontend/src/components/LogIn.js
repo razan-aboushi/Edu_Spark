@@ -5,7 +5,8 @@ import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../css/style.css';
 
-function LogIn() {
+function LogIn({ fetchUserData })
+ {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -26,27 +27,7 @@ function LogIn() {
   }, []);
 
 
-  // remove the remember me from the local storage
-  useEffect(() => {
-    if (!rememberMe) {
-      localStorage.removeItem('email');
-      localStorage.removeItem('password');
-    }
-  }, [rememberMe]);
 
-
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const PasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   // Handle log in form submit
   const handleSubmit = async (e) => {
@@ -56,7 +37,6 @@ function LogIn() {
       const response = await axios.post('http://localhost:4000/login', { email, password });
 
       if (response.status === 200) {
-        const data = response.data;
 
         if (rememberMe) {
           localStorage.setItem('email', email);
@@ -71,8 +51,7 @@ function LogIn() {
         localStorage.setItem('token', token);
 
 
-        if (role === 1)
-         {
+        if (role === 1) {
           navigate('/AdminSideBar');
         } else if (role === 2) {
           navigate('/UserProfileStudent');
@@ -80,7 +59,7 @@ function LogIn() {
           navigate('/UserProfileTeacher');
         }
 
-        window.location.reload();
+        fetchUserData();
 
       } else {
         const errorData = response.data;
@@ -119,7 +98,7 @@ function LogIn() {
                   className="form-control p-3 form-control-lg"
                   placeholder="أدخل عنوان بريد إلكتروني صحيح"
                   value={email}
-                  onChange={handleEmailChange} />
+                  onChange={(e)=>setEmail(e.target.value)} />
               </div>
               {/* حقل كلمة المرور */}
               <div className="form-outline mb-3">
@@ -134,12 +113,12 @@ function LogIn() {
                     className="form-control p-3 form-control-lg"
                     placeholder="أدخل كلمة المرور"
                     value={password}
-                    onChange={handlePasswordChange} />
+                    onChange={(e)=>setPassword(e.target.value)} />
 
                   <button
                     className="btn btn-outline-secondary" style={{ borderRadius: "5px" }}
                     type="button"
-                    onClick={PasswordVisibility}>
+                    onClick={()=>setShowPassword(!showPassword)}>
                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                   </button>
                 </div>
@@ -148,16 +127,19 @@ function LogIn() {
                 {/* خانة الاختيار */}
 
                 <div className="form-check mb-0">
+                  <label className="form-check-label" htmlFor="form2Example3">
+                    تذكرني
+                  </label>
                   <input
                     className="form-check-input me-2"
                     type="checkbox"
                     id="form2Example3"
                     checked={rememberMe}
-                    onChange={() => setRememberMe(!rememberMe)} />
+                    onChange={() => {
+                      setRememberMe(!rememberMe);
 
-                  <label className="form-check-label" htmlFor="form2Example3">
-                    تذكرني
-                  </label>
+                      localStorage.removeItem("email");
+                      localStorage.removeItem("password"); }} />
                 </div>
                 <Link to="/ResetPassword" className="text-body">
                   هل نسيت كلمة المرور؟
@@ -184,13 +166,7 @@ function LogIn() {
                   </div>
 
                   <div className="bttso d-flex flex-row align-items-center justify-content-center">
-                    <button
-                      style={{ width: '35px', height: '35px', borderRadius: '10px' }}
-                      type="button"
-                      className="btn-primary btn-floating mx-1"
-                    >
-                      <i className="fab fa-facebook-f" />
-                    </button>
+
                     <button
                       style={{ width: '35px', height: '35px', borderRadius: '10px' }}
                       type="button"

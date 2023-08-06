@@ -17,8 +17,7 @@ import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
 
-function CourseDetails()
- {
+function CourseDetails() {
   const [course, setCourse] = useState([]);
   const { course_id } = useParams();
   const [subscriberCount, setSubscriberCount] = useState(0);
@@ -29,11 +28,8 @@ function CourseDetails()
 
 
 
-
-
-
+  // get enrolled courses
   useEffect(() => {
-    // Fetch enrolled courses
     const fetchEnrolledCourses = async () => {
       const token = localStorage.getItem('token');
       const decodedToken = token ? jwt_decode(token) : null;
@@ -56,16 +52,14 @@ function CourseDetails()
 
 
 
-
-
-
+  // Handle add the course to cart
   const handleAddToCart = async (course) => {
     const token = localStorage.getItem('token');
 
     if (!token) {
       // If the user is not logged in, show a pop-up message asking them to log in first.
       Swal.fire({
-        title: 'سجل الدخول لتتمكن من التسجيل في الدورة',
+        title: 'من فضلك ، قُم بتسجيل الدخول لتتمكن من التسجيلِ في الدورة',
         text: 'هل ترغب في تسجيل الدخول الآن؟',
         icon: 'info',
         confirmButtonText: 'تسجيل الدخول',
@@ -94,10 +88,8 @@ function CourseDetails()
           icon: 'info',
           confirmButtonText: 'موافق',
         });
-        return; // Exit the function if the course is already in the cart
+        return;
       }
-
-
 
 
       // Send a request to the server to add the course to the cart table
@@ -144,7 +136,7 @@ function CourseDetails()
     }
   };
 
-
+  // get the course details and the count or number of subscribers in this course
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {

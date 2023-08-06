@@ -10,20 +10,20 @@ function Summaries() {
   const [summaries, setSummaries] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [universityFilter, setUniversityFilter] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
+  const [categoryFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [summariesPerPage] = useState(6);
   const [universities, setUniversities] = useState([]);
   const { universityId } = useParams();
   const [enrolledSummaries, setEnrolledSummaries] = useState([]);
-  const { user_id } = useParams();
 
 
-
-
-
+  
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
+      const token = localStorage.getItem('token');
+      const decodedToken = token ? jwt_decode(token) : null;
+      const user_id = decodedToken?.userId;
 
       try {
         const response = await axios.get(`http://localhost:4000/enrolled-summaries/${user_id}`);
@@ -34,11 +34,11 @@ function Summaries() {
     };
 
     fetchEnrolledSummaries();
-  }, [user_id]);
+  }, []);
 
 
 
-
+  
   useEffect(() => {
     getUniversities();
     getSummaries();
@@ -100,13 +100,6 @@ function Summaries() {
     setSearchTerm(event.target.value);
   };
 
-  const handleUniversityFilter = (event) => {
-    setUniversityFilter(event.target.value);
-  };
-
-  const handleCategoryFilter = (event) => {
-    setCategoryFilter(event.target.value);
-  };
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -124,7 +117,7 @@ function Summaries() {
     if (!token) {
       // If the user is not logged in, show a pop-up message asking them to log in first.
       Swal.fire({
-        title: 'سجل الدخول لتتمكن من شراء المُلخص',
+        title: 'من فضلك ، قُم بتسجيل الدخول لتتمكن من شراءِ المُلخص ',
         text: 'هل ترغب في تسجيل الدخول الآن؟',
         icon: 'info',
         confirmButtonText: 'تسجيل الدخول',
@@ -153,7 +146,7 @@ function Summaries() {
           icon: 'info',
           confirmButtonText: 'موافق',
         });
-        return; // Exit the function if the summary is already in the cart
+        return; 
       }
 
 
@@ -342,7 +335,7 @@ function Summaries() {
                   <li key={index + 1} className="page-item">
                     <button
                       className="page-link mt-5"
-                      style={{ borderRadius: "100%", color: "white", marginLeft: "15px", marginLeft: "15px", backgroundColor: "#06BBCC" }}
+                      style={{ borderRadius: "100%", color: "white", marginLeft: "15px", backgroundColor: "#06BBCC" }}
                       onClick={() => paginate(index + 1)}
                     >
                       {index + 1}

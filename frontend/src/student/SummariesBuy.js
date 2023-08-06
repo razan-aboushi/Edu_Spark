@@ -4,9 +4,10 @@ import '../css/style.css';
 import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
-function SummariesBuy()
- {
+function SummariesBuy() {
   const [summaries, setSummaries] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(6); 
   const { user_id } = useParams();
 
   useEffect(() => {
@@ -26,18 +27,21 @@ function SummariesBuy()
     getSummaries();
   }, [user_id]);
 
+  // Calculate the indexes of the items to display on the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = summaries.slice(indexOfFirstItem, indexOfLastItem);
 
+  // Change the current page number
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-// to open the pdf file
+  // to open the pdf file
   const handleDownload = (summaryFile) => {
     if (summaryFile) {
       const fileUrl = `http://localhost:4000/reports/${summaryFile}`;
       window.open(fileUrl);
     }
   };
-
-
-
 
   const convertTimestampToDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -46,22 +50,21 @@ function SummariesBuy()
 
   return (
     <>
-
       <div className='text-center'>
         <h6 className="section-title bg-white text-center text-primary px-3 mt-5">
           "مُلخصاتي"
         </h6>
       </div>
 
-      {summaries.length === 0 ? (<div className="summary-cards-container" style={{ marginTop: "100px" }}>
-        <div className="no-summaries-message">
-          <p>لا توجد مُلخصات مُشتراة حتى الأن، سارع في الحصول على واحد و قُد تُعلمك نحو الأفضل.</p>
+      {currentItems.length === 0 ? (
+        <div className="summary-cards-container" style={{ marginTop: "100px" }}>
+          <div className="no-summaries-message">
+            <p>لا توجد مُلخصات مُشتراة حتى الأن، سارع في الحصول على واحد و قُد تُعلمك نحو الأفضل.</p>
+          </div>
         </div>
-      </div>
       ) : (
-
         <div className="summary-cards-container">
-          {summaries.map((summary) => (
+          {currentItems.map((summary) => (
             <div className="summary-cardBuy" key={summary.summary_id}>
               <img src={`http://localhost:4000/images/${summary.summary_image}`} alt={summary.summary_title} className="summaryBuy-image" />
               <h3 className="summaryBuy-title">{summary.summary_title}</h3>
@@ -74,8 +77,20 @@ function SummariesBuy()
           ))}
         </div>
       )}
-    </>
 
+      {/* Pagination */}
+      {summaries.length > itemsPerPage && (
+        <ul className="pagination">
+          {Array.from({ length: Math.ceil(summaries.length / itemsPerPage) }).map((_, index) => (
+            <li key={index} className={`page-item ${currentPage === index + 1 ? "active" : ""}`}>
+              <button className="page-link" onClick={() => paginate(index + 1)}>
+                {index + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 }
 

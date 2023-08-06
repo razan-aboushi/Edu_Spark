@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/style.css';
 
-function Card({ title, value, icon }) {
+function Card({ title, value, icon }) 
+{
   return (
     <div className="DashboardCards">
       <div className="card-icon">{icon}</div>
@@ -12,7 +13,8 @@ function Card({ title, value, icon }) {
   );
 }
 
-function Dashboard() {
+function Dashboard() 
+{
   const [numberOfStudents, setNumberOfStudents] = useState(0);
   const [numberOfExplainers, setNumberOfExplainers] = useState(0);
   const [numberOfContactMessages, setNumberOfContactMessages] = useState(0);
@@ -22,7 +24,6 @@ function Dashboard() {
 
 
   useEffect(() => {
-    // Fetch data from the server
     const fetchData = async () => {
       try {
         // Fetch the number of students
@@ -49,14 +50,12 @@ function Dashboard() {
         // Fetch the sales
         const salesResponse = await axios.get('http://localhost:4000/sales');
         const salesData = salesResponse.data.sales;
-        console.log(salesData);
         setSales(salesData);
 
 
         // Fetch the university
         const universityResponse = await axios.get('http://localhost:4000/universityNumber');
         const universityData = universityResponse.data.count;
-        console.log(universityData);
         setNumberOfUniversity(universityData);
 
 
@@ -74,8 +73,8 @@ function Dashboard() {
       <Card title="الشارحين" value={numberOfExplainers} icon={<i className="fas fa-chalkboard-teacher"></i>} />
       <Card title="رسائل التواصل معنا" value={numberOfContactMessages} icon={<i className="fas fa-envelope"></i>} />
       <Card title="عدد الجامعات" value={numberOfUniversity} icon={<i className="fa fa-graduation-cap"></i>} />
-      <Card title="الإيرادات" value={revenue} icon={<i className="fas fa-dollar-sign"></i>} />
-      <Card title="المبيعات" value={sales} icon={<i className="fas fa-dollar-sign"></i>} />
+      <Card title="الإيرادات" value={`${revenue} د.أ`} icon={<i className="fas fa-dollar-sign"></i>} />
+      <Card title="المبيعات" value={`${sales} د.أ`} icon={<i className="fas fa-dollar-sign"></i>} />
 
     </div>
   );

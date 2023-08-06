@@ -5,7 +5,8 @@ import "../css/style.css";
 import about from "../img/about.jpg";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 
-function About() {
+function About()
+ {
   const [aboutUsData, setAboutUsData] = useState({});
   const [visionData, setVisionData] = useState({});
   const [missionData, setMissionData] = useState({});
@@ -126,7 +127,6 @@ function About() {
 
 
       {/* About Start */}
-
       <div>
         <div className="container-xxl py-5">
           <div className="container">

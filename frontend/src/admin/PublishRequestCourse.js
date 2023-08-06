@@ -6,6 +6,9 @@ import '../css/style.css';
 function PublishRequestCourse() {
   const [data, setData] = useState([]);
 
+
+  
+  // Handle when the admin approve the course
   const handleApprove = async (id) => {
     try {
       // Send approve request to the server
@@ -22,6 +25,8 @@ function PublishRequestCourse() {
     }
   };
 
+
+  // Handle when the admin reject the course
   const handleReject = async (id) => {
     try {
       // Prompt the admin to enter the reason for rejection
@@ -38,17 +43,14 @@ function PublishRequestCourse() {
         preConfirm: (inputValue) => {
           if (inputValue) {
             // Send reject request to the server with the reason
-            return axios
-              .put(`http://localhost:4000/courses/${id}/rejectCourse`, { reason: inputValue })
-              .then(() => {
-                // Update the data state by removing the rejected item
-                setData((prevData) => prevData.filter((item) => item.course_id !== id));
-                return inputValue;
-              })
-              .catch((error) => {
-                console.log('Error rejecting request:', error);
-                Swal.showValidationMessage('فشل في رفض طلب الدورة.');
-              });
+            return axios.put(`http://localhost:4000/courses/${id}/rejectCourse`, { reason: inputValue }).then(() => {
+              // Update the data state by removing the rejected item
+              setData((prevData) => prevData.filter((item) => item.course_id !== id));
+              return inputValue;
+            }).catch((error) => {
+              console.log('Error rejecting request:', error);
+              Swal.showValidationMessage('فشل في رفض طلب الدورة.');
+            });
           } else {
             Swal.showValidationMessage('يرجى إدخال سبب الرفض.');
           }
@@ -70,6 +72,7 @@ function PublishRequestCourse() {
     fetchPendingCourses();
   }, []);
 
+  // get the courses that have the pending status
   const fetchPendingCourses = async () => {
     try {
       const response = await axios.get('http://localhost:4000/courses/pending');

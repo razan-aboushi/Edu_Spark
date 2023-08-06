@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaSignInAlt, FaInfoCircle, FaMoneyBill, FaUser, FaCalendarAlt, FaSearch } from 'react-icons/fa';
+import { FaSignInAlt, FaInfoCircle, FaMoneyBill, FaUser, FaCalendarAlt } from 'react-icons/fa';
 import '../css/style.css';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
 
-function CoursesAndSummaries() {
+function CoursesAndSummaries() 
+{
   const { university_id, category_id } = useParams();
 
   const [courses, setCourses] = useState([]);
@@ -15,7 +16,6 @@ function CoursesAndSummaries() {
   const [searchQuery, setSearchQuery] = useState('');
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [enrolledSummaries, setEnrolledSummaries] = useState([]);
-  const { user_id } = useParams();
 
 
 
@@ -109,9 +109,9 @@ function CoursesAndSummaries() {
 
 
     if (!token) {
-      // If the user is not logged in, show a pop-up message asking them to log in first.
+      // If the user is not logged in, show a message asking them to log in first.
       Swal.fire({
-        title: 'سجل الدخول لتتمكن من الشراء ',
+        title: 'من فضلك ، قُم بتسجيلِ الدخول لتتمكن من الشراء ',
         text: 'هل ترغب في تسجيل الدخول الآن؟',
         icon: 'info',
         confirmButtonText: 'تسجيل الدخول',

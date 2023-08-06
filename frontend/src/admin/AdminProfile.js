@@ -3,7 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import "../css/style.css";
 import bcrypt from 'bcryptjs';
-
+import jwt_decode from 'jwt-decode';
 
 function AdminProfile() {
   const [name, setName] = useState('');
@@ -12,13 +12,24 @@ function AdminProfile() {
   const [password, setPassword] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
 
+
+  const token = localStorage.getItem('token');
+  const decodedToken = token ? jwt_decode(token) : null;
+  const user_id = decodedToken?.userId;
+
+
+
+
   useEffect(() => {
     fetchData();
   }, []);
 
+
+  // Get the admin profile data
   async function fetchData() {
+
     try {
-      const response = await axios.get('http://localhost:4000/adminData');
+      const response = await axios.get(`http://localhost:4000/adminData/${user_id}`);
       const data = response.data;
 
       setName(data.name);
@@ -29,41 +40,45 @@ function AdminProfile() {
       console.error('Error fetching data:', error);
     }
   }
+
+
+
+  // Handle edit and save the admin profile changes
   async function handleSave() {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-  
+
     const updatedProfile = {
       name,
       email,
       phone_number,
-      password: hashedPassword, 
+      password: hashedPassword,
     };
-  
+
+
     // Perform save action using Axios
-    axios.put('http://localhost:4000/adminDataUpdate', updatedProfile)
-      .then((response) => {
-        console.log('Profile updated successfully:', response.data);
-  
-        // Show success message
-        Swal.fire({
-          title: 'تم الحفظ',
-          text: 'تم حفظ معلومات الملف الشخصي بنجاح!',
-          icon: 'success',
-          confirmButtonText: 'حسنًا',
-          customClass: {
-            confirmButton: 'edit-button save-button',
-          },
-        });
-  
-        setIsEditMode(false);
-      })
-      .catch((error) => {
-        console.error('Error updating profile:', error);
+    axios.put(`http://localhost:4000/adminDataUpdate/${user_id}`, updatedProfile).then((response) => {
+      console.log('Profile updated successfully:', response.data);
+
+      // Show success message
+      Swal.fire({
+        title: 'تم الحفظ',
+        text: 'تم حفظ معلومات الملف الشخصي بنجاح!',
+        icon: 'success',
+        confirmButtonText: 'حسنًا',
+        customClass: {
+          confirmButton: 'edit-button save-button',
+        },
       });
+
+      setIsEditMode(false);
+
+    }).catch((error) => {
+      console.error('Error updating profile:', error);
+    });
   }
-  
-  
+
+
 
   function handleEdit() {
     Swal.fire({
@@ -90,7 +105,7 @@ function AdminProfile() {
     <div className="center-containerAdmin">
       <div className="profile-form">
         <div className="form-groupAdmin">
-        
+
         </div>
         <div className="form-groupAdmin">
           <label className='LabelAdminProfile' htmlFor="fullName">الإسم الكامل</label>
@@ -109,7 +124,7 @@ function AdminProfile() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            disabled/>
+            disabled />
         </div>
         <div className="form-groupAdmin">
           <label className='LabelAdminProfile' htmlFor="phoneNumber">رقم الهاتف</label>
@@ -118,7 +133,7 @@ function AdminProfile() {
             id="phoneNumber"
             value={phone_number}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            disabled={!isEditMode}/>
+            disabled={!isEditMode} />
         </div>
         <div className="form-groupAdmin">
           <label className='LabelAdminProfile' htmlFor="password">الرقم السري</label>
@@ -127,9 +142,9 @@ function AdminProfile() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            disabled={!isEditMode}/>
+            disabled={!isEditMode} />
         </div>
-        
+
         {isEditMode ? (
           <button className="edit-button save-button" onClick={handleSave}>حفظ</button>
         ) : (

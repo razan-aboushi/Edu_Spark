@@ -5,7 +5,7 @@ const connection = require('../models/dbConnect');
 const checkUserExist= (req, res) => {
     const { email, phone } = req.body;
 
-    // Check if the user exists in the database
+    // Check if the user exists in the database or not
     const query = 'SELECT * FROM users WHERE email = ? AND phone_number = ?';
     connection.query(query, [email, phone], (err, results) => {
         if (err) {
@@ -20,6 +20,8 @@ const checkUserExist= (req, res) => {
         }
     });
 }
+
+
 
 
 // Reset the password for the user with the provided email and phone number

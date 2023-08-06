@@ -14,10 +14,12 @@ function AdminPanel() {
     const [aboutParagraph2, setAboutParagraph2] = useState('');
     const [activeTab, setActiveTab] = useState('visionMission');
 
+
     useEffect(() => {
         fetchData();
     }, []);
 
+    // Get the data from the about us table
     async function fetchData() {
         try {
             const response = await axios.get('http://localhost:4000/about_missionVisionData');
@@ -34,6 +36,8 @@ function AdminPanel() {
         }
     }
 
+
+    // Handle update the vision and mission
     async function handleVisionMissionSave(e) {
         e.preventDefault();
 
@@ -65,6 +69,7 @@ function AdminPanel() {
         }
     }
 
+    // Handle update the about us
     async function handleAboutUsSave(e) {
         e.preventDefault();
         try {

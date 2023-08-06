@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom';
 function CourseForm() {
     const [categories, setCategories] = useState([]);
     const [universities, setUniversities] = useState([]);
+    const { universityId } = useParams();
+
 
     const [courseData, setCourseData] = useState({
         course_title: "",
@@ -31,22 +33,19 @@ function CourseForm() {
 
 
 
-    const { universityId } = useParams();
 
     useEffect(() => {
         handleInputChange();
     }, [universityId]);
 
 
+    // get universities
     useEffect(() => {
-        // get universities
-        axios.get("http://localhost:4000/universities")
-            .then((response) => {
-                setUniversities(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        axios.get("http://localhost:4000/universities").then((response) => {
+            setUniversities(response.data);
+        }).catch((error) => {
+            console.error(error);
+        });
     }, []);
 
 
@@ -75,7 +74,7 @@ function CourseForm() {
 
 
 
-    // submit the course form
+    // submit the course form to add a new course
     const handleSubmitCourseForm = (event) => {
         event.preventDefault();
 
@@ -120,8 +119,7 @@ function CourseForm() {
                     icon: "success",
                     button: "حسناً",
                 });
-            })
-                .catch((error) => {
+            }).catch((error) => {
                     console.log(error);
                     Swal.fire({
                         title: "حدث خطأ!",
@@ -184,8 +182,6 @@ function CourseForm() {
 
 
 
-
-
     return (
         <div className="page-wrapper p-t-100 p-b-50">
             <div className="container">
@@ -205,21 +201,18 @@ function CourseForm() {
                                     id="course_title"
                                     value={courseData.course_title}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required/>
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_image")}`}>
                                 <label htmlFor="course_image">صورة تعبّر عن الدورة المقدمة :</label>
-                                <div className="input-group">
-                                    <div className="custom-file">
-                                        <input
-                                            type="file"
-                                            className="form-control"
-                                            name="course_image"
-                                            id="course_image"
-                                            onChange={handleFileChangeCourseImage}
-                                            required />
-                                    </div>
+                                <div className="custom-file">
+                                    <input
+                                        type="file"
+                                        className="form-control"
+                                        name="course_image"
+                                        id="course_image"
+                                        onChange={handleFileChangeCourseImage}
+                                        required />
                                 </div>
                                 <small className="form-text text-muted">
                                     رفع صورة الدورة. الحجم الأقصى للملف هو 50 ميغابايت.
@@ -248,8 +241,7 @@ function CourseForm() {
                                     placeholder="تفاصيل الدورة"
                                     value={courseData.course_description}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required/>
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("connection_channel")}`}>
                                 <label className="mb-2 mt-2" htmlFor="connection_channel">قناة الاتصال:</label>
@@ -261,8 +253,7 @@ function CourseForm() {
                                     id="connection_channel"
                                     value={courseData.connection_channel}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required/>
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_type")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_type">نوع الدورة:</label>
@@ -274,8 +265,7 @@ function CourseForm() {
                                     id="course_type"
                                     value={courseData.course_type}
                                     onChange={handleInputChange}
-                                    required
-                                />
+                                    required/>
                             </div>
 
                             {/* Sell or Free */}

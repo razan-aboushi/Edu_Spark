@@ -86,6 +86,7 @@ const SignUpRegister = (req, res) => {
   });
 };
 
+
 module.exports = {
   SignUpRegister
 };

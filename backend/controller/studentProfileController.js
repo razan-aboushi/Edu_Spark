@@ -1,7 +1,6 @@
 const connection = require('../models/dbConnect');
 const multer = require('multer');
 const path = require('path');
-const bcrypt = require('bcrypt');
 
 
 // Configure Multer to specify the destination and filename
@@ -36,29 +35,6 @@ const getIdFromUserData = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
-}
-
-
-
-
-// post the data of user bank account into database
-const postUserBankAccounts = (req, res) => {
-  const { accountNumber, cvv } = req.body;
-  const userId = req.params.userId;
-
-  // Hash the account number and cvv using bcrypt
-  const hashedAccountNumber = bcrypt.hashSync(accountNumber, 10);
-  const hashedcvv = bcrypt.hashSync(cvv, 10);
-
-  const query = 'INSERT INTO bank_accounts (account_number, cvv, user_id) VALUES ( ?, ?, ?)';
-  connection.query(query, [hashedAccountNumber, hashedcvv, userId], (err, result) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ error: 'An error occurred while saving bank account information' });
-    } else {
-      res.status(200).json({ message: 'Bank account information saved successfully' });
-    }
-  })
 }
 
 
@@ -141,7 +117,7 @@ const getUserBuySummaries = (req, res) => {
 
 
 
-
+// Get the courses the user joined to them
 const getCourseTheUserJoined = async (req, res) => {
   const { user_id } = req.params;
 
@@ -165,20 +141,9 @@ const getCourseTheUserJoined = async (req, res) => {
 
 
 
-const getAllUserInfoData = async (req, res) => {
-  try {
-    const userData = await connection.promise().query('SELECT email FROM users');
-    res.json(userData);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred while fetching the user data.'});
-  }
-};
-
-
 
 module.exports = {
 
-  getIdFromUserData, postUserBankAccounts, getStudentProfileInfo, editStudentInfo, getUserBuySummaries, getCourseTheUserJoined,getAllUserInfoData
+  getIdFromUserData, getStudentProfileInfo, editStudentInfo, getUserBuySummaries, getCourseTheUserJoined
 
 }

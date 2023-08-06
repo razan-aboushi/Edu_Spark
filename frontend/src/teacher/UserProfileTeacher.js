@@ -11,7 +11,8 @@ import CourseCalendar from '../student/CourseCalendar';
 import ListTodos from '../components/ListTodos';
 import SummariesBuy from '../student/SummariesBuy';
 
-function UserProfileTeacher() {
+function UserProfileTeacher()
+ {
   const [activeSection, setActiveSection] = useState('profile');
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
@@ -50,7 +51,17 @@ function UserProfileTeacher() {
             <span className="navbar-toggler-icon pointer-link" />
           </button>
           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`}>
+            
             <div className="navbar-nav ms-auto p-4 p-lg-0">
+
+
+            <Link
+                to="/"
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === null ? 'active' : ''}`}
+              >
+                الصفحة الرئيسية
+              </Link>
+
 
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
@@ -95,12 +106,7 @@ function UserProfileTeacher() {
               >
                 الملف الشخصي
               </span>
-              <Link
-                to="/"
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === null ? 'active' : ''}`}
-              >
-                الصفحة الرئيسية
-              </Link>
+            
 
 
             </div>

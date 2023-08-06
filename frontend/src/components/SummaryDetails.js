@@ -64,7 +64,7 @@ function SummaryDetails()
     if (!token) {
       // If the user is not logged in, show a pop-up message asking them to log in first.
       Swal.fire({
-        title: 'سجل الدخول لتتمكن من شراء المُلخص',
+        title: 'من فضلك ، قُم بتسجيل الدخول لتتمكن من شراءِ المُلخص ',
         text: 'هل ترغب في تسجيل الدخول الآن؟',
         icon: 'info',
         confirmButtonText: 'تسجيل الدخول',

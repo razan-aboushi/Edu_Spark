@@ -6,12 +6,13 @@ import '../css/style.css';
 function PublishRequest() {
   const [data, setData] = useState([]);
 
+
+// Handle when the admin approve the summary
   const handleApprove = async (id) => {
     try {
-      // Send approve request to the server
       await axios.put(`http://localhost:4000/summaries/${id}/approveSummary`);
 
-      // Update the data state by removing the approved item
+      // Update the data state by removing the approved item "summary"
       setData((prevData) => prevData.filter((item) => item.summary_id !== id));
 
       // Notify the user about the approval
@@ -22,6 +23,8 @@ function PublishRequest() {
     }
   };
 
+
+  // Handle when the admin reject the summary
   const handleReject = async (id) => {
     try {
       // Prompt the admin to enter the reason for rejection
@@ -37,15 +40,11 @@ function PublishRequest() {
         showLoaderOnConfirm: true,
         preConfirm: (inputValue) => {
           if (inputValue) {
-            // Send reject request to the server with the reason
-            return axios
-              .put(`http://localhost:4000/summaries/${id}/rejectSummary`, { reason: inputValue })
-              .then(() => {
-                // Update the data state by removing the rejected item
+            return axios.put(`http://localhost:4000/summaries/${id}/rejectSummary`, { reason: inputValue }).then(() => {
+                // Update the data state by removing the rejected item "summary"
                 setData((prevData) => prevData.filter((item) => item.summary_id !== id));
                 return inputValue;
-              })
-              .catch((error) => {
+              }).catch((error) => {
                 console.log('Error rejecting request:', error);
                 Swal.showValidationMessage('فشل في رفض طلب الملخص.');
               });
@@ -70,6 +69,8 @@ function PublishRequest() {
     fetchPendingSummaries();
   }, []);
 
+  
+  // Get the the summaries that have the pending status
   const fetchPendingSummaries = async () => {
     try {
       const response = await axios.get('http://localhost:4000/summaries/pending');
@@ -80,15 +81,12 @@ function PublishRequest() {
     }
   };
 
-  if (!data) {
-    return <div>لا توجد ملخصات معلقة.</div>;
-  }
+ 
 
+  // Open the PDF summary in the new tab
   const viewSummary = (fileUrl) => {
     window.open(fileUrl, '_blank');
   };
-
-
 
 
 
@@ -111,12 +109,9 @@ function PublishRequest() {
 
             {data.length === 0 ? (
 
-              <div className='text-center mt-5'>لا توجد طلبات مُلخصات مُعلقة حتى الأن</div>
-
-
-            ) :
-              (
-                data.map((item) => (
+              <div className='text-center mt-5'>لا توجد طلبات مُلخصات مُعلقة حتى الأن</div>) 
+              :
+              (data.map((item) => (
                   <tr key={item.summary_id}>
                     <td>{item.name}</td>
                     <td>{item.email}</td>

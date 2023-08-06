@@ -9,9 +9,10 @@ import jwt_decode from 'jwt-decode';
 function SummariesHome() {
   const [summaries, setSummaries] = useState([]);
   const [enrolledSummaries, setEnrolledSummaries] = useState([]);
+  const navigate = useNavigate();
 
 
-
+// Get the enrolled summaries to check if the user buy the summary before now or not
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
       const token = localStorage.getItem('token');
@@ -34,34 +35,28 @@ function SummariesHome() {
 
 
 
-
+// Get the latest summaries added in the website
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/summaries/latest')
-      .then(response => {
+    axios.get('http://localhost:4000/summaries/latest').then(response => {
         setSummaries(response.data);
-      })
-      .catch(error => {
+      }).catch(error => {
         console.error('Error fetching summaries:', error);
       });
   }, []);
 
 
 
-  const navigate = useNavigate();
 
 
-
-
-
+  // Handle add to cart function
   const handleAddToCart = async (summary) => {
     const token = localStorage.getItem('token');
 
 
     if (!token) {
-      // If the user is not logged in, show a pop-up message asking them to log in first.
+      // If the user is not logged in, show a message asking them to log in first.
       Swal.fire({
-        title: 'سجل الدخول لتتمكن من شراء المُلخص',
+        title: 'من فضلك ، قُم بتسجيل الدخول لتتمكن من شراءِ المُلخص ',
         text: 'هل ترغب في تسجيل الدخول الآن؟',
         icon: 'info',
         confirmButtonText: 'تسجيل الدخول',
@@ -89,7 +84,7 @@ function SummariesHome() {
           icon: 'info',
           confirmButtonText: 'موافق',
         });
-        return; // Exit the function if the summary is already in the cart
+        return; 
       }
 
 
@@ -123,7 +118,7 @@ function SummariesHome() {
         },
       }).then((result) => {
         if (result.dismiss === Swal.DismissReason.cancel) {
-          // Remove the cart items from the server if the user cancels the payment
+          // Remove the cart items if the user cancels the payment
           axios.delete(`http://localhost:4000/cartSummary/${user_id}/${summary.summary_id}`);
 
         }

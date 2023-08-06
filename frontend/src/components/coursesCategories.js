@@ -4,8 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import '../css/style.css';
 
 
-function CoursesCategories() 
-{
+function CoursesCategories() {
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const { universityId } = useParams();
@@ -76,27 +75,28 @@ function CoursesCategories()
 
           {/* Categories */}
           <div className="row" dir="ltr" mt-4>
-            {categories.map(category => (
-              category.category_name.toLowerCase().includes(searchTerm.toLowerCase()) && (
-                <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={category.category_id}>
-                  <div className="cardCategory my-2 wow fadeInUp" data-wow-delay="0.2s">
-                    <Link
-                      to={`/CoursesAndSummaries/${category.university_id}/${category.category_id}`}
-                      className="text-decoration-none" >
-                      <img
+            {categories.length > 0 ?
+              (categories.map(category => (
+                category.category_name.toLowerCase().includes(searchTerm.toLowerCase()) && (
+                  <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={category.category_id}>
+                    <div className="cardCategory my-2 wow fadeInUp" data-wow-delay="0.2s">
+                      <Link
+                        to={`/CoursesAndSummaries/${category.university_id}/${category.category_id}`}
+                        className="text-decoration-none" >
+                        <img
 
-                        src={`http://localhost:4000/images/${category.category_image}`}
-                        className="card-img-top img-fluid"
-                        alt={category.category_name}
-                      />
-                      <div className="card-body text-center">
-                        <h5 className="card-title">{category.category_name}</h5>
-                      </div>
-                    </Link>
+                          src={`http://localhost:4000/images/${category.category_image}`}
+                          className="card-img-top img-fluid"
+                          alt={category.category_name}
+                        />
+                        <div className="card-body text-center">
+                          <h5 className="card-title">{category.category_name}</h5>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              )
-            ))}
+                )
+              ))) : (<div className='text-center mt-5'> لا توجد تخصصات حتى الأن  </div>)}
           </div>
           {/* end Categories */}
 
@@ -104,7 +104,7 @@ function CoursesCategories()
       </div>
       {/* End Category Section */}
     </div>
-    
+
   );
 }
 
