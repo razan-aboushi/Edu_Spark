@@ -79,7 +79,7 @@ function AdminProfile() {
   }
 
 
-
+// Handle edit admin profile
   function handleEdit() {
     Swal.fire({
       title: 'تأكيد التعديل',

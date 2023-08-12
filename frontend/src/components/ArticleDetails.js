@@ -37,7 +37,6 @@ function ArticleDetails()
   const getComments = async () => {
     try {
       const response = await axios.get(`http://localhost:4000/articles/${article_id}/comments`);
-      console.log(response);
       setComments(response.data);
     } catch (error) {
       console.error('Error fetching comments:', error);
@@ -134,7 +133,6 @@ function ArticleDetails()
 
 
 
-
   // Function to delete a comment
   const deleteComment = async (commentId) => {
     try {
@@ -202,7 +200,8 @@ function ArticleDetails()
                     <div className="post-img">
                       <img src={`http://localhost:4000/images/${article.article_image}`}
                         alt="صورة"
-                        className="img-fluid"
+                        className="img-fluid" 
+                        width="100%"
                       />
                     </div>
                     <h4 className="title">{article.article_title}</h4>
@@ -214,11 +213,6 @@ function ArticleDetails()
                     </div>
                   </article>
                   {/* نهاية مقالة المدونة */}
-
-
-
-
-
 
 
 
@@ -312,10 +306,6 @@ function ArticleDetails()
                       {showComments ? 'تقليل عرض التعليقات' : 'عرض التعليقات'}
                     </button>
                   </div>
-
-
-
-
 
 
                   <div className="reply-form mt-5">

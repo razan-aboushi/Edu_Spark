@@ -146,7 +146,7 @@ function SummariesHome() {
       </div>
       <div className="row mt-5">
         {summaries.map(summary => (
-          <div className="col-lg-4 col-md-6" key={summary.summary_id}>
+          <div className="col-lg-4 col-md-6 mb-3" key={summary.summary_id}>
             {/* Render summary details */}
             <div className="cardSum">
               <Link to="/Summaries" className="icon d-flex align-items-center justify-content-center">

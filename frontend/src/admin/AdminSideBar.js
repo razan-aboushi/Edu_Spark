@@ -8,7 +8,7 @@ import logo from '../img/adminLogo.png'
 import AllUsers from "../admin/AllUsers";
 import AdminProfile from "../admin/AdminProfile";
 import DashBoard from "../admin/DashBoard";
-import PublishRequest from "../admin/PublishRequest";
+import PublishRequest from "./PublishRequestSummary";
 import AddArticleForm from "../admin/AddArticleForm";
 import ContactMessages from "../admin/ContactMessages";
 import AdminPanel from "../admin/AdminPanel";
@@ -18,12 +18,14 @@ import ApprovedContent from './ApprovedContent';
 import axios from 'axios';
 
 
-function Sidebar({fetchUserData}) 
-{
+function Sidebar({ fetchUserData, userRole }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeLink, setActiveLink] = useState('/DashBoard');
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
+  const [roleOfUser, setUserRole] = useState(userRole);
   const navigate = useNavigate();
+
+console.log(roleOfUser)
 
 
   function handleLinkClick(link) {
@@ -36,30 +38,33 @@ function Sidebar({fetchUserData})
   }
 
 
-// Handle when the admin click to log out from the dashboard
-function handleLogout() {
-  Swal.fire({
-    title: 'تسجيل الخروج',
-    text: 'هل تريد تسجيل الخروج؟',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'تسجيل الخروج',
-    cancelButtonText: 'إلغاء'
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      localStorage.removeItem('token');
-      navigate('/LogIn');
-      fetchUserData();
-    }
-  });
-}
+  // Handle when the admin click to log out from the dashboard
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'تسجيل الخروج',
+      text: 'هل تريد تسجيل الخروج؟',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'تسجيل الخروج',
+      cancelButtonText: 'إلغاء'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('token');
+        setUserRole(0);
+        navigate('/LogIn');
+        fetchUserData();
+        window.location.reload();
+      }
+    });
+  }
+
 
 
   function toggleSidebar() {
     setIsSidebarOpen(!isSidebarOpen);
   }
 
-// Store the active link in the local storage
+  // Store the active link in the local storage
   useEffect(() => {
     const storedActiveLink = localStorage.getItem('activeLink');
     if (storedActiveLink) {
@@ -71,8 +76,7 @@ function handleLogout() {
 
 
   // get the count of unread messages of the contact us messages on side bar 
-  async function getUnreadMessagesCount() 
-  {
+  async function getUnreadMessagesCount() {
     try {
       const response = await axios.get('http://localhost:4000/unreadMessagesCount');
       const count = response.data.count;
@@ -85,8 +89,7 @@ function handleLogout() {
 
 
   // When click on the contact messages update the count as read
-  async function markMessagesAsRead()
-   {
+  async function markMessagesAsRead() {
     try {
       await axios.put('http://localhost:4000/markMessagesAsRead');
       console.log('Messages marked as read');
@@ -98,7 +101,7 @@ function handleLogout() {
   return (
     <div className="row m-0" style={{ overflowX: "hidden" }}>
       <div className={`col-2 sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
-        
+
         <div className="logo">
           <img src={logo} alt="Logo" width="100%" height="119px" />
         </div>
@@ -134,8 +137,7 @@ function handleLogout() {
           <li>
             <button
               className={`sidebar-link ${activeLink === '/AllUsers' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/AllUsers')}
-            >
+              onClick={() => handleLinkClick('/AllUsers')}>
               <FontAwesomeIcon icon={faUser} className='ms-2' />
               المستخدمين
             </button>
@@ -143,8 +145,7 @@ function handleLogout() {
           <li>
             <button
               className={`sidebar-link ${activeLink === '/AddArticleForm' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/AddArticleForm')}
-            >
+              onClick={() => handleLinkClick('/AddArticleForm')}>
               <FontAwesomeIcon icon={faPlus} className='ms-2' />
               إضافة مقالة
             </button>
@@ -153,8 +154,7 @@ function handleLogout() {
           <li>
             <button
               className={`sidebar-link ${activeLink === '/ContactMessages' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/ContactMessages')}
-            >
+              onClick={() => handleLinkClick('/ContactMessages')}>
               <FontAwesomeIcon icon={faEnvelope} className='ms-2' />
               رسائل التواصل معنا{' '}
               {unreadMessagesCount > 0 && <span className="unread-count" style={{ color: "white", marginRight: "20px", border: "solid 1px gray", borderRadius: "100%", padding: "6px", paddingRight: "14px", paddingLeft: "14px", backgroundColor: "red" }}>{unreadMessagesCount}</span>}
@@ -164,8 +164,7 @@ function handleLogout() {
           <li>
             <button
               className={`sidebar-link ${activeLink === '/PublishRequest' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/PublishRequest')}
-            >
+              onClick={() => handleLinkClick('/PublishRequest')}>
               <FontAwesomeIcon icon={faFileAlt} className='ms-2' />
               طلبات إضافة مُلخص
             </button>
@@ -175,8 +174,7 @@ function handleLogout() {
           <li>
             <button
               className={`sidebar-link ${activeLink === '/PublishRequestCourse' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/PublishRequestCourse')}
-            >
+              onClick={() => handleLinkClick('/PublishRequestCourse')}>
               <FontAwesomeIcon icon={faFileAlt} className='ms-2' />
               طلبات إضافة دورة
             </button>
@@ -185,8 +183,7 @@ function handleLogout() {
           <li>
             <button
               className={`sidebar-link ${activeLink === '/ApprovedContent' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/ApprovedContent')}
-            >
+              onClick={() => handleLinkClick('/ApprovedContent')}>
               <FontAwesomeIcon icon={faFileAlt} className='ms-2' />
               أرشيف الموافقة على الطلبات
             </button>
@@ -195,8 +192,7 @@ function handleLogout() {
           <li>
             <button
               className={`sidebar-link ${activeLink === '/AddUniversity' ? 'active' : ''}`}
-              onClick={() => handleLinkClick('/AddUniversity')}
-            >
+              onClick={() => handleLinkClick('/AddUniversity')}>
               <FontAwesomeIcon icon={faPlus} className='ms-2' />
               إضافة جامعة أو تخصص
             </button>
@@ -217,6 +213,7 @@ function handleLogout() {
           <div className={`bar ${isSidebarOpen ? 'open' : ''}`}></div>
         </div>
       </div>
+
       <div className="col">
         {activeLink === '/DashBoard' && <DashBoard />}
         {activeLink === '/AllUsers' && <AllUsers />}

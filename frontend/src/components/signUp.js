@@ -276,8 +276,7 @@ function SignUp({ fetchUserData }) {
                     id="role"
                     style={{ width: "100%" }}
                     value={values.role}
-                    onChange={(e) => setValues({ ...values, role: e.target.value })}
-                  >
+                    onChange={(e) => setValues({ ...values, role: e.target.value })}>
                     <option value="">اختر نوع المستخدم</option>
                     <option value="3">المعلم</option>
                     <option value="2">الطالب</option>
@@ -297,8 +296,7 @@ function SignUp({ fetchUserData }) {
                     id="pass"
                     placeholder="كلمة المرور"
                     value={values.password}
-                    onChange={(e) => setValues({ ...values, password: e.target.value })}
-                  />
+                    onChange={(e) => setValues({ ...values, password: e.target.value })}/>
                   {errors.password && <span className="error">{errors.password}</span>}
                 </div>
 
@@ -314,8 +312,7 @@ function SignUp({ fetchUserData }) {
                     id="re_pass"
                     placeholder="أعد إدخال كلمة المرور"
                     value={values.re_pass}
-                    onChange={(e) => setValues({ ...values, re_pass: e.target.value })}
-                  />
+                    onChange={(e) => setValues({ ...values, re_pass: e.target.value })}/>
                   {errors.re_pass && <span className="error">{errors.re_pass}</span>}
                 </div>
 
@@ -327,8 +324,7 @@ function SignUp({ fetchUserData }) {
                     id="agree-term"
                     className="agree-term"
                     checked={values.agreeTerm}
-                    onChange={(e) => setValues({ ...values, agreeTerm: e.target.checked })}
-                  />
+                    onChange={(e) => setValues({ ...values, agreeTerm: e.target.checked })}/>
                   <label className="signUpInput me-2" htmlFor="agree-term">
                     <span>
                       <span />
@@ -347,8 +343,7 @@ function SignUp({ fetchUserData }) {
                     name="submit"
                     id="submit"
                     className="form-submit btn btn-primary"
-                    value="تسجيل"
-                  />
+                    value="تسجيل"/>
                 </div>
 
                 <div className="ms-3 term-service">

@@ -5,26 +5,30 @@ import { HashLink } from 'react-router-hash-link';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
-function CoursesHome() 
-{
+function CoursesHome() {
   const [courses, setCourses] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const navigate = useNavigate();
+
+
+  const token = localStorage.getItem('token');
+  const decodedToken = token ? jwt_decode(token) : null;
+  const user_id = decodedToken?.userId;
+
+
+
 
   useEffect(() => {
-    // Fetch latest courses
+    // get the latest three courses
     axios.get('http://localhost:4000/courses/latestHome').then(response => {
-        setCourses(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+      setCourses(response.data);
+    }).catch(error => {
+      console.error(error);
+    });
 
 
-    // Fetch enrolled courses
+    // get enrolled courses to check if the user register in it or not
     const fetchEnrolledCourses = async () => {
-      const token = localStorage.getItem('token');
-      const decodedToken = token ? jwt_decode(token) : null;
-      const user_id = decodedToken?.userId;
 
       try {
         const response = await axios.get(`http://localhost:4000/enrolled-courses/${user_id}`);
@@ -35,21 +39,17 @@ function CoursesHome()
     };
 
     fetchEnrolledCourses();
-  }, []);
+  }, [user_id]);
+
 
   const formatDate = timestamp => {
     const date = new Date(timestamp);
     return date.toLocaleDateString('en-US');
   };
 
-  const navigate = useNavigate();
-
-
 
   // Handle add course to cart
   const handleAddToCart = async (course) => {
-    const token = localStorage.getItem('token');
-
 
     if (!token) {
       // If the user is not logged in, show a pop-up message asking them to log in first.
@@ -69,10 +69,7 @@ function CoursesHome()
       return;
     }
 
-
-    const decodedToken = token ? jwt_decode(token) : null;
-    const user_id = decodedToken?.userId;
-
+    
     try {
       // Check if the course already exists in the cart table
       const response = await axios.get(`http://localhost:4000/cartCourse/${user_id}/${course.course_id}`);
@@ -87,7 +84,6 @@ function CoursesHome()
       }
 
 
-
       // Send a request to the server to add the course to the cart table
       await axios.post('http://localhost:4000/cartCourse', {
         user_id: user_id,
@@ -97,7 +93,6 @@ function CoursesHome()
         course_image: course.course_image,
         type: 'course'
       });
-
 
 
       Swal.fire({
@@ -117,7 +112,7 @@ function CoursesHome()
       }).then(async (result) => {
         if (result.dismiss === Swal.DismissReason.cancel) {
           // Remove the cart items from the server if the user cancels the payment
-          await axios.delete(`http://localhost:4000/cart/${user_id}/${course.course_id}`);
+          await axios.delete(`http://localhost:4000/cartItemCourse/${user_id}/${course.course_id}`);
 
           Swal.fire({
             title: 'تم إلغاء الطلب بنجاح',
@@ -135,12 +130,8 @@ function CoursesHome()
 
 
 
-
-  
-
-
   return (
-    <div className="container py-5 mt-5" style={{ marginTop: '70px' }}>
+    <div className="container py-5 mt-5" style={{ marginTop: '100px' }}>
       {/* Render courses */}
       <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3 mb-3">
@@ -152,15 +143,13 @@ function CoursesHome()
           <div
             className="col-lg-4 col-md-6 course-card wow fadeInUp"
             data-wow-delay="0.1s"
-            key={course.course_id}
-          >
+            key={course.course_id}>
             <div className="course-item bg-light">
               <div className="position-relative overflow-hidden">
                 <img
-                  className="img-fluid course-image"
+                  className="course-image"
                   src={`http://localhost:4000/images/${course.course_image}`}
-                  alt="صورة الدورة الدراسية"
-                />
+                  alt="صورة الدورة الدراسية" width="100%"  style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"}}/>
               </div>
               <div className="text-left p-4 pb-0">
                 <h5 className="mb-4">{course.course_title}</h5>

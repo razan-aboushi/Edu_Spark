@@ -54,30 +54,27 @@ function Contact() {
       message: message
     };
 
-    axios.post('http://localhost:4000/messages', newMessage)
-      .then(response => {
-        console.log('Message sent successfully:', response.data);
-        Swal.fire({
-          icon: 'success',
-          title: 'تمت عملية الإرسال',
-          text: 'تم إرسال رسالتك بنجاح'
-        });
-      })
-      .catch(error => {
-        console.error('Error in sending message:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'فشل في الإرسال',
-          text: 'حدث خطأ أثناء عملية إرسال رسالتك ، من فضلك أعد المحاولة'
-        });
+    axios.post('http://localhost:4000/messages', newMessage).then(response => {
+      console.log('Message sent successfully:', response.data);
+      Swal.fire({
+        icon: 'success',
+        title: 'تمت عملية الإرسال',
+        text: 'تم إرسال رسالتك بنجاح'
       });
+    }).catch(error => {
+      console.error('Error in sending message:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'فشل في الإرسال',
+        text: 'حدث خطأ أثناء عملية إرسال رسالتك ، من فضلك أعد المحاولة'
+      });
+    });
 
 
     setName("");
     setEmail("");
     setSubject("");
     setMessage("");
-
 
   }
 
@@ -92,17 +89,16 @@ function Contact() {
               <h1 className="display-3 text-white animated slideInDown">تواصل معنا</h1>
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb justify-content-center">
-                  <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
-                    <Link className="text-white" to={"/"}>
-                      الرئيسية
-                    </Link>
-                  </Breadcrumbs>
                   <li
                     className="breadcrumb-item text-white active"
-                    aria-current="page"
-                  >
+                    aria-current="page">
                     الاتصال
                   </li>
+                  <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
+                    <Link className="text-white" to={"/"}>
+                      الصفحة الرئيسية
+                    </Link>
+                  </Breadcrumbs>
                 </ol>
               </nav>
             </div>
@@ -118,55 +114,59 @@ function Contact() {
             <form id="ContactForm" onSubmit={handleSubmit}>
               <div className="row g-4">
                 <div className="col-md-6">
-                  <div className="form-floating">
+                  <div className="form-label">
+                    <label htmlFor="name">إسمك</label>
+
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control p-3"
                       id="name"
-                      placeholder="اسمك"
+                      placeholder="إسمك"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
-                    <label htmlFor="name">اسمك</label>
                   </div>
                 </div>
                 <div className="col-md-6">
-                  <div className="form-floating">
+                  <label htmlFor="email">البريد الإلكتروني</label>
+
+                  <div className="form-label">
                     <input
                       type="email"
-                      className="form-control"
+                      className="form-control p-3"
                       id="email"
                       placeholder="example@gmail.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <label htmlFor="email">بريدك الإلكتروني</label>
                   </div>
                 </div>
                 <div className="col-12">
-                  <div className="form-floating">
+                  <label htmlFor="subject">الموضوع</label>
+
+                  <div className="form-label">
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control p-3"
                       id="subject"
                       placeholder="الموضوع"
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
                     />
-                    <label htmlFor="subject">الموضوع</label>
                   </div>
                 </div>
                 <div className="col-12">
-                  <div className="form-floating">
+                  <label htmlFor="message">الرسالة</label>
+
+                  <div className="form-label">
                     <textarea
-                      className="form-control"
+                      className="form-control p-3"
                       placeholder="اترك رسالتك هنا"
                       id="message"
                       style={{ height: 150 }}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                     />
-                    <label htmlFor="message">الرسالة</label>
                   </div>
                 </div>
                 <div className="col-12">

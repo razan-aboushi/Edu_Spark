@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ApprovedContent = () => {
+function ApprovedContent() 
+ {
   const [activeTab, setActiveTab] = useState(1);
   const [approvedCourses, setApprovedCourses] = useState([]);
   const [approvedSummaries, setApprovedSummaries] = useState([]);
 
   useEffect(() => {
-    // Fetch approved courses
+    // get approved courses
     axios.get('http://localhost:4000/approvedCourses').then(response => {
         setApprovedCourses(response.data);
       }).catch(error => {
         console.log(error);
       });
 
-    // Fetch approved summaries
+    // get approved summaries
     axios.get('http://localhost:4000/approvedSummaries').then(response => {
         setApprovedSummaries(response.data);
       }).catch(error => {
@@ -32,8 +33,7 @@ const ApprovedContent = () => {
       <div className="tabs mb-4" style={{ fontSize: "18px", fontWeight: "bold" }}>
         <button
           className={`tab mt-2 shadow ms-5 ${activeTab === 1 ? 'active' : ''}`}
-          onClick={() => handleTabChange(1)} style={{border:"1px solid gray", padding:"15px" , borderRadius:"15px"}}
-        >
+          onClick={() => handleTabChange(1)} style={{border:"1px solid gray", padding:"15px" , borderRadius:"15px"}}>
           الدورات المعتمدة
         </button>
         <button
@@ -85,9 +85,9 @@ const ApprovedContent = () => {
             </tbody>
           </table>
         )}
-      </div >
-    </div >
+      </div>
+    </div>
   );
-};
+}
 
 export default ApprovedContent;

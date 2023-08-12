@@ -11,14 +11,11 @@ function UserProfile() {
     const getUserProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        console.log(token);
         if (token) {
           const decodedToken = jwt_decode(token);
-          console.log(decodedToken);
           const user_id = decodedToken.userId;
-          console.log(user_id);
+
           const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
-          console.log(response.data);
           const formattedProfile = {
             ...response.data,
             birthdate: new Date(response.data.birthdate).toLocaleDateString(), 
@@ -33,6 +30,7 @@ function UserProfile() {
     getUserProfile();
   }, []);
 
+  
   return (
     <section id="UserProfile" className="mt-5">
       <div className="container-fluid d-flex justify-content-center mb-2">

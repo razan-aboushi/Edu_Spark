@@ -227,7 +227,6 @@ function CheckoutPayment() {
             timer: 3000,
           });
 
-
           // Clear the cart items from the database
           axios.delete(`http://localhost:4000/clearCartItems/${user_id}`).then((response) => {
             // Handle success response
@@ -431,7 +430,6 @@ function CheckoutPayment() {
 
 
 
-
   return (
     <>
 
@@ -449,8 +447,7 @@ function CheckoutPayment() {
 
                     <li
                       className="breadcrumb-item text-white active"
-                      aria-current="page"
-                    >
+                      aria-current="page">
                     </li>
                   </ol>
                 </nav>
@@ -541,22 +538,24 @@ function CheckoutPayment() {
 
 
             </p>
-            <p>عربة تسوقِك فارغة ، سارع في شراء مُلخص أو الإنضمام لدورة الأن</p>
+            <p> عربةِ تسوقِكَ فارغة ، سارع في شراءِ             <Link to="/summaries" className='fw-bold'> مُلخص </Link> 
+              أو الإنضمام              <Link to="/Courses" className='fw-bold'>لدورة</Link> الأن
+              </p>
+            <p>
+              إستمر في التعلم و إحصل على المعرفة و الدرجات العالية	&hearts;
 
-            <Link to="/summaries">إستمر بالتعلم و إحصل على المعرفة و الدرجات العالية</Link>
+            </p>
+
           </div>
         )}
       </div>
 
 
 
-
-
-
       {/* Payment form  */}
       {!isLoggedIn ? (
         <div className='d-flex justify-content-center'>
-          <button className="checkout-btn buttonInAddArticle mt-5 fa-solid fa-book-open-reader" onClick={() =>
+          <button className="checkout-btn buttonInAddArticle mt-3 fa-solid fa-book-open-reader" onClick={() =>
             Swal.fire({
               title: 'قم بعملية تسجيل الدخول لتستمر في عمليتي الشراء و الدفع',
               icon: 'info',
@@ -592,16 +591,14 @@ function CheckoutPayment() {
                     <div className="btn-group d-flex justify-content-center">
                       <button
                         className="PayTab btn-primary p-2 m-2"
-                        onClick={() => handleTabChange("creditCard")}
-                      >
+                        onClick={() => handleTabChange("creditCard")}>
 
                         بطاقة الماستر أو  بطاقة الفيزا
                       </button>
 
                       <button
                         className="PayTab btn-primary p-2 m-2"
-                        onClick={() => handleTabChange("orangeMoney")}
-                      >
+                        onClick={() => handleTabChange("orangeMoney")}>
 
                         محفظة أورانج
                       </button>

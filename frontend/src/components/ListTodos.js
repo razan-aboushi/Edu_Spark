@@ -3,8 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import jwt_decode from 'jwt-decode';
 
-function ListTodos() 
-{
+function ListTodos() {
   const [todos, setTodos] = useState([]);
   const [description, setDescription] = useState("");
   const [selectedTodo, setSelectedTodo] = useState(null);
@@ -14,7 +13,7 @@ function ListTodos()
   const user_id = decodedToken?.userId;
 
 
-// Add to do in the list
+  // Add to do in the list
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
@@ -23,10 +22,8 @@ function ListTodos()
     }
 
     try {
-      const body = { description, user_id };
-      await axios.post("http://localhost:4000/todos", body, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const toDoData = { description, user_id };
+      await axios.post("http://localhost:4000/todos", toDoData);
       getTodos();
       setDescription("");
     } catch (err) {
@@ -35,32 +32,32 @@ function ListTodos()
   };
 
 
-    // delete to do
-    const deleteTodo = async (todo_id) => {
-      try {
-        const result = await Swal.fire({
-          title: "تأكيد الحذف",
-          text: "هل أنت متأكد أنك تريد حذف هذه المهمة؟",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "نعم",
-          cancelButtonText: "لا",
-          confirmButtonColor: "#dc3545", 
-          cancelButtonColor: "#06BBCC", 
-        });
-  
-        if (result.isConfirmed) {
-          await axios.delete(`http://localhost:4000/todos/${todo_id}`);
-          getTodos();
-        }
-      } catch (error) {
-        console.error(error);
+  // delete to do
+  const deleteTodo = async (todo_id) => {
+    try {
+      const result = await Swal.fire({
+        title: "تأكيد الحذف",
+        text: "هل أنت متأكد أنك تريد حذف هذه المهمة؟",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "نعم",
+        cancelButtonText: "لا",
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#06BBCC",
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:4000/todos/${todo_id}`);
+        getTodos();
       }
-    };
-  
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
-// get spesific to do
+
+  // get all the to dos for this person
   const getTodos = async () => {
     try {
       const response = await axios.get(`http://localhost:4000/todos/${user_id}`);
@@ -76,12 +73,11 @@ function ListTodos()
   }, []);
 
 
-// Edit on the to do "description"
-  const handleEditTodoModalOpen = async (todo_id) => {
+  // Edit on the to do "description"
+  const handleEditTodoBoxOpen = async (todo_id) => {
     const selectedTodo = todos.find((todo) => todo.todo_id === todo_id);
 
-    if (!selectedTodo) 
-    {
+    if (!selectedTodo) {
       console.error(`Todo with todo_id ${todo_id} not found.`);
       return;
     }
@@ -187,8 +183,7 @@ function ListTodos()
                   <button
                     type="button"
                     className="btn btn-warning"
-                    onClick={() => handleEditTodoModalOpen(todo.todo_id)}
-                  >
+                    onClick={() => handleEditTodoBoxOpen(todo.todo_id)}>
                     تعديل
                   </button>
                 </td>

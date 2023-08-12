@@ -207,7 +207,7 @@ function SummaryForm() {
                                 <input
                                     className="form-control"
                                     type="text"
-                                    placeholder="أدخل عنواناً مناسباً للملخص"
+                                    placeholder="أدخل عنواناً مناسباً للمُلخص"
                                     name="summary_title"
                                     id="summary_title"
                                     value={summaryData.summary_title}
@@ -218,7 +218,7 @@ function SummaryForm() {
                             {/* Summary Image */}
                             <div className={`form-group mt-3 ${getInputClass("summary_image")}`}>
                                 <label className="control-label" htmlFor="summary_image">
-                                    صورة الملخص
+                                    صورة توصف المُلخص
                                 </label>
                                 <input
                                     className="form-control"
@@ -233,11 +233,11 @@ function SummaryForm() {
                             {/* Summary Description */}
                             <div className={`form-group mt-3 ${getInputClass("summary_brief")}`}>
                                 <label className="control-label" htmlFor="summary_brief">
-                                    وصف الملخص
+                                    وصف المُلخص
                                 </label>
                                 <textarea
                                     className="form-control"
-                                    placeholder="أدخل وصفاً للملخص"
+                                    placeholder="أدخل وصفاً للمُلخص"
                                     name="summary_brief"
                                     id="summary_brief"
                                     value={summaryData.summary_brief}
@@ -248,11 +248,11 @@ function SummaryForm() {
                             {/* Summary Details */}
                             <div className={`form-group mt-3 ${getInputClass("summary_description")}`}>
                                 <label className="control-label" htmlFor="summary_description">
-                                    تفاصيل الملخص
+                                    تفاصيل عن المُلخص
                                 </label>
                                 <textarea
                                     className="form-control"
-                                    placeholder="أدخل تفاصيل الملخص"
+                                    placeholder="أدخل تفُاصيل الملخص"
                                     name="summary_description"
                                     id="summary_description"
                                     value={summaryData.summary_description}
@@ -306,9 +306,9 @@ function SummaryForm() {
                                     name="summary_price"
                                     id="summary_price"
                                     value={summaryData.summary_price}
-                                    onChange={handleInputChange}/>
+                                    onChange={handleInputChange}
+                                    disabled={summaryData.sell_or_free==="free"} />
                             </div>
-
 
 
                             {/* course University */}

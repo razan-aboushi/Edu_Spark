@@ -26,7 +26,7 @@ function AddArticleForm()
 
 
 
-  // Handle image changes and update the articleData state
+  // Handle image changes and update the article Data state
   function handleImageChange(event) {
     const files = event.target.files;
     const file = files[0];
@@ -38,7 +38,7 @@ function AddArticleForm()
 
 
 
-  // Submit the article
+  // Submit the article "Add new article"
   async function onSubmit(event) 
   {
     event.preventDefault();
@@ -50,7 +50,6 @@ function AddArticleForm()
       formData.append('article_content', articleData.article_content);
       formData.append('article_image', articleData.article_image);
 
-      // Make a POST request to add the article
       await axios.post('http://localhost:4000/AddArticle', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -104,8 +103,7 @@ function AddArticleForm()
         id="formAddArticle"
         onSubmit={onSubmit}
         className={classNames('form-container', 'custom-form')}
-        style={{ width: '100%', maxWidth: '750px', padding: '20px', margin: '0 auto' }}
-      >
+        style={{ width: '100%', maxWidth: '750px', padding: '20px', margin: '0 auto' }}>
         <div className="form-group">
           <label htmlFor="title" className="mt-3 mb-3">
             العنوان:

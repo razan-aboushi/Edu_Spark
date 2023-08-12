@@ -14,10 +14,6 @@ router.get('/articles', articlesController.articlesAll);
 router.post('/comments/count', articlesController.getCountOfComments);
 
 
-
-
-
-
 // Define the route to fetch a specific article based on the article id in the article details page
 router.get('/articles/:article_id', articlesController.getarticlesbyID);
 

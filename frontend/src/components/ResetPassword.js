@@ -14,8 +14,6 @@ function ResetPassword()
 
 
 
-
-
   // Handle submit the form for reset password
   const handleSubmit = async (event) => {
     event.preventDefault();

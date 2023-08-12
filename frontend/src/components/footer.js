@@ -43,7 +43,7 @@ function Footer()
                     مقالات
                   </Link>
                   <Link className="btnLinks btn-link" to="/Summaries" target="_blank">
-                    ملخصات
+                    مُلخصات
                   </Link>
                   <Link className="btnLinks btn-link" to="/faq" target="_blank">
                     الأسئلة الشائعة

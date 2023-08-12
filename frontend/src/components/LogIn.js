@@ -5,8 +5,7 @@ import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../css/style.css';
 
-function LogIn({ fetchUserData })
- {
+function LogIn({ fetchUserData }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -25,7 +24,6 @@ function LogIn({ fetchUserData })
       setRememberMe(true);
     }
   }, []);
-
 
 
 
@@ -72,7 +70,6 @@ function LogIn({ fetchUserData })
 
   };
 
-
   return (
     <section className="vh-100" style={{ marginTop: '80px' }}>
       <div className="container-fluid h-custom">
@@ -96,9 +93,9 @@ function LogIn({ fetchUserData })
                   id="email1"
                   name="email"
                   className="form-control p-3 form-control-lg"
-                  placeholder="أدخل عنوان بريد إلكتروني صحيح"
+                  placeholder="example@gmail.com"
                   value={email}
-                  onChange={(e)=>setEmail(e.target.value)} />
+                  onChange={(e) => setEmail(e.target.value)} />
               </div>
               {/* حقل كلمة المرور */}
               <div className="form-outline mb-3">
@@ -113,12 +110,12 @@ function LogIn({ fetchUserData })
                     className="form-control p-3 form-control-lg"
                     placeholder="أدخل كلمة المرور"
                     value={password}
-                    onChange={(e)=>setPassword(e.target.value)} />
+                    onChange={(e) => setPassword(e.target.value)} />
 
                   <button
                     className="btn btn-outline-secondary" style={{ borderRadius: "5px" }}
                     type="button"
-                    onClick={()=>setShowPassword(!showPassword)}>
+                    onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                   </button>
                 </div>
@@ -137,9 +134,9 @@ function LogIn({ fetchUserData })
                     checked={rememberMe}
                     onChange={() => {
                       setRememberMe(!rememberMe);
-
                       localStorage.removeItem("email");
-                      localStorage.removeItem("password"); }} />
+                      localStorage.removeItem("password");
+                    }} />
                 </div>
                 <Link to="/ResetPassword" className="text-body">
                   هل نسيت كلمة المرور؟

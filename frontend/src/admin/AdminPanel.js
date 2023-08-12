@@ -107,10 +107,17 @@ function AdminPanel() {
         setAboutUsTitle(aboutUsTitle);
     }
 
-    function updateAboutUsParagraph(aboutParagraph1, aboutParagraph2) {
+    function updateAboutUsParagraph1(aboutParagraph1) {
         setAboutParagraph1(aboutParagraph1);
+    }
+
+
+    function updateAboutUsParagraph2(aboutParagraph2) {
         setAboutParagraph2(aboutParagraph2);
     }
+
+
+
 
     function navigateTabs(tab) {
         setActiveTab(tab);
@@ -209,13 +216,23 @@ function AdminPanel() {
                             />
                         </div>
                         <div className="form-groupPanelDash">
-                            <label htmlFor="formAboutUsContent">محتوى من نحن</label>
+                            <label htmlFor="formAboutUsContent"> الفقرة الأولى </label>
                             <textarea
                                 className="form-controlDashboardPanel"
                                 id="formAboutUsContent"
                                 rows="3"
-                                onChange={(e) => updateAboutUsParagraph(e.target.value)}
-                                value={aboutParagraph1 + " " + aboutParagraph2}
+                                onChange={(e) => updateAboutUsParagraph1(e.target.value)}
+                                value={aboutParagraph1}
+                            ></textarea>
+                        </div>
+                        <div className="form-groupPanelDash">
+                            <label htmlFor="formAboutUsContent">الفقرة الثانية </label>
+                            <textarea
+                                className="form-controlDashboardPanel"
+                                id="formAboutUsContent1"
+                                rows="3"
+                                onChange={(e) => updateAboutUsParagraph2(e.target.value)}
+                                value={ aboutParagraph2}
                             ></textarea>
                         </div>
 

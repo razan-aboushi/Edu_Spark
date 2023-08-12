@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import OwlCarousel from 'react-owl-carousel';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
+// import 'owl.carousel/dist/assets/owl.carousel.css';
+import "../lib/owlcarousel/assets/owl.carousel.css"
+// import 'owl.carousel/dist/assets/owl.theme.default.css';
+import '../lib/owlcarousel/assets/owl.theme.default.css';
 
 
 function UniversityHome() 
@@ -11,17 +13,22 @@ function UniversityHome()
   const [universities, setUniversities] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:4000/universities').then(response => {
+    const gethUniversities = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/universities');
         setUniversities(response.data);
-      }).catch(error => {
+      } catch (error) {
         console.error(error);
-      });
+      }
+    };
+  
+    gethUniversities();
   }, []);
-
+  
 
 
   return (
-    <section className="ftco-section mb-5" dir="ltr" style={{ marginTop: "110px" }}>
+    <section className="ftco-section mb-5" dir="ltr" style={{ marginTop: "100px" }}>
       <div className="container">
         <div className="row">
           <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -61,8 +68,7 @@ function UniversityHome()
                       <div className="text pt-3 w-100 text-center">
                         <h5>
                           <Link
-                            to={`/coursesCategories/${university.university_id}`}
-                          >
+                            to={`/coursesCategories/${university.university_id}`}>
                             {university.university_name}
                           </Link>
                         </h5>

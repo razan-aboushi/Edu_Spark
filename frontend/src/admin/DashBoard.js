@@ -2,16 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/style.css';
 
-function Card({ title, value, icon }) 
-{
-  return (
-    <div className="DashboardCards">
-      <div className="card-icon">{icon}</div>
-      <h4>{title}</h4>
-      <p className="paragraph">{value}</p>
-    </div>
-  );
-}
 
 function Dashboard() 
 {
@@ -81,3 +71,20 @@ function Dashboard()
 }
 
 export default Dashboard;
+
+
+
+
+
+
+
+function Card({ title, value, icon }) 
+{
+  return (
+    <div className="DashboardCards">
+      <div className="card-icon">{icon}</div>
+      <h4>{title}</h4>
+      <p className="paragraph">{value}</p>
+    </div>
+  );
+}

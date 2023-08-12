@@ -5,13 +5,12 @@ import "../css/style.css";
 import about from "../img/about.jpg";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 
-function About()
- {
+function About() {
   const [aboutUsData, setAboutUsData] = useState({});
   const [visionData, setVisionData] = useState({});
   const [missionData, setMissionData] = useState({});
 
-  
+
 
   useEffect(() => {
     const getAboutData = async () => {
@@ -19,10 +18,9 @@ function About()
         const response = await axios.get('http://localhost:4000/aboutUsGet');
         setAboutUsData(response.data);
         setVisionData(response.data);
-        setMissionData(response.data);     
-       }
-      catch (error)
-       {
+        setMissionData(response.data);
+      }
+      catch (error) {
         console.error('Error fetching data:', error);
       }
     };
@@ -47,17 +45,17 @@ function About()
                   معلومات عنا            </h1>
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb justify-content-center">
-                    <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
-                      <Link className="text-white" to={"/"}>
-                        الرئيسية
-                      </Link>
-                    </Breadcrumbs>
-                    <li
+                  <li
                       className="breadcrumb-item text-white active"
-                      aria-current="page"
-                    >
+                      aria-current="page">
                       معلومات عنا
                     </li>
+                    <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
+                      <Link className="text-white" to={"/"}>
+                        الصفحة الرئيسية
+                      </Link>
+                    </Breadcrumbs>
+                  
                   </ol>
                 </nav>
               </div>
@@ -134,8 +132,7 @@ function About()
               <div
                 className="col-lg-6 wow fadeInUp"
                 data-wow-delay="0.1s"
-                style={{ minHeight: 400 }}
-              >
+                style={{ minHeight: 400 }}>
                 <div className="position-relative h-100">
                   <img
                     className="img-fluid position-absolute w-100 h-100"
@@ -148,10 +145,10 @@ function About()
               <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
                 <h1 className="mb-4">{aboutUsData.aboutus_title}</h1>
                 <p className="mb-4">
-                  {aboutUsData.aboutpargraph1}    
+                  {aboutUsData.aboutpargraph1}
                 </p>
                 <p className="mb-4">
-                  {aboutUsData.aboutpargraph2}  
+                  {aboutUsData.aboutpargraph2}
                 </p>
               </div>
             </div>
@@ -159,8 +156,8 @@ function About()
         </div>
       </div>
       {/* About End */}
-      {/* Start of mission and vision section */}
 
+      {/* Start of mission and vision section */}
       <div className="hmv-box">
         <div className="container">
           <div className="row  justify-content-end">
@@ -172,7 +169,7 @@ function About()
                 <h3>{visionData.vision_title}</h3>
                 <div className="tr-pa">ر</div>
                 <p>
-                  {visionData.vision}   
+                  {visionData.vision}
                 </p>
               </div>
             </div>
@@ -184,7 +181,7 @@ function About()
                 <h3>{missionData.mission_title}</h3>
                 <div className="tr-pa">م</div>
                 <p>
-                  {missionData.mission}  
+                  {missionData.mission}
                 </p>
               </div>
             </div>

@@ -3,7 +3,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import '../css/style.css';
 
-function PublishRequestCourse() {
+function PublishRequestCourse()
+ {
   const [data, setData] = useState([]);
 
 
@@ -68,24 +69,26 @@ function PublishRequestCourse() {
     }
   };
 
+
   useEffect(() => {
-    fetchPendingCourses();
+    getPendingCourses();
   }, []);
 
+
+
   // get the courses that have the pending status
-  const fetchPendingCourses = async () => {
+  const getPendingCourses = async () => {
     try {
       const response = await axios.get('http://localhost:4000/courses/pending');
       const pendingCourses = response.data;
       setData(pendingCourses);
-    } catch (error) {
+    } catch (error) 
+    {
       console.log('Error fetching pending courses:', error);
     }
   };
 
-  if (!data) {
-    return <div>لا توجد دورات مُعلقة.</div>;
-  }
+
 
   return (
     <div className="text-center mt-4 d-flex justify-content-center">
@@ -106,10 +109,10 @@ function PublishRequestCourse() {
             ) : (
               data.map((item) => (
                 <tr key={item.course_id}>
-                  <td>{item.name}</td>
-                  <td>{item.email}</td>
-                  <td>{item.course_title}</td>
-                  <td>{item.course_description}</td>
+                  <td className='text-end'>{item.name}</td>
+                  <td className='text-end'>{item.email}</td>
+                  <td className='text-end'>{item.course_title}</td>
+                  <td className='text-end'>{item.course_brief}</td>
                   <td>
                     {item.course_price === "0" ? (
                       <span style={{ color: 'green' }}>مجاني</span>

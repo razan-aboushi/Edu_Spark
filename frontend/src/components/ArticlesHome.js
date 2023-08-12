@@ -5,10 +5,11 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import axios from 'axios';
 
-function ArticlesHome() {
+function ArticlesHome()
+ {
   const [articles, setArticles] = useState([]);
 
-  // Get six articles in the home page
+  // Get latest six articles in the home page
   useEffect(() => {
     async function getSomeArticles() {
       try {
@@ -51,7 +52,7 @@ function ArticlesHome() {
               articles.map((article) => (
                 <div className="item" key={article.article_id}>
                   <div className="work">
-                    <div className="img d-flex align-items-center justify-content-center rounded" style={{ backgroundImage: `url(http://localhost:4000/images/${article.article_image})` }}>
+                    <div className="img d-flex align-items-center justify-content-center rounded" style={{ backgroundImage: `url(http://localhost:4000/images/${article.article_image})`, width:"100%" , height:"250px" ,backgroundSize:"cover"}} >
                       <Link to={`/ArticleDetails/${article.article_id}`} className="icon d-flex align-items-center justify-content-center">
                         <span className="bi bi-search" />
                       </Link>
@@ -67,7 +68,7 @@ function ArticlesHome() {
                 </div>
               ))
             ) : (
-              <div>
+              <div className='text-center'>
               يتم تحميل المقالات الأن ... طابَ يومك
             </div>    
                     )}

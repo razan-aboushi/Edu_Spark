@@ -78,7 +78,6 @@ function CourseForm() {
     const handleSubmitCourseForm = (event) => {
         event.preventDefault();
 
-
         const formData = new FormData();
 
         for (const [key, value] of Object.entries(courseData)) {
@@ -92,7 +91,6 @@ function CourseForm() {
             console.log(user_id)
 
             axios.post(`http://localhost:4000/addCourseForm/${user_id}`, formData).then((response) => {
-                console.log(response.data);
                 setCourseData({
                     course_title: "",
                     course_image: "",
@@ -161,7 +159,6 @@ function CourseForm() {
             field === "course_university" ||
             field === "facebook_link" ||
             field === "linkedin_link"
-
         );
     };
 
@@ -232,7 +229,7 @@ function CourseForm() {
                                 />
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_description")}`}>
-                                <label className="mb-2 mt-2" htmlFor="course_description">تفاصيل الدورة:</label>
+                                <label className="mb-2 mt-2" htmlFor="course_description">تفاصيل عن الدورة و أهميتها:</label>
                                 <textarea
                                     className="form-control"
                                     name="course_description"
@@ -316,6 +313,7 @@ function CourseForm() {
                                     value={courseData.course_price}
                                     onChange={handleInputChange}
                                     required
+                                    disabled={courseData.sell_or_free==="free"}
                                 />
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_duration")}`}>
@@ -344,8 +342,7 @@ function CourseForm() {
                                         id="start_date"
                                         value={courseData.start_date}
                                         onChange={handleInputChange}
-                                        required
-                                    />
+                                        required/>
                                     <span className="input-group-text">إلى</span>
                                     <input
                                         className="form-control"
@@ -370,8 +367,7 @@ function CourseForm() {
                                         id="start_time"
                                         value={courseData.start_time}
                                         onChange={handleInputChange}
-                                        required
-                                    />
+                                        required/>
                                     <span className="input-group-text">وقت الإنتهاء</span>
                                     <input
                                         className="form-control"
@@ -416,8 +412,7 @@ function CourseForm() {
                                     id="course_category"
                                     value={courseData.course_category}
                                     onChange={handleInputChange}
-                                    disabled={!courseData.course_university}
-                                >
+                                    disabled={!courseData.course_university}>
                                     <option value="">اختر التخصص</option>
                                     {categories.map((category) => (
                                         <option key={category.category_id} value={category.category_id}>

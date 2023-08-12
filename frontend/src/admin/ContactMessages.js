@@ -2,40 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/style.css';
 
-function ReplySection({ messageId, email })
+
+function ContactMessages()
  {
-
-  const [reply, setReply] = useState('');
-
-  const handleReply = async () => {
-    try {
-      const requestData = {
-        messageId: messageId,
-        reply: reply,
-      };
-
-      const response = await axios.post('http://localhost:4000/sendReply', requestData, {
-        headers: { 'Content-Type': 'application/json' }
-      });
-      console.log('Reply sent:', response.data);
-      setReply('');
-    } catch (error) {
-      console.error('Error sending reply:', error);
-    }
-  };
-
-
-  return (
-    <div className="reply-section">
-      <a href={`mailto:${email}`}>
-        <button className="ContactMessageButton" onClick={handleReply}>
-          كتابة رّد      
-            </button> </a>
-    </div>
-  );
-}
-
-function ContactMessages() {
   const [messages, setMessages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [messagesPerPage] = useState(10);
@@ -44,11 +13,12 @@ function ContactMessages() {
     getContactMessages();
   }, []);
 
+  
+  // Get contact messages
   const getContactMessages = async () => {
     try {
       const response = await axios.get('http://localhost:4000/messagesContactUs');
-      const retrievedMessages = response.data;
-      setMessages(retrievedMessages);
+      setMessages(response.data);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
@@ -88,7 +58,7 @@ function ContactMessages() {
                   <td>{message.subject}</td>
                   <td>{message.message}</td>
                   <td>
-                    <ReplySection messageId={message.contact_id} email={message.email} />
+                    <ReplySection email={message.email} />
                   </td>
                 </tr>
               ))}
@@ -105,8 +75,7 @@ function ContactMessages() {
               <button
                 key={index}
                 className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
-                onClick={() => paginate(index + 1)}
-              >
+                onClick={() => paginate(index + 1)}>
                 {index + 1}
               </button>
             ))}
@@ -118,3 +87,19 @@ function ContactMessages() {
 }
 
 export default ContactMessages;
+
+
+
+
+function ReplySection({ email }) 
+{
+
+  return (
+    <div className="reply-section">
+      <a href={`mailto:${email}`}>
+        <button className="ContactMessageButton">
+          كتابة رّد
+        </button> </a>
+    </div>
+  );
+}

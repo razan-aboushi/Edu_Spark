@@ -20,7 +20,6 @@ import CoursesHome from './CoursesHome';
 import Swal from 'sweetalert2';
 
 function Index() {
-
   const [aboutUsData, setAboutUsData] = useState({});
 
   useEffect(() => {
@@ -106,7 +105,7 @@ function Index() {
                   className="img-fluid"
                   src={slider2}
                   alt="صورة"
-                  style={{ backgroundRepeat: "no-repeat", backgroundSize: "cover" }}/>
+                  style={{ backgroundRepeat: "no-repeat", backgroundSize: "cover" }} />
                 <div
                   className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end"
                   style={{ background: "rgba(24, 29, 56, .7)" }}>
@@ -117,7 +116,7 @@ function Index() {
                           أفضل المراجعات لموادك
                         </h5>
                         <h2 className="display-5 text-white animated slideInDown">
-                          تعلم دوراتك عبر الإنترنت  
+                          تعلم دوراتك عبر الإنترنت
                         </h2>
                         <p className="text-white mb-3 pb-2">
                           أفضل طريقة للتعلم هي تعليم الآخرين ما قُمتَ بتعمله
@@ -224,7 +223,6 @@ function Index() {
               </p>
               <p className="mb-4">
                 {aboutUsData.aboutpargraph2}
-
               </p>
               <HashLink className="py-2 px-3 mt-2" to={"/about/#"}>
                 <button className="learn-more">
@@ -298,18 +296,18 @@ function Index() {
         {/* نهاية الكارت للفيديو المباشر */}
 
 
-
-
-        {/* University section */}
-        <UniversityHome />
-        {/* End of university section */}
       </div>
+
+
+      {/* University section */}
+      <UniversityHome />
+      {/* End of university section */}
 
 
 
 
       {/* ======= قسم الأسئلة المتكررة ======= */}
-      < section id="faq" className="faq" style={{ marginTop: "110px" }}>
+      < section id="faq" className="faq" style={{ marginTop: "105px" }}>
         <div className="container" data-aos="fade-up">
           <div className="row gy-4">
             <div className="col-lg-8 order-lg-1 order-2">
@@ -317,25 +315,48 @@ function Index() {
                 className="accordion accordion-flush"
                 id="faqlist"
                 data-aos="fade-up"
-                data-aos-delay={100}
-              >
+                data-aos-delay={100}>
                 <div className="accordion-item">
                   <h3 className="accordion-header">
                     <button
                       className="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
-                      data-bs-target="#faq-content-1"
-                    >
+                      data-bs-target="#faq-content-1">
                       <span className="num">1.</span>
-                      كيف يمكنني الدفع لشراء الملخصات والكتب ؟
+                      ما هو موقع EduSpark ؟
                     </button>
                   </h3>
                   <div
                     id="faq-content-1"
                     className="accordion-collapse collapse"
-                    data-bs-parent="#faqlist"
-                  >
+                    data-bs-parent="#faqlist">
+                    <div className="accordion-body mt-2">
+
+                        . إنه منصة تعليمية توفر شروحات لطلاب الجامعة في مراحل مختلفة، وتقدمها الطالب كمعلم للمتعلم، من خلال تقديم وشرح الملخصات. وتوفر مواد لجامعات مختلفة في أكثر من فئة واحدة.
+                      <Link to="/about" className='me-2'>   
+                        تعرف علينا أكثر
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                {/* # بند الأسئلة المتكررة */}
+                <div className="accordion-item">
+
+                  <h3 className="accordion-header">
+                    <button
+                      className="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#faq-content-2">
+                      <span className="num">2.</span>
+                      كيف يمكنني الدفع لشراء الملخصات والكتب ؟
+                    </button>
+                  </h3>
+                  <div
+                    id="faq-content-2"
+                    className="accordion-collapse collapse"
+                    data-bs-parent="#faqlist">
                     <div className="accordion-body mt-2">
                       يمكنك الدفع للمواد والملخصات من خلال صفحة الدفع على الموقع عند النقر على المادة المطلوبة.
                     </div>
@@ -348,31 +369,7 @@ function Index() {
                       className="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
-                      data-bs-target="#faq-content-2"
-                    >
-                      <span className="num">2.</span>
-                      ما هو موقع EduSpark ؟
-                    </button>
-                  </h3>
-                  <div
-                    id="faq-content-2"
-                    className="accordion-collapse collapse"
-                    data-bs-parent="#faqlist"
-                  >
-                    <div className="accordion-body mt-2">
-                      إنه منصة تعليمية توفر شروحات لطلاب الجامعة في مراحل مختلفة، وتقدمها الطالب كمعلم للمتعلم، من خلال تقديم وشرح الملخصات. وتوفر مواد لجامعات مختلفة في أكثر من فئة واحدة.
-                    </div>
-                  </div>
-                </div>
-                {/* # بند الأسئلة المتكررة */}
-                <div className="accordion-item">
-                  <h3 className="accordion-header">
-                    <button
-                      className="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#faq-content-3"
-                    >
+                      data-bs-target="#faq-content-3">
                       <span className="num">3.</span>
                       هل يمكنني إضافة ملخص أو كتاب للبيع؟ هل هناك رسوم لذلك ؟
                     </button>
@@ -380,8 +377,7 @@ function Index() {
                   <div
                     id="faq-content-3"
                     className="accordion-collapse collapse"
-                    data-bs-parent="#faqlist"
-                  >
+                    data-bs-parent="#faqlist">
                     <div className="accordion-body mt-2">
                       نعم، يمكنك إضافة ملخصات أو مواد للبيع أو مجانًا على الموقع، بالإضافة إلى القدرة على إضافة أسئلة ومصارف اختبار للعديد من المواد. وسيتم خصم نسبة من المال كرسوم عند البيع عبر الموقع.
                     </div>
@@ -394,8 +390,7 @@ function Index() {
                       className="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
-                      data-bs-target="#faq-content-4"
-                    >
+                      data-bs-target="#faq-content-4">
                       <span className="num">4.</span>
                       كيف يمكنني التسجيل كمعلم أو موضح على الموقع ؟
                     </button>
@@ -403,8 +398,7 @@ function Index() {
                   <div
                     id="faq-content-4"
                     className="accordion-collapse collapse"
-                    data-bs-parent="#faqlist"
-                  >
+                    data-bs-parent="#faqlist">
                     <div className="accordion-body mt-2">
                       يمكنك فتح حساب كمعلم أو موضح عند التسجيل على الموقع.
                     </div>
@@ -417,20 +411,17 @@ function Index() {
                       className="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
-                      data-bs-target="#faq-content-5"
-                    >
+                      data-bs-target="#faq-content-5">
                       <span className="num">5.</span>
-                      ما هي الطرق المعتمدة للتواصل مع الموضحين ؟
+                      ما هي الطرق المعتمدة للتواصل مع المعلمين ؟
                     </button>
                   </h3>
                   <div
                     id="faq-content-5"
                     className="accordion-collapse collapse"
-                    data-bs-parent="#faqlist"
-                  >
+                    data-bs-parent="#faqlist">
                     <div className="accordion-body mt-2">
-                      في الصفحة الشخصية لكل موضح، ستجد معلومات الاتصال، بما في ذلك البريد الإلكتروني ورقم الهاتف، يمكنك التواصل معه من خلالهما.
-                    </div>
+                      في تفاصيل عرض كل دورة أو مُلخص يوجد البريد الإلكتروني و الفيسبوك و لينكد إن للشخص الناشر لهما أي المُعلم "الطالب" الذي يقوم بتقديمهما ، يمكنك التواصل معه من خلال النقر على أي واحدة منهم و التواصل معه                   </div>
                   </div>
                 </div>
                 {/* # بند الأسئلة المتكررة */}

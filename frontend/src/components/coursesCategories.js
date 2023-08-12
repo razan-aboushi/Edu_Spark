@@ -78,7 +78,7 @@ function CoursesCategories() {
             {categories.length > 0 ?
               (categories.map(category => (
                 category.category_name.toLowerCase().includes(searchTerm.toLowerCase()) && (
-                  <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={category.category_id}>
+                  <div className="col-lg-3 col-md-4 col-sm-12" key={category.category_id}>
                     <div className="cardCategory my-2 wow fadeInUp" data-wow-delay="0.2s">
                       <Link
                         to={`/CoursesAndSummaries/${category.university_id}/${category.category_id}`}
@@ -86,8 +86,9 @@ function CoursesCategories() {
                         <img
 
                           src={`http://localhost:4000/images/${category.category_image}`}
-                          className="card-img-top img-fluid"
-                          alt={category.category_name}
+                          className="card-img-top"
+                          alt={category.category_name}   width="100%" height="250px"
+
                         />
                         <div className="card-body text-center">
                           <h5 className="card-title">{category.category_name}</h5>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { FaUniversity, FaDollarSign, FaInfoCircle, FaEnvelope, FaFacebook, FaLinkedin } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,18 +9,15 @@ import jwt_decode from 'jwt-decode';
 
 
 
-
 function SummaryDetails()
  {
   const [summary, setSummary] = useState(null);
-  const { summaryId } = useParams();
   const [enrolledSummaries, setEnrolledSummaries] = useState([]);
+  const { summaryId } = useParams();
   const navigate = useNavigate();
 
 
-
-
-
+// get the summary from the summary enrollment table to check if the user buy this summary before now or nots the 
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
       const token = localStorage.getItem('token');
@@ -40,12 +37,11 @@ function SummaryDetails()
 
 
 
-
+// Get the summary details
   useEffect(() => {
     const getSummaryDetails = async () => {
       try {
         const response = await axios.get(`http://localhost:4000/summariesDetails/${summaryId}`);
-        console.log(response);
         setSummary(response.data);
       } catch (error) {
         console.error('Error fetching summary details:', error);
@@ -79,8 +75,6 @@ function SummaryDetails()
       return; 
     }
   
-
-
       const decodedToken = token ? jwt_decode(token) : null;
       const user_id = decodedToken?.userId;
 
@@ -146,66 +140,64 @@ function SummaryDetails()
 
     if (!summary) 
     {
-      return <div className="m-5">في إنتظار تحميل تفاصيل الملخص، إنتظر قليلاً من فضلك ...</div>;
+      return <div className="m-5">في إنتظار تحميل تفاصيل المُلخص، إنتظر قليلاً من فضلك ...</div>;
     }
 
 
     return (
-      <div className="d-flex justify-content-center align-items-center">
-        <Card className="course-card p-1">
-          <Row>
-            <Col md={8}>
-              <Card.Body className="summaryDe-body">
-                <Card.Title className="course-title">{summary.summary_title}</Card.Title>
-                <Card.Text className="course-publisher">
-                  <FaInfoCircle /> الناشر: {summary.summary_publisher}
-                </Card.Text>
-                <Card.Text className="course-university">
-                  <FaUniversity /> الجامعة: {summary.university_name}
-                </Card.Text>
-                <Card.Text className="course-category">التخصص: {summary.category_name}</Card.Text>
-                <Card.Text className="course-price">
-                  <FaDollarSign /> السعر: {summary.summary_price === "0" ? (
-                    <span style={{ color: 'green' }}>مجاني</span>
-                  ) : (
-                    <span>
-                      {summary.summary_price} د.أ
-                    </span>
-                  )}
-                </Card.Text>
-                <div className="course-description-wrapper">
-                  <Card.Text className="course-description">
-                    <p>{summary.summary_description}</p>
-                  </Card.Text>
-                </div>
-                <div className="social-icons">
-                  تواصل معي من خلال :
-                  <a href={`mailto:${summary.email}`}>
-                    <FaEnvelope style={{ fontSize: '25px' }} />
-                  </a>
-                  <a href={summary.facebook_link}>
-                    <FaFacebook style={{ fontSize: '25px' }} />
-                  </a>
-                  <a href={summary.linkedin_link}>
-                    <FaLinkedin style={{ fontSize: '25px' }} />
-                  </a>
-                </div>
-                <button className="join-button mt-5" onClick={() => handleAddToCart(summary)}
-                  disabled={enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id)}>
-                  {enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id) ? 'لقد تمَّ شرائهُ مسبقاً' : 'شراء المُلخص'}
-                </button>
-              </Card.Body>
-            </Col>
-            <Col md={4}>
-              <Card.Img
-                src={`http://localhost:4000/images/${summary.summary_image}`}
-                alt="Course Image"
-                className="course-image"
-              />
-            </Col>
-          </Row>
-        </Card>
-      </div>
+      <div className="summary-card-grid d-flex justify-content-center">
+      <Card className="course-card p-1">
+      <Card.Img
+          src={`http://localhost:4000/images/${summary.summary_image}`}
+          alt="Course Image"
+          className="course-image"  style={{width:"100%" , backgroundSize:"cover" ,height:"390px"}}
+        />
+        <Card.Body className="summaryDe-body">
+          <Card.Title className="course-title">{summary.summary_title}</Card.Title>
+          <Card.Text className="course-publisher">
+            <FaInfoCircle /> الناشر: {summary.summary_publisher}
+          </Card.Text>
+          <Card.Text className="course-university">
+            <FaUniversity /> الجامعة: {summary.university_name}
+          </Card.Text>
+          <Card.Text className="course-category">التخصص: {summary.category_name}</Card.Text>
+          <Card.Text className="course-price">
+            <FaDollarSign /> السعر: {summary.summary_price === "0" ? (
+              <span style={{ color: 'green' }}>مجاني</span>
+            ) : (
+              <span>
+                {summary.summary_price} د.أ
+              </span>
+            )}
+          </Card.Text>
+          <div className="course-description-wrapper">
+            <Card.Text className="course-description">
+              <span>{summary.summary_description}</span>
+            </Card.Text>
+          </div>
+          <div className="social-icons mt-3">
+            تواصل معي من خلال :
+            <a href={`mailto:${summary.email}`}>
+              <FaEnvelope style={{ fontSize: '25px' }} />
+            </a>
+            <a href={summary.facebook_link}>
+              <FaFacebook style={{ fontSize: '25px' }} />
+            </a>
+            <a href={summary.linkedin_link}>
+              <FaLinkedin style={{ fontSize: '25px' }} />
+            </a>
+          </div>
+          <button
+            className="join-button mt-4"
+            onClick={() => handleAddToCart(summary)}
+            disabled={enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id)}>
+            {enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id) ? 'لقد تمَّ شرائهُ مسبقاً' : 'شراء المُلخص'}
+          </button>
+        </Card.Body>
+        
+      </Card>
+    </div>
+    
     );
   }
 

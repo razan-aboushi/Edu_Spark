@@ -28,7 +28,7 @@ function CourseSummaryForm() {
             <section className="text-center" id="AddCourseOrSummary">
                 <div>
                     <h6 className="section-title bg-white text-center text-primary px-3 mt-5 mb-5">
-                        أضف ملخص أو دورة "مادة"
+                        أضف مُلخص أو دورة "مادة"
                     </h6>
                 </div>
                 <div className="d-flex justify-content-center mb-3">
@@ -36,13 +36,11 @@ function CourseSummaryForm() {
                         إضافة دورة
                     </button>
                     <button id="add-summary-btn" className="btn btn-primary btn-lg mx-2" onClick={() => handleButtonClick('AddSummary')}>
-                        إضافة ملخص
+                        إضافة مُلخص
                     </button>
                 </div>
             </section>
             {/* End Add summary or course buttons section */}
-
-
 
 
 

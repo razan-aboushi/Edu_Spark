@@ -61,15 +61,6 @@ function CoursesAndSummaries()
 
 
 
-
-
-
-
-
-
-
-
-
   // useEffect hook to fetch courses based on university and category IDs
   useEffect(() => {
     const getCourses = async () => {
@@ -84,6 +75,8 @@ function CoursesAndSummaries()
     getCourses();
   }, [university_id, category_id]);
 
+
+  
   // useEffect hook to fetch summaries based on university and category IDs
   useEffect(() => {
     const getSummaries = async () => {
@@ -259,7 +252,7 @@ function CoursesAndSummaries()
           {courses.map((course, index) => (
             <div className="courseCat-card p-3 shadow mb-4 m-4 mx-3" key={index} style={{ width: '400px', height: 'auto' }}>
               <img className="shadow" src={`http://localhost:4000/images/${course.course_image}`} alt="Course" width="100%" height="280px" />
-              <h4>{course.course_title}</h4>
+              <h4 className='mt-2'>{course.course_title}</h4>
               <p>{course.course_brief}</p>
               <p>
                 <FaMoneyBill className="icon" />
@@ -307,7 +300,7 @@ function CoursesAndSummaries()
           {summaries.map((summary, index) => (
             <div className="summary-card p-3 shadow m-4 mb-4 mx-3" key={index} style={{ width: '400px', height: 'auto' }}>
               <img className="shadow" src={`http://localhost:4000/images/${summary.summary_image}`} alt="Summary" width="100%" height="280px" />
-              <h4>{summary.summary_title}</h4>
+              <h4 className='mt-2'>{summary.summary_title}</h4>
               <p>{summary.summary_brief}</p>
               <p>
                 <FaMoneyBill className="icon" />

@@ -34,8 +34,6 @@ router.get('/cartCourse/:user_id/:course_id',cartController.getCourseFromCart);
 
 
 // in the courses and summaries page
-
-
 router.get('/checkCartItem/:user_id/:itemType/:item_id',cartController.getItemsCourseSummary );
 
 router.post('/addToCart',cartController.addToCartItems );

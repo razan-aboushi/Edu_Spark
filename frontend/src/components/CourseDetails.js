@@ -1,28 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-  FaUniversity,
-  FaDollarSign,
-  FaInfoCircle,
-  FaCalendarAlt,
-  FaUserFriends,
-  FaEnvelope,
-  FaFacebook,
-  FaLinkedin,
-} from 'react-icons/fa';
+import { FaUniversity, FaDollarSign, FaInfoCircle, FaCalendarAlt, FaUser, FaUserFriends, FaEnvelope, FaFacebook, FaLinkedin, FaArtstation, } from 'react-icons/fa';
 import axios from 'axios';
 import '../css/style.css';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
-
 function CourseDetails() {
   const [course, setCourse] = useState([]);
-  const { course_id } = useParams();
   const [subscriberCount, setSubscriberCount] = useState(0);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
-
+  const { course_id } = useParams();
 
   const navigate = useNavigate();
 
@@ -45,9 +34,6 @@ function CourseDetails() {
 
     fetchEnrolledCourses();
   }, []);
-
-
-
 
 
 
@@ -103,8 +89,6 @@ function CourseDetails() {
       });
 
 
-
-
       Swal.fire({
         title: 'تمت إضافة الدورة إلى السلة',
         html: `
@@ -122,7 +106,7 @@ function CourseDetails() {
       }).then(async (result) => {
         if (result.dismiss === Swal.DismissReason.cancel) {
           // Remove the cart items from the server if the user cancels the payment
-          await axios.delete(`http://localhost:4000/cart/${user_id}/${course.course_id}`);
+          await axios.delete(`http://localhost:4000/cartItemCourse/${user_id}/${course.course_id}`);
 
           Swal.fire({
             title: 'تم إلغاء الطلب بنجاح',
@@ -162,76 +146,81 @@ function CourseDetails() {
   const endDate = new Date(course.end_date).toLocaleDateString();
 
   return (
-    <div className="d-flex justify-content-center align-items-center">
+    <div className="course-card-grid d-flex justify-content-center">
       <Card className="course-card p-1">
-        <Row>
-          <Col md={8}>
-            <Card.Body className="course-body p-3 m-0">
-              <Card.Title className="course-title">{course.course_title}</Card.Title>
-              <Card.Text className="course-publisher">
-                <FaInfoCircle /> الناشر: {course.course_publisher}
-              </Card.Text>
-              <Card.Text className="course-university">
-                <FaUniversity /> الجامعة: {course.university_name}
-              </Card.Text>
-              <Card.Text className="course-category">
-                التخصص: {course.category_name}
-              </Card.Text>
-              <Card.Text className="course-price">
+        <Card.Img
+          src={`http://localhost:4000/images/${course.course_image}`}
+          alt="Course Image"
+          style={{
+            width: "100%",
+            backgroundSize: "cover",
+            height: "390px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" 
+          }}
+        />
+        <Card.Body className="course-body p-3 m-0">
+          <Card.Title className="course-title">{course.course_title}</Card.Title>
+          <Card.Text className="course-publisher">
+            <FaUser /> الناشر: {course.course_publisher}
+          </Card.Text>
+          <Card.Text className="course-university">
+            <FaUniversity /> الجامعة: {course.university_name}
+          </Card.Text>
+          <Card.Text className="course-category">
+            التخصص: {course.category_name}
+          </Card.Text>
+          <Card.Text className="course-price">
+            <FaDollarSign /> السعر: {course.course_price === "0" ? (
+              <span style={{ color: 'green' }}>مجاني</span>
+            ) : (
+              <span>
+                {course.course_price} د.أ
+              </span>
+            )}
+          </Card.Text>
+          <Card.Text className="course-date">
+            <FaCalendarAlt /> تاريخ الدورة: {startDate} - {endDate}
+          </Card.Text>
+          <Card.Text className="course-date">
+            <FaCalendarAlt /> وقت الدورة: {course.start_time} - {course.end_time}
+          </Card.Text>
+          <Card.Text className="course-subscribers">
+            <FaUserFriends /> عدد المشتركين: {subscriberCount}
+          </Card.Text>
+          <Card.Text className="course-subscribers mb-3">
 
-                <FaDollarSign /> السعر: {course.course_price === "0" ? (
-                  <span style={{ color: 'green' }}>مجاني</span>
-                ) : (
-                  <span>
-                    {course.course_price} د.أ
-                  </span>
-                )}
-              </Card.Text>
-              <Card.Text className="course-date">
-                <FaCalendarAlt /> تاريخ الدورة: {startDate} - {endDate}
-              </Card.Text>
-              <Card.Text className="course-date">
-                <FaCalendarAlt /> وقت الدورة: {course.start_time} - {course.end_time}
-              </Card.Text>
-              <Card.Text className="course-subscribers">
-                <FaUserFriends /> عدد المشتركين :
-                {subscriberCount}
-              </Card.Text>
-              <div className="course-description-wrapper">
-                <Card.Text className="course-description">
-                  <p>{course.course_description}</p>
-                </Card.Text>
-              </div>
-              <div className="social-icons">
-                تواصل معي من خلال  :
-                <a href={`mailto:${course.email}`}>
-                  <FaEnvelope style={{ fontSize: '25px' }} />
-                </a>
-                <a href={course.facebook_link}>
-                  <FaFacebook style={{ fontSize: '25px' }} />
-                </a>
-                <a href={course.linkedin_link}>
-                  <FaLinkedin style={{ fontSize: '25px' }} />
-                </a>
-              </div>
-              <button className="join-button mt-4" onClick={() => handleAddToCart(course)}
-                disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}
+            <FaInfoCircle /> نوع الدورة: {course.course_type}
+          </Card.Text>
+          <div className="course-description-wrapper">
+            <Card.Text className="course-description">
+              <span>  <FaArtstation /> وصف الدورة : {course.course_description}</span>
+            </Card.Text>
+          </div>
+          <div className="social-icons mt-5">
+            تواصل معي من خلال  :
+            <a href={`mailto:${course.email}`}>
+              <FaEnvelope style={{ fontSize: '25px' }} />
+            </a>
+            <a href={course.facebook_link}>
+              <FaFacebook style={{ fontSize: '25px' }} />
+            </a>
+            <a href={course.linkedin_link}>
+              <FaLinkedin style={{ fontSize: '25px' }} />
+            </a>
+          </div>
+          <button
+            className="join-button mt-4"
+            onClick={() => handleAddToCart(course)}
+            disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}
+          >
+            {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'تم الإنضمام لها مسبقاً' : 'الإنضمام للدورة'}
+          </button>
+        </Card.Body>
 
-              >
-                {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'تم الإنضمام لها مسبقاَ' : 'الإنضمام للدورة'}
-              </button>
-            </Card.Body>
-          </Col>
-          <Col md={4}>
-            <Card.Img
-              src={`http://localhost:4000/images/${course.course_image}`}
-              alt="Course Image"
-              className="course-image"
-            />
-          </Col>
-        </Row>
       </Card>
     </div>
+
+
   );
 }
 

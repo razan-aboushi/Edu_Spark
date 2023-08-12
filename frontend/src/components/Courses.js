@@ -12,7 +12,7 @@ function Courses() {
   const [universityFilter, setUniversityFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [coursesPerPage, setCoursesPerPage] = useState(9);
+  const [coursesPerPage] = useState(9);
   const [universities, setUniversities] = useState([]);
   const [categories, setCategories] = useState([]);
   const { universityId } = useParams();
@@ -67,9 +67,9 @@ function Courses() {
 
       const universityId = parseInt(value);
       axios.get(`http://localhost:4000/universities/${universityId}/categories`).then((response) => {
-          console.log(response)
-          setCategories(response.data);
-        })
+        console.log(response)
+        setCategories(response.data);
+      })
         .catch((error) => {
           console.error(error);
         });
@@ -83,10 +83,10 @@ function Courses() {
 
   useEffect(() => {
     axios.get('http://localhost:4000/courses').then((response) => {
-        setCourses(response.data);
-      }).catch((error) => {
-        console.error('Error fetching courses:', error);
-      });
+      setCourses(response.data);
+    }).catch((error) => {
+      console.error('Error fetching courses:', error);
+    });
   }, []);
 
 
@@ -102,9 +102,6 @@ function Courses() {
 
 
 
-  const indexOfLastCourse = currentPage * coursesPerPage;
-  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -114,13 +111,9 @@ function Courses() {
     setSearchTerm(e.target.value);
   };
 
-  const handleUniversityFilterChange = (e) => {
-    setUniversityFilter(e.target.value);
-  };
 
-  const handleCategoryFilterChange = (e) => {
-    setCategoryFilter(e.target.value);
-  };
+
+
 
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(filteredCourses.length / coursesPerPage); i++) {
@@ -248,8 +241,6 @@ function Courses() {
                       الصفحة الرئيسية
                     </Link>
                   </Breadcrumbs>
-
-
                 </ol>
               </nav>
             </div>
@@ -274,8 +265,7 @@ function Courses() {
               className="form-select"
               name="course_university"
               value={universityFilter}
-              onChange={handleInputChange}
-            >
+              onChange={handleInputChange}>
               <option value="">كل الجامعات</option>
               {universities.map((university) => (
                 <option key={university.university_id} value={university.university_id}>
@@ -289,8 +279,7 @@ function Courses() {
               className="form-select"
               name="category"
               value={categoryFilter}
-              onChange={handleInputChange}
-            >
+              onChange={handleInputChange}>
               <option value="">كل التخصصات</option>
               {categories.length > 0 ? (
                 categories.map((category) => (
@@ -307,18 +296,14 @@ function Courses() {
       </div>
 
       {/* Courses section Start */}
-      <div className="container-xxl py-5">
+      <div className="container-fluid py-5">
         <div className="container">
-          <div className="row g-4 justify-content-center">
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
             {filteredCourses.map((course) => (
-              <div
-                className="col-lg-4 col-md-6 wow fadeInUp"
-                data-wow-delay="0.1s"
-                key={course.course_id}
-              >
+              <div className="col mb-4" key={course.course_id}>
                 <div className="course-item bg-light shadow-sm rounded">
                   <div className="position-relative overflow-hidden">
-                    <img className="img-fluid" src={`http://localhost:4000/images/${course.course_image}`} alt="an image of course" />
+                    <img src={`http://localhost:4000/images/${course.course_image}`} alt="صورة الكورس"style={{width:"100%" , height:"250px"}} />
                   </div>
                   <div className="text-left p-4 pb-0">
 
@@ -364,8 +349,8 @@ function Courses() {
                     </Link>
                     <Link>
                       <button className="btn-primary my-button mt-3" id="download-btn me-1" onClick={() => handleAddToCart(course)}
-                        disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)} >
-                        {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'تم الإنضمام لها مسبقاَ' : 'الإنضمام للدورة'}
+                        disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}>
+                        {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'تم الإنضمام لها مسبقاً' : 'الإنضمام للدورة'}
                       </button>
                     </Link>
                   </div>
@@ -375,6 +360,7 @@ function Courses() {
           </div>
         </div>
       </div>
+
       {/* Courses section End */}
 
 
@@ -385,13 +371,11 @@ function Courses() {
             {pageNumbers.map((number) => (
               <li
                 key={number}
-                className={`page-item ${currentPage === number ? 'active' : ''}`}
-              >
+                className={`page-item ${currentPage === number ? 'active' : ''}`}>
                 <button
                   className="page-link"
                   onClick={() => paginate(number)}
-                  style={{ borderRadius: "80%", paddingLeft: "15px", paddingRight: "15px" }}
-                >
+                  style={{ borderRadius: "80%", paddingLeft: "15px", paddingRight: "15px" }}>
                   {number}
                 </button>
               </li>

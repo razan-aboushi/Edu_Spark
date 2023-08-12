@@ -42,6 +42,8 @@ function UserProfileStudent() {
     }
   }, []);
 
+
+
   const handleSectionClick = (section) => {
     setActiveSection(section);
     setIsNavbarOpen(false);
@@ -71,32 +73,27 @@ function UserProfileStudent() {
 
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
-                onClick={() => handleSectionClick('todo-list')}
-              >
+                onClick={() => handleSectionClick('todo-list')}>
                 قائمة المهام
               </span>
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
-                onClick={() => handleSectionClick('summary-buy')}
-              >
+                onClick={() => handleSectionClick('summary-buy')}>
                 مُلخصاتي
               </span>
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'course-calendar' ? 'active' : ''}`}
-                onClick={() => handleSectionClick('course-calendar')}
-              >
+                onClick={() => handleSectionClick('course-calendar')}>
                 تواريخ دوراتي
               </span>
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'edit-profile' ? 'active' : ''}`}
-                onClick={() => handleSectionClick('edit-profile')}
-              >
+                onClick={() => handleSectionClick('edit-profile')}>
                 تعديل الملف الشخصي
               </span>
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'profile' ? 'active' : ''}`}
-                onClick={() => handleSectionClick('profile')}
-              >
+                onClick={() => handleSectionClick('profile')}>
                 الملف الشخصي
               </span>
 
@@ -111,11 +108,7 @@ function UserProfileStudent() {
         {/* Render the active section */}
         {activeSection === 'profile' && <UserProfile />}
         {activeSection === 'edit-profile' && <EditProfileSection />}
-        {activeSection === 'todo-list' && (
-          <>
-            <ListTodos />
-          </>
-        )}
+        {activeSection === 'todo-list' && <ListTodos />}
         {activeSection === 'course-calendar' && <CourseCalendar />}
         {activeSection === 'summary-buy' && <SummariesBuy />}
 

@@ -453,6 +453,7 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
   border-radius: 8px;
+  height: 352px;
 }
 
 .cardCategory:hover {
@@ -2246,7 +2247,7 @@ margin-top: 5px;
     height: 100px;
     line-height: 100px;
     text-align: center;
-    border: 3px solid #4babb1;
+    border: 3px solid #06BBCC;
     border-radius: 6px;
     margin-bottom: 20px;
     -webkit-transition: all 0.3s;
@@ -2258,7 +2259,7 @@ margin-top: 5px;
 
 .icon-box-hmv i {
     font-size: 60px;
-    color: #4babb1;
+    color: #06BBCC;
 
 }
 
@@ -3402,7 +3403,7 @@ margin-top: 5px;
     }
     
     .course-image {
-      height: 100%;
+      height: 300px;
       object-fit:cover;
       border: 1px solid white;
       border-radius: 20px;
@@ -3412,7 +3413,7 @@ margin-top: 5px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      height: 570px;
+      height: 785px;
     }
     
 
@@ -3472,13 +3473,6 @@ margin-top: 5px;
       max-height: 250px; 
       overflow-y: auto;
     }
-
-
-
-
-
-
-
 
 
     /* in the admin side bar "add university" */

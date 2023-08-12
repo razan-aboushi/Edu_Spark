@@ -41,8 +41,7 @@ function University()
                   <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
                   <li
                     className="breadcrumb-item text-white active"
-                    aria-current="page"
-                  >
+                    aria-current="page">
                     الجامعات
                   </li>
                   <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
@@ -55,7 +54,6 @@ function University()
                       الصفحة الرئيسية
                     </Link>
                   </Breadcrumbs>
-                
                 </ol>
               </nav>
             </div>
@@ -71,8 +69,7 @@ function University()
           <div
             className="text-center mx-auto mb-5 wow fadeInUp"
             data-wow-delay="0.1s"
-            style={{ maxWidth: 600 }}
-          >
+            style={{ maxWidth: 600 }}>
             <h4>
               يمكنك رؤية المواد والملخصات المتاحة في كل جامعة
             </h4>
@@ -82,8 +79,7 @@ function University()
               <div
                 className="col-lg-4 col-md-6 wow fadeInUp"
                 data-wow-delay="0.1s"
-                key={university.university_id}
-              >
+                key={university.university_id}>
                 <div className="classes-item text-center">
                   <div className="rounded-circle w-75 mx-auto p-2">
                   
@@ -95,8 +91,7 @@ function University()
 
                   <div className="rounded p-4 pt-3 mt-2" style={{fontSize:"20px"}}>
                     <Link
-                      to={`/coursesCategories/${university.university_id}`}
-                    >
+                      to={`/coursesCategories/${university.university_id}`}>
                       {university.university_name}
                     </Link>
                   </div>

@@ -21,14 +21,11 @@ function AddUniversity()
   };
 
 
-
+// Get universities
   const fetchUniversities = () => {
-    axios
-      .get('http://localhost:4000/universities')
-      .then((response) => {
+    axios.get('http://localhost:4000/universities').then((response) => {
         setUniversities(response.data);
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.error('Error:', error);
         Swal.fire({
           title: 'خطأ',
@@ -79,7 +76,7 @@ function AddUniversity()
     if (checkIfUniversityExists(universityName)) {
       Swal.fire({
         title: 'خطأ',
-        text: 'اسم الجامعة موجود بالفعل',
+        text: ' الجامعة موجودة بالفعل',
         icon: 'error',
         confirmButtonText: 'موافق',
       });
@@ -101,8 +98,7 @@ function AddUniversity()
         setUniversityName('');
         setUniversityImage(null);
         fetchUniversities(); // Fetch updated list of universities
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.error('Error:', error);
         Swal.fire({
           title: 'خطأ',
@@ -114,6 +110,7 @@ function AddUniversity()
   };
   
 
+  // Handle submit add new category
   const handleSubmitCategory = (event) => {
     event.preventDefault();
 
@@ -132,8 +129,7 @@ function AddUniversity()
     formData.append('category_image', categoryImage);
     formData.append('university_id', selectedUniversity);
 
-    axios.post('http://localhost:4000/add-category', formData)
-      .then((response) => {
+    axios.post('http://localhost:4000/add-category', formData).then((response) => {
         console.log(response.data);
         Swal.fire({
           title: 'نجاح',
@@ -143,8 +139,7 @@ function AddUniversity()
         });
         setCategoryName('');
         setCategoryImage(null);
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.error('Error:', error);
         Swal.fire({
           title: 'خطأ',
@@ -213,8 +208,7 @@ function AddUniversity()
             id="universitySelect"
             value={selectedUniversity}
             onChange={handleUniversitySelect}
-            className="input-field"
-          >
+            className="input-field">
             <option value="">اختر الجامعة</option>
             {universities.map((university) => (
               <option key={university.university_id} value={university.university_id}>

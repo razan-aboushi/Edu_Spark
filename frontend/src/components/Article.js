@@ -5,8 +5,8 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { HashLink } from 'react-router-hash-link';
 import axios from 'axios';
 
-function Article()
- {
+function Article() 
+{
   const [currentPage, setCurrentPage] = useState(1);
   const [articles, setArticles] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,19 +21,20 @@ function Article()
   // Calculate the total number of pages
   const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
 
+
   // Get the current page's articles
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
   const currentArticles = filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle);
 
-  // Function to handle page change
+
+  // Function to handle page change in the pagination
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
 
-
-  // handle the search input
+  // handle the search input when search about article title or brief
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchQuery(searchValue);
@@ -41,7 +42,8 @@ function Article()
 
     if (searchValue.trim() === '') {
       setFilteredArticles(articles);
-    } else {
+    }
+    else {
       // Filter articles based on search query
       const filteredArticles = articles.filter(
         (article) =>
@@ -51,7 +53,6 @@ function Article()
 
       setFilteredArticles(filteredArticles);
     }
-
     setCurrentPage(1);
   };
 
@@ -88,7 +89,7 @@ function Article()
 
   // get all articles 
   useEffect(() => {
-    const fetchArticles = async () => {
+    const getArticles = async () => {
       try {
         const response = await axios.get('http://localhost:4000/articles');
         const fetchedArticles = response.data.articles;
@@ -99,7 +100,7 @@ function Article()
       }
     };
 
-    fetchArticles();
+    getArticles();
   }, []);
 
 
@@ -114,7 +115,7 @@ function Article()
 
 
   return (
-    <div style={{ overflow: "hidden" }} >
+    <div style={{ overflow: "hidden" }}>
       {/* Header Start */}
       <div className="container-fluid bg-primary py-5 mb-5 page-headerBlog" dir="ltr">
         <div className="container py-5">
@@ -130,7 +131,8 @@ function Article()
                   </li>
                   <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
                     <Link className="text-white">
-                      التصنيفات                    </Link>
+                      التصنيفات
+                    </Link>
                   </Breadcrumbs>
 
                   <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
@@ -158,9 +160,7 @@ function Article()
                 className="form-control"
                 placeholder="ابحث..."
                 value={searchQuery}
-                onChange={handleSearch}
-              />
-
+                onChange={handleSearch} />
             </div>
           </div>
         </div>
@@ -174,7 +174,7 @@ function Article()
           <div className="col-lg-6 col-md-12" key={article.article_id}>
             <article className="d-flex flex-column">
               <div className="post-img">
-                <img src={`http://localhost:4000/images/${article.article_image}`} alt="an image" className="img-fluid" width="100%" height="290px" />
+                <img src={`http://localhost:4000/images/${article.article_image}`} alt="صورة المقالة" className="img-fluid" width="100%" height="290px" />
               </div>
               <h2 className="title">{article.article_title}</h2>
               <div className="meta-top">

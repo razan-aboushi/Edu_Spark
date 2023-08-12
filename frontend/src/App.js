@@ -251,7 +251,7 @@ function App()
           {userRole === 1 && (
             <Route
               path="/AdminSideBar"
-              element={<AdminSideBar fetchUserData={fetchUserData}/>} />
+              element={<AdminSideBar fetchUserData={fetchUserData} userRole={userRole} />} />
               )}
 
           {/* Routes for student profile */}
