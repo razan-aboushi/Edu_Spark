@@ -178,7 +178,7 @@ function LogIn({ fetchUserData }) {
                 <div className="text-right mt-5">
                   <p>
                     ليس لديك حساب؟
-                    <HashLink to="/signUp" className="fw-bold" activeClassName="">
+                    <HashLink to="/signUp" className="fw-bold">
                       {' '}
                       سجّل الآن
                     </HashLink>

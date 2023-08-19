@@ -13,8 +13,5 @@ router.get('/courses',coursesController.getAllCourses);
 router.get('/courses/:course_id',coursesController.getCourseDetails);
 
 
-// get the number of subsicribers in the course 
-router.get('/courses/:course_id/subscribers',coursesController.getCountOfSubsucribers );
-
 
 module.exports = router;

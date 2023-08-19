@@ -11,10 +11,10 @@ import CourseCalendar from '../student/CourseCalendar';
 import ListTodos from '../components/ListTodos';
 import SummariesBuy from '../student/SummariesBuy';
 
-function UserProfileTeacher()
- {
+function UserProfileTeacher() {
   const [activeSection, setActiveSection] = useState('profile');
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
 
   const handleSectionClick = (section) => {
     setActiveSection(section);
@@ -23,16 +23,16 @@ function UserProfileTeacher()
   };
 
 
-  const handleNavbarToggle = () => {
-    setIsNavbarOpen(!isNavbarOpen);
-  };
 
+
+  // If the active tab in the local storage get it , if not set default tab
   useEffect(() => {
+
     const activeTabFromLocalStorage = localStorage.getItem('activeTab');
     if (activeTabFromLocalStorage) {
       setActiveSection(activeTabFromLocalStorage);
     } else {
-      setActiveSection(activeTabFromLocalStorage);
+      setActiveSection('profile');
     }
   }, []);
 
@@ -46,17 +46,16 @@ function UserProfileTeacher()
           <button
             type="button"
             className="navbar-toggler me-4"
-            onClick={handleNavbarToggle}>
+            onClick={()=>setIsNavbarOpen(!isNavbarOpen)}>
             <span className="navbar-toggler-icon pointer-link" />
           </button>
-          <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`}>
-            
+          <div className={`collapse navbar-collapse ${isNavbarOpen ?'show' : ''}`}>
+
             <div className="navbar-nav ms-auto p-4 p-lg-0">
 
-
-            <Link
+              <Link
                 to="/"
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === null ? 'active' : ''}`}>
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === null ? 'active' : ''}`} style={{color:"#06BBCC "}}>
                 الصفحة الرئيسية
               </Link>
 
@@ -69,7 +68,7 @@ function UserProfileTeacher()
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'add-course' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('add-course')}>
-                إضافة دورة أو ملخص
+                إضافة دورة أو مُلخص
               </span>
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
@@ -97,8 +96,6 @@ function UserProfileTeacher()
                 onClick={() => handleSectionClick('profile')}>
                 الملف الشخصي
               </span>
-            
-
 
             </div>
           </div>

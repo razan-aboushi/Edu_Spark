@@ -4,8 +4,7 @@ import axios from 'axios';
 import "../css/style.css";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 
-function University()
- {
+function University() {
   const [universities, setUniversities] = useState([]);
 
 
@@ -17,9 +16,8 @@ function University()
     try {
       const response = await axios.get('http://localhost:4000/universities');
       setUniversities(response.data);
-    } 
-    catch (error)
-     {
+    }
+    catch (error) {
       console.error('Error fetching universities:', error);
     }
   };
@@ -38,22 +36,14 @@ function University()
               </h1>
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb justify-content-center">
+                  <li className="breadcrumb-item text-white active" aria-current="page">
+                    الجامعات                  </li>
                   <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
-                  <li
-                    className="breadcrumb-item text-white active"
-                    aria-current="page">
-                    الجامعات
-                  </li>
-                  <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
-                    <Link className="text-white" to="#">
-                     التصنيفات
+                    <Link className="text-white">
+                      التصنيفات
                     </Link>
                   </Breadcrumbs>
-                 
-                    <Link className="text-white" to={"/"}>
-                      الصفحة الرئيسية
-                    </Link>
-                  </Breadcrumbs>
+                  
                 </ol>
               </nav>
             </div>
@@ -62,7 +52,7 @@ function University()
       </div>
       {/* نهاية الهيدر */}
 
-      
+
       {/* بداية الفئات */}
       <div className="container-xxl py-5">
         <div className="container">
@@ -82,14 +72,14 @@ function University()
                 key={university.university_id}>
                 <div className="classes-item text-center">
                   <div className="rounded-circle w-75 mx-auto p-2">
-                  
+
                     <img
                       src={`http://localhost:4000/images/${university.university_image}`}
                       alt="صورة للجامعة"
-                      width="65%" height="175px"/>
+                      width="65%" height="175px" />
                   </div>
 
-                  <div className="rounded p-4 pt-3 mt-2" style={{fontSize:"20px"}}>
+                  <div className="rounded p-4 pt-3 mt-2" style={{ fontSize: "20px" }}>
                     <Link
                       to={`/coursesCategories/${university.university_id}`}>
                       {university.university_name}

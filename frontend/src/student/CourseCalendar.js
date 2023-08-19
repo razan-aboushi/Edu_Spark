@@ -39,12 +39,23 @@ function CourseCalendar() {
   }
 
   // Get current courses to display on the current page, sorted by start_date
-  const sortedCourses = courses.slice().sort((a, b) => new Date(a.start_date) - new Date(b.end_date));
+  const sortedCourses = courses.slice().sort((a, b) => new Date(b.start_date) - new Date(a.end_date));
+    
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
   const currentCourses = sortedCourses.slice(indexOfFirstCourse, indexOfLastCourse);
 
-  
+
+
+
+  // Pagination
+  const totalPages = Math.ceil(courses.length / coursesPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+
   // Function to handle page change
   function paginate(pageNumber) {
     setCurrentPage(pageNumber);
@@ -82,8 +93,7 @@ function CourseCalendar() {
                             target='_blank'
                             key={course.course_id}
                             to={course.connection_channel}
-                            className="list-group-item list-group-item-action"
-                          >
+                            className="list-group-item list-group-item-action">
                             <h5 className="mb-3">{course.course_title}</h5>
                             <p> وصف الدورة :{course.course_brief}</p>
                             <h6 className="mb-3">تاريخ بداية الدورة : من {formatDate(course.start_date)} إلى {formatDate(course.end_date)}</h6>
@@ -102,19 +112,16 @@ function CourseCalendar() {
                 {courses.length > coursesPerPage && (
                   <nav className="mt-4">
                     <ul className="pagination justify-content-center">
-                      {Array.from({ length: Math.ceil(courses.length / coursesPerPage) }).map((_, index) => (
-                        <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                          <button className="page-link" onClick={() => paginate(index + 1)}>
-                            {index + 1}
+                      {pageNumbers.map((pageNumber) => (
+                        <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
+                          <button className="page-link" onClick={() => paginate(pageNumber)}>
+                            {pageNumber}
                           </button>
                         </li>
                       ))}
                     </ul>
                   </nav>
                 )}
-
-
-
               </div>
             </div>
           </div>

@@ -3,7 +3,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import '../css/style.css';
 
-function PublishRequest() {
+function PublishRequest()
+ {
   const [data, setData] = useState([]);
 
 
@@ -15,11 +16,11 @@ function PublishRequest() {
       // Update the data state by removing the approved item "summary"
       setData((prevData) => prevData.filter((item) => item.summary_id !== id));
 
-      Swal.fire('تم بنجاح', 'تمت الموافقة على طلب الملخص.', 'success');
+      Swal.fire('تم بنجاح', 'تمت الموافقة على طلب المُلخص.', 'success');
     }
      catch (error) {
       console.log('Error approving request:', error);
-      Swal.fire('خطأ', 'فشل في الموافقة على طلب الملخص.', 'error');
+      Swal.fire('خطأ', 'فشل في الموافقة على طلب المُلخص.', 'error');
     }
   };
 
@@ -29,7 +30,7 @@ function PublishRequest() {
     try {
       // Prompt the admin to enter the reason for rejection
       const { value: reason } = await Swal.fire({
-        title: 'أدخل سبب الرفض:',
+        title: 'أدخل سبب رفض المُلخص:',
         input: 'text',
         inputPlaceholder: 'أدخل السبب هنا...',
         inputAttributes: {
@@ -46,7 +47,7 @@ function PublishRequest() {
                 return inputValue;
               }).catch((error) => {
                 console.log('Error rejecting request:', error);
-                Swal.showValidationMessage('فشل في رفض طلب الملخص.');
+                Swal.showValidationMessage('فشل في رفض طلب المُلخص.');
               });
           } else {
             Swal.showValidationMessage('يرجى إدخال سبب الرفض.');
@@ -85,7 +86,7 @@ function PublishRequest() {
 
   // Open the PDF summary in the new tab
   const viewSummary = (fileUrl) => {
-    window.open(fileUrl, '_blank');
+    window.open(fileUrl);
   };
 
 
@@ -125,7 +126,7 @@ function PublishRequest() {
                       )} </td>
 
                     <td>
-                      <a onClick={() => viewSummary(`http://localhost:4000/reports/${item.summary_file}`)}>
+                      <a onClick={() => viewSummary(`http://localhost:4000/reports/${item.summary_file}`)} style={{ cursor: "pointer" }}>
                         تحميل ملف PDF
                       </a>
                     </td>

@@ -60,23 +60,6 @@ const getCourseDetails = (req, res) => {
 
 
 
-// get the number of subscribers for a course
-const getCountOfSubsucribers = (req, res) => {
-  const { course_id } = req.params;
-
-  const query = `SELECT COUNT(*) AS subscriberCount FROM course_enrollments WHERE course_id = ?`;
-
-  connection.query(query, [course_id], (error, results) => {
-    if (error) {
-      console.error('Error retrieving subscriber count:', error);
-      res.status(500).json({ error: 'An error occurred while retrieving the subscriber count.' });
-    } else {
-      const subscriberCount = results[0].subscriberCount;
-      res.json({ subscriberCount });
-    }
-  });
-}
-
 
 
 
@@ -85,6 +68,6 @@ const getCountOfSubsucribers = (req, res) => {
 
 module.exports = {
 
-  getAllCourses,getCourseDetails,getCountOfSubsucribers
+  getAllCourses,getCourseDetails
 
 }

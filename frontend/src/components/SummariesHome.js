@@ -12,7 +12,7 @@ function SummariesHome() {
   const navigate = useNavigate();
 
 
-// Get the enrolled summaries to check if the user buy the summary before now or not
+  // Get the enrolled summaries to check if the user buy the summary before now or not
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
       const token = localStorage.getItem('token');
@@ -33,17 +33,14 @@ function SummariesHome() {
 
 
 
-
-
-// Get the latest summaries added in the website
+  // Get the latest summaries added in the website
   useEffect(() => {
     axios.get('http://localhost:4000/summaries/latest').then(response => {
-        setSummaries(response.data);
-      }).catch(error => {
-        console.error('Error fetching summaries:', error);
-      });
+      setSummaries(response.data);
+    }).catch(error => {
+      console.error('Error fetching summaries:', error);
+    });
   }, []);
-
 
 
 
@@ -80,11 +77,11 @@ function SummariesHome() {
       const response = await axios.get(`http://localhost:4000/cart/${user_id}/${summary.summary_id}`);
       if (response.data.exists) {
         Swal.fire({
-          title: 'الملخص موجود بالفعل بالسلة',
+          title: 'المُلخص موجود بالفعل بالسلة',
           icon: 'info',
           confirmButtonText: 'موافق',
         });
-        return; 
+        return;
       }
 
 
@@ -101,12 +98,11 @@ function SummariesHome() {
 
 
 
-
       Swal.fire({
         title: 'تمت إضافة المُلخص إلى السلة',
         html: `
-          <img src="http://localhost:4000/images/${summary.summary_image}" alt="Summary Image" className="popup-image" width="265px">
-          <p className="popup-title">عنوان الملخص: ${summary.summary_title}</p>
+          <img src="http://localhost:4000/images/${summary.summary_image}" alt="Summary" className="popup-image" width="265px">
+          <p className="popup-title">عنوان المُلخص: ${summary.summary_title}</p>
           <p className="popup-price">السعر: ${summary.summary_price} JD</p>
         `,
         showCancelButton: true,
@@ -141,7 +137,7 @@ function SummariesHome() {
       {/* Render summaries */}
       <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3 mb-3">
-          الملخصات الدراسية
+          المُلخصات الدراسية
         </h6>
       </div>
       <div className="row mt-5">
@@ -153,8 +149,7 @@ function SummariesHome() {
                 <img
                   src={`http://localhost:4000/images/${summary.summary_image}`}
                   className="card-img-top"
-                  alt="صورة الملخص" width="100%" height="280px"
-                />
+                  alt="صورة المُلخص" width="100%" height="280px" />
               </Link>
               <div className="card-body">
                 <h5 className="card-title">{summary.summary_title}</h5>
@@ -174,8 +169,9 @@ function SummariesHome() {
                   <button className="btn-primary my-button me-1" onClick={() => handleAddToCart(summary)}
 
                     disabled={enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id)}>
-                    {enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id) ? 'لقد تمَّ شرائهُ مسبقاً' : 'شراء المُلخص'}
+                    {enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id) ? 'لقد تمَّ شرائهُ مُسبقاً' : 'شراء المُلخص'}
                   </button>
+
                   <HashLink to={`/SummaryDetails/${summary.summary_id}`}>
                     <button className="btn-primary my-button me-1"> تفاصيل أكثر</button>
                   </HashLink>

@@ -8,7 +8,8 @@ const checkUserExist= (req, res) => {
     // Check if the user exists in the database or not
     const query = 'SELECT * FROM users WHERE email = ? AND phone_number = ?';
     connection.query(query, [email, phone], (err, results) => {
-        if (err) {
+        if (err) 
+        {
             console.error(err);
             res.status(500).json({ error: 'An error occurred' });
         } else {

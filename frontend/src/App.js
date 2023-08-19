@@ -30,8 +30,8 @@ import UserProfileStudent from './student/UserProfileStudent';
 
 import UserProfileTeacher from './teacher/UserProfileTeacher';
 
-function App() 
-{
+
+function App() {
   const [userRole, setUserRole] = useState(0);
 
   const fetchUserData = async () => {
@@ -66,6 +66,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/about"
                 element={
@@ -76,6 +77,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/faq"
                 element={
@@ -86,6 +88,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/contact"
                 element={
@@ -107,6 +110,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/Courses"
                 element={
@@ -141,6 +145,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/Summaries"
                 element={
@@ -151,6 +156,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/Article"
                 element={
@@ -161,6 +167,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/ArticleDetails/:article_id"
                 element={
@@ -171,6 +178,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/coursesCategories/:universityId"
                 element={
@@ -181,6 +189,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/checkoutPayment"
                 element={
@@ -191,6 +200,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/TermsOfService"
                 element={
@@ -223,6 +233,7 @@ function App()
                   </>
                 }
               />
+
               <Route
                 path="/ResetPassword"
                 element={
@@ -252,7 +263,7 @@ function App()
             <Route
               path="/AdminSideBar"
               element={<AdminSideBar fetchUserData={fetchUserData} userRole={userRole} />} />
-              )}
+          )}
 
           {/* Routes for student profile */}
           {userRole === 2 && (
@@ -264,14 +275,10 @@ function App()
               path="/UserProfileTeacher"
               element={
                 <UserProfileTeacher />}
-          />)}
+            />)}
 
 
-
-
-          {userRole !== 1 || userRole !== 2 || userRole !== 3 || (
-            <Route path="*" element={<Error404 />} />
-          )}
+          <Route path="*" element={<Error404 />} />
 
 
 

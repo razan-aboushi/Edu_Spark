@@ -17,12 +17,11 @@ function Nav()
   const navigate = useNavigate();
 
 
-// get the user role from the token in the local storage
+  // get the user role from the token in the local storage
   useEffect(() => {
     const getUserRole = async () => {
       const token = localStorage.getItem('token');
-      if (token)
-       {
+      if (token) {
         const decodedToken = jwt_decode(token);
         const roleId = decodedToken.role;
         setUserRole(roleId);
@@ -33,7 +32,6 @@ function Nav()
   }, []);
 
 
-  
 
   // Get the count of items for the user
   useEffect(() => {
@@ -61,10 +59,6 @@ function Nav()
     setIsNavbarOpen(false);
   };
 
-  const handleNavbarToggle = () => {
-    setIsNavbarOpen(!isNavbarOpen);
-  };
-
 
   // Handle when the user click on the LogOut button
   const handleLogout = () => {
@@ -76,11 +70,9 @@ function Nav()
 
   // Handle when the user click on the profile button
   const handleProfileClick = () => {
-    if (userRole === 2) 
-    {
+    if (userRole === 2) {
       navigate('/UserProfileStudent');
-    } else if (userRole === 3) 
-    {
+    } else if (userRole === 3) {
       navigate('/UserProfileTeacher');
     }
   };
@@ -98,12 +90,12 @@ function Nav()
           <button
             className="navbar-toggler"
             type="button"
-            onClick={handleNavbarToggle}>
+            onClick={()=>setIsNavbarOpen(!isNavbarOpen)}>
             <span className="navbar-toggler-icon"></span>
           </button>
 
           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`} id="navbarCollapse">
-            <ul className="navbar-nav me-5 ms-auto">
+            <ul className="navbar-nav ms-auto" style={{marginRight:"30px"}}>
               <li className="nav-item">
                 <Link
                   to={'/'}
@@ -117,7 +109,7 @@ function Nav()
                   to={'/about'}
                   className={`nav-link ${activeTab === 'حول' ? 'active' : ''}`}
                   onClick={() => handleTabClick('حول')}>
-                  حولنا
+                  إعرفنا أكثر
                 </Link>
               </li>
               <li className="nav-item dropdown">
@@ -157,7 +149,6 @@ function Nav()
                     المُلخصات
                     <FontAwesomeIcon icon={faBook} className="ms-2" />
                   </Link>
-
                 </div>
               </li>
               <li className="nav-item">
@@ -165,7 +156,7 @@ function Nav()
                   to={'/contact'}
                   className={`nav-link ${activeTab === 'اتصل بنا' ? 'active' : ''}`}
                   onClick={() => handleTabClick('اتصل بنا')}>
-                  تواصل
+                  تواصل معنا
                 </Link>
               </li>
 

@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
-
 
 function Courses() {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [universityFilter, setUniversityFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [coursesPerPage] = useState(9);
   const [universities, setUniversities] = useState([]);
   const [categories, setCategories] = useState([]);
-  const { universityId } = useParams();
+  const { universityId } = useState();
   const [enrolledCourses, setEnrolledCourses] = useState([]);
-
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const coursesPerPage = 6;
 
   useEffect(() => {
     getUniversities();
@@ -28,18 +25,9 @@ function Courses() {
     handleInputChange();
   }, [universityId]);
 
-  const getUniversities = async () => {
-    try {
-      const response = await axios.get('http://localhost:4000/universities');
-      setUniversities(response.data);
-    } catch (error) {
-      console.error('Error fetching universities:', error);
-    }
-  };
 
-
+  // get the enrolled courses for the user to check if he get this course before now or not
   useEffect(() => {
-    // get enrolled courses
     const fetchEnrolledCourses = async () => {
       const token = localStorage.getItem('token');
       const decodedToken = token ? jwt_decode(token) : null;
@@ -58,29 +46,44 @@ function Courses() {
 
 
 
-
-  const handleInputChange = (event = {}) => {
-    const { name, value } = event.target || {};
-
-    if (name === 'course_university') {
-      setUniversityFilter(value);
-
-      const universityId = parseInt(value);
-      axios.get(`http://localhost:4000/universities/${universityId}/categories`).then((response) => {
-        console.log(response)
-        setCategories(response.data);
-      })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-
-    if (name === 'category') {
-      setCategoryFilter(value);
+  // Get the universities in dropdown list
+  const getUniversities = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/universities');
+      setUniversities(response.data);
+    } catch (error) {
+      console.error('Error fetching universities:', error);
     }
   };
 
 
+
+
+
+
+// Handle when inputs in filters change 
+  const handleInputChange = (event = {}) => {
+    const { name, value } = event.target || {};
+  
+    if (name === 'course_university') {
+      setUniversityFilter(value);
+  
+      const universityId = parseInt(value);
+      axios.get(`http://localhost:4000/universities/${universityId}/categories`).then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }
+  
+    if (name === 'category') {
+      setCategoryFilter(value); 
+    }
+  };
+  
+
+// get all courses 
   useEffect(() => {
     axios.get('http://localhost:4000/courses').then((response) => {
       setCourses(response.data);
@@ -90,7 +93,7 @@ function Courses() {
   }, []);
 
 
-
+  // filter the courses by name , brief and publisher name
   const filteredCourses = courses.filter((course) => {
     const matchName = course.course_title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchPublisher = course.publisher_name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -101,25 +104,11 @@ function Courses() {
   });
 
 
-
-
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
   const handleSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-
-
-
-
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredCourses.length / coursesPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
+  // convert the date from the timestamp to normal date 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString('en-US');
@@ -128,7 +117,7 @@ function Courses() {
   const navigate = useNavigate();
 
 
-
+  // Handle add the course to cart for the user to get it and complete checkOut
   const handleAddToCart = async (course) => {
     const token = localStorage.getItem('token');
 
@@ -164,9 +153,8 @@ function Courses() {
           icon: 'info',
           confirmButtonText: 'موافق',
         });
-        return; // Exit the function if the course is already in the cart
+        return;
       }
-
 
 
       // Send a request to the server to add the course to the cart table
@@ -178,7 +166,6 @@ function Courses() {
         course_image: course.course_image,
         type: 'course'
       });
-
 
 
       Swal.fire({
@@ -213,14 +200,28 @@ function Courses() {
   };
 
 
+  // Make the pagination for this page
+  const indexOfLastCourse = currentPage * coursesPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
 
-  const shouldDisplayPagination = filteredCourses.length > coursesPerPage;
 
+  // TO loop on the courses and number of pages
+  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
+  const pageNumbers = [];
+  for (let r = 1; r <= totalPages; r++) 
+  {
+    pageNumbers.push(r);
+  }
+
+  
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
 
   return (
     <>
-      {/* Header Start */}
       <div className="container-fluid bg-primary py-5 mb-5 page-headerCourses" dir="ltr">
         <div className="container py-5">
           <div className="row justify-content-center">
@@ -236,19 +237,13 @@ function Courses() {
                       التصنيفات
                     </Link>
                   </Breadcrumbs>
-                  <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
-                    <Link className="text-white" to="/">
-                      الصفحة الرئيسية
-                    </Link>
-                  </Breadcrumbs>
+                
                 </ol>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      {/* Header End */}
-      {/* Filter and Search Bar */}
       <div className="container my-4">
         <div className="row justify-content-between">
           <div className="col-lg-4">
@@ -294,19 +289,16 @@ function Courses() {
           </div>
         </div>
       </div>
-
-      {/* Courses section Start */}
       <div className="container-fluid py-5">
         <div className="container">
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
-            {filteredCourses.map((course) => (
-              <div className="col mb-4" key={course.course_id}>
+            {currentCourses.map((course) => (
+              <div className="col mb-4 shadow" key={course.course_id}>
                 <div className="course-item bg-light shadow-sm rounded">
                   <div className="position-relative overflow-hidden">
-                    <img src={`http://localhost:4000/images/${course.course_image}`} alt="صورة الكورس"style={{width:"100%" , height:"250px"}} />
+                    <img src={`http://localhost:4000/images/${course.course_image}`} alt="صورة الكورس" style={{ width: "100%", height: "250px" }} />
                   </div>
                   <div className="text-left p-4 pb-0">
-
                     <h5 className="mb-4">{course.course_title}</h5>
                     <p className="mb-2 text-right">
                       السعر: {course.course_price === "0" ? (
@@ -314,7 +306,6 @@ function Courses() {
                       ) : (
                         <span>{course.course_price} د.أ</span>
                       )}
-
                     </p>
                     <p className="mb-4">{course.course_brief}</p>
                     <div>
@@ -348,9 +339,13 @@ function Courses() {
                       المزيد عن الدورة
                     </Link>
                     <Link>
-                      <button className="btn-primary my-button mt-3" id="download-btn me-1" onClick={() => handleAddToCart(course)}
-                        disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}>
-                        {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'تم الإنضمام لها مسبقاً' : 'الإنضمام للدورة'}
+                    <button
+                        className="btn-primary my-button mt-3"
+                        id="download-btn me-1"
+                        onClick={() => handleAddToCart(course)}
+                        disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}
+                      >
+                        {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'لقد تم الإضمام لها مسبقاً' : 'الإنضمام للدورة'}
                       </button>
                     </Link>
                   </div>
@@ -361,29 +356,22 @@ function Courses() {
         </div>
       </div>
 
-      {/* Courses section End */}
 
-
-      {/* Pagination Start */}
-      {shouldDisplayPagination && (
-        <div className="container mt-5">
-          <ul className="pagination justify-content-center">
-            {pageNumbers.map((number) => (
-              <li
-                key={number}
-                className={`page-item ${currentPage === number ? 'active' : ''}`}>
+      <div className="d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+          <ul className="pagination">
+            {pageNumbers.map((pageNumber) => (
+              <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
                 <button
                   className="page-link"
-                  onClick={() => paginate(number)}
-                  style={{ borderRadius: "80%", paddingLeft: "15px", paddingRight: "15px" }}>
-                  {number}
+                  onClick={() => handlePageChange(pageNumber)}>
+                  {pageNumber}
                 </button>
               </li>
             ))}
           </ul>
-        </div>
-      )}
-      {/* Pagination End */}
+        </nav>
+      </div>
     </>
   );
 }

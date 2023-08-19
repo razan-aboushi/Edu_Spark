@@ -5,8 +5,9 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import "../css/style.css";
 
-function ArticleDetails() 
-{
+
+
+function ArticleDetails() {
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState('');
@@ -31,6 +32,7 @@ function ArticleDetails()
   useEffect(() => {
     getArticleDetails();
   }, [article_id]);
+
 
 
   // get all the comments that related to sepsific article
@@ -162,10 +164,10 @@ function ArticleDetails()
   };
 
 
-  
+
 
   if (!article) {
-    return <div className='m-5'>جارٍ تحميل المقالات...</div>;
+    return <div className='m-5'>جارٍ تحميل المقالة...</div>;
   }
 
 
@@ -200,7 +202,7 @@ function ArticleDetails()
                     <div className="post-img">
                       <img src={`http://localhost:4000/images/${article.article_image}`}
                         alt="صورة"
-                        className="img-fluid" 
+                        className="img-fluid"
                         width="100%"
                       />
                     </div>
@@ -210,6 +212,9 @@ function ArticleDetails()
                     </div>
                     <div className="content">
                       {article.article_content}
+                    </div>
+                    <div className="content">
+                      {article.article_content2}
                     </div>
                   </article>
                   {/* نهاية مقالة المدونة */}
@@ -225,7 +230,7 @@ function ArticleDetails()
                             <div className="d-flex">
                               <div>
                                 <h5>
-                                 {comment.name}{" "}
+                                  {comment.name}{" "}
                                   {user_id === comment.user_id && (
                                     <div className="dropdown d-inline">
                                       <button
@@ -294,7 +299,7 @@ function ArticleDetails()
                             </div>
                           </div>
                         ))
-                        
+
                       ) : (
                         <div className="no-comments">لا يوجد تعليقات حتى الآن. بادر بإبداء رأيك!</div>
                       )
@@ -336,10 +341,6 @@ function ArticleDetails()
             </div>
           </section>
         </main>
-
-
-
-
         {/* نهاية المحتوى الرئيسي */}
       </div>
     </>

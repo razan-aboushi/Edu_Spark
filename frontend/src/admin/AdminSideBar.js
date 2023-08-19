@@ -18,14 +18,13 @@ import ApprovedContent from './ApprovedContent';
 import axios from 'axios';
 
 
-function Sidebar({ fetchUserData, userRole }) {
+function Sidebar({ fetchUserData }) 
+{
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeLink, setActiveLink] = useState('/DashBoard');
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
-  const [roleOfUser, setUserRole] = useState(userRole);
   const navigate = useNavigate();
 
-console.log(roleOfUser)
 
 
   function handleLinkClick(link) {
@@ -50,7 +49,6 @@ console.log(roleOfUser)
     }).then(async (result) => {
       if (result.isConfirmed) {
         localStorage.removeItem('token');
-        setUserRole(0);
         navigate('/LogIn');
         fetchUserData();
         window.location.reload();

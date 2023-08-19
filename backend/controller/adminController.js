@@ -193,7 +193,7 @@ const writeAndPostArticles = (req, res) => {
       return res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 
-    const { article_title, article_brief, article_content } = req.body;
+    const { article_title, article_brief, article_content, article_content2 } = req.body;
 
     // Access the uploaded image file from the request
     const article_image = req.file;
@@ -203,8 +203,8 @@ const writeAndPostArticles = (req, res) => {
       return res.status(400).json({ success: false, message: 'No image file provided' });
     }
 
-    const sql = 'INSERT INTO articles (article_title, article_brief, article_content, article_image) VALUES (?, ?, ?, ?)';
-    connection.query(sql, [article_title, article_brief, article_content, article_image.filename], (err, result) => {
+    const sql = 'INSERT INTO articles (article_title, article_brief, article_content, article_content2, article_image) VALUES (?, ?, ?, ?, ?)';
+    connection.query(sql, [article_title, article_brief, article_content, article_content2, article_image.filename], (err, result) => {
       if (err) {
         console.error('Error adding article:', err);
         return res.status(500).json({ success: false, message: 'Failed to add article' });
@@ -214,8 +214,6 @@ const writeAndPostArticles = (req, res) => {
     });
   });
 };
-
-
 
 
 
@@ -473,11 +471,10 @@ const updateSummaryApproveStatus = (req, res) => {
       console.log('Error approving summary:', err);
       return res.status(500).json({ error: 'Failed to approve the summary request.' });
     }
-
+    
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Summary not found' });
     }
-
     return res.status(200).json({ message: 'The summary request has been approved.' });
   });
 }

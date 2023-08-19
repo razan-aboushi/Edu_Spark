@@ -107,6 +107,7 @@
     text-transform: uppercase;
     outline: none;
     text-align: right;
+    text-wrap: nowrap;
 }
 
 .navbar-light .navbar-nav .nav-link:hover,
@@ -813,7 +814,7 @@
     font-size: 18px;
     line-height: 25px;
     color: var(--color-default);
-    text-align: left;
+    text-align: right;
     box-shadow: none;
     border-radius: 10px;
 }
@@ -1067,7 +1068,7 @@
 
 .posts-list .col-lg-6 {
   width: 90%; /* Increase the width for mobile */
-  max-width: 400px; /* Set a max-width for mobile */
+  max-width: 395px; /* Set a max-width for mobile */
   height: auto; /* Remove fixed height */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -3421,7 +3422,7 @@ margin-top: 5px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      height: 550px;
+      height: 580px;
     }
 
 
@@ -3541,9 +3542,10 @@ margin-top: 5px;
 
 .summaryBuy-image {
   width: 100%;
-  max-height: 200px;
-  object-fit: cover;
+  max-height: 250px;
+  background-size: cover;
   border-radius: 4px;
+  box-shadow:0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .summaryBuy-title {
@@ -3616,3 +3618,21 @@ margin-top: 5px;
 
 
 
+/* Approved content in the admin dashboard */
+.tabApproved {
+  padding: 15px;
+  border-radius: 15px;
+  border: none;
+  background-color: #f1f1f1;
+  color: #333;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.tabApproved.active {
+  background-color: #06BBCC;
+  color: white;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}

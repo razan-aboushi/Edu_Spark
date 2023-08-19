@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/style.css';
 import '../css/UserProfile.css';
-import axios from 'axios';
+
 
 import UserProfile from './UserProfile';
 import EditProfileSection from './EditProfileSection';
@@ -11,34 +11,19 @@ import ListTodos from '../components/ListTodos';
 import SummariesBuy from './SummariesBuy';
 
 function UserProfileStudent() {
-  const [activeSection, setActiveSection] = useState('');
-  const [userId, setUserId] = useState('');
+  const [activeSection, setActiveSection] = useState('profile');
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
-
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('http://localhost:4000/getIdFromUserData');
-        const userData = response.data;
-        setUserId(userData.userId);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
 
 
   // get active tab from the local storage
   useEffect(() => {
     const activeTabFromLocalStorage = localStorage.getItem('activeTab');
-    if (activeTabFromLocalStorage) {
+    if (activeTabFromLocalStorage) 
+    {
       setActiveSection(activeTabFromLocalStorage);
     } else {
-      setActiveSection(activeTabFromLocalStorage);
+      setActiveSection('profile');
     }
   }, []);
 
@@ -50,9 +35,7 @@ function UserProfileStudent() {
     localStorage.setItem('activeTab', section);
   };
 
-  const handleNavbarToggle = () => {
-    setIsNavbarOpen(!isNavbarOpen);
-  };
+
 
   return (
     <div>
@@ -61,13 +44,13 @@ function UserProfileStudent() {
         <nav className="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
           {/* Navigation links */}
 
-          <button type="button" className="navbar-toggler me-4" onClick={handleNavbarToggle}>
+          <button type="button" className="navbar-toggler me-4" onClick={()=>setIsNavbarOpen(!isNavbarOpen)}>
             <span className="navbar-toggler-icon pointer-link" />
           </button>
           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`}>
             <div className="navbar-nav ms-auto p-4 p-lg-0">
 
-              <Link to="/" className="nav-item nav-link scrollto">
+              <Link to="/" className="nav-item nav-link scrollto" style={{color:"#06BBCC "}}>
                 الصفحة الرئيسية
               </Link>
 

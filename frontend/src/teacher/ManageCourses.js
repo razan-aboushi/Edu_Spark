@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-function ManageCourses()
- {
+function ManageCourses() {
   const [courses, setCourses] = useState([]);
   const [summaries, setSummaries] = useState([]);
   const [subscriberCounts, setSubscriberCounts] = useState({});
+  const [subscriberCountSummaries, setSubscriberCountsSummaries] = useState({});
 
   useEffect(() => {
     getCourses();
@@ -27,6 +27,7 @@ function ManageCourses()
 
         // get subscriber counts for each course
         const courseIds = response.data.map(course => course.course_id);
+        console.log(courseIds)
         const subscriberCounts = await Promise.all(courseIds.map(async courseId => {
           const subscriberResponse = await axios.get(`http://localhost:4000/courses/${courseId}/subscribers`);
           return {
@@ -51,20 +52,37 @@ function ManageCourses()
   // get summaries from the databse for the teacher
   const getSummaries = async () => {
     try {
-
       const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = jwt_decode(token);
         const user_id = decodedToken.userId;
 
-
         const response = await axios.get(`http://localhost:4000/user-summaries/${user_id}`);
         setSummaries(response.data);
+
+        // Fetch subscriber counts for each summary
+        const summaryIds = response.data.map(summary => summary.summary_id);
+        const subscriberCounts = await Promise.all(summaryIds.map(async summaryId => {
+          const subscriberResponse = await axios.get(`http://localhost:4000/summaries/${summaryId}/subscribers`);
+          return {
+            summaryId,
+            subscriberCount: subscriberResponse.data.subscriberCount
+          };
+        }));
+
+        const subscriberCountMap = {};
+        subscriberCounts.forEach(count => {
+          subscriberCountMap[count.summaryId] = count.subscriberCount;
+        });
+        setSubscriberCountsSummaries(subscriberCountMap);
       }
     } catch (error) {
       console.error('Error fetching summaries:', error);
     }
   };
+
+
+
 
   // convert the timestamp to date
   const formatDate = (timestamp) => {
@@ -126,9 +144,9 @@ function ManageCourses()
 
               <div style={{ height: '200px', overflow: 'hidden' }}>
                 <img
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  style={{ width: '100%', height: '100%', backgroundSize: 'cover' }}
                   src={`http://localhost:4000/images/${course.course_image}`}
-                  alt="صورة الدورة"
+                  alt="صورة الدورة" width="100%"
                 />
               </div>
               <div style={{ padding: '20px' }}>
@@ -141,7 +159,7 @@ function ManageCourses()
                   )}              </p>
                 <p style={{ fontSize: '14px', marginBottom: '5px' }}>{course.university}</p>
                 <p style={{ fontSize: '14px', marginBottom: '5px' }}>
-                  المشتركون: {subscriberCounts[course.course_id] || 0}
+                  عدد المشتركون: {subscriberCounts[course.course_id] || 0}
 
                 </p>
                 <p style={{ fontSize: '14px', marginBottom: '5px' }}>
@@ -160,7 +178,7 @@ function ManageCourses()
                 )}
               </div>
             </div>
-          ))):(<div className='mt-3'>لم تقّم بإضافة أيّة دورة حتى الأن</div>)  }
+          ))) : (<div className='mt-3'>لم تقّم بإضافة أيّة دورة حتى الأن</div>)}
       </div>
 
       {/* Section to display user added summaries */}
@@ -202,7 +220,7 @@ function ManageCourses()
 
                 <div style={{ height: '200px', overflow: 'hidden' }}>
                   <img
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{ width: '100%', height: '100%', backgroundSize: 'cover' }}
                     src={`http://localhost:4000/images/${summary.summary_image}`}
                     alt="صورة الدورة"
                   />
@@ -217,7 +235,9 @@ function ManageCourses()
                       <span>{summary.summary_price} د.أ</span>
                     )}
                   </p>
-
+                  <p style={{ fontSize: '14px', marginBottom: '5px' }}>
+                    عدد المُشترون: {subscriberCountSummaries[summary.summary_id] || 0}
+                  </p>
                   <p style={{ fontSize: '14px', marginBottom: '5px' }}>
                     وصف المُلخص : {summary.summary_brief}
                   </p>

@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/style.css';
-import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
 function SummariesBuy() {
   const [summaries, setSummaries] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6); 
-  const { user_id } = useParams();
+  const [itemsPerPage] = useState(4);
+
+  const token = localStorage.getItem('token');
+  const decodedToken = token ? jwt_decode(token) : null;
+  const user_id = decodedToken?.userId;
+
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const decodedToken = token ? jwt_decode(token) : null;
-    const user_id = decodedToken?.userId;
-
     const getSummaries = async () => {
       try {
         const response = await axios.get(`http://localhost:4000/buySummaries/${user_id}`);
@@ -26,6 +25,8 @@ function SummariesBuy() {
 
     getSummaries();
   }, [user_id]);
+
+
 
   // Calculate the indexes of the items to display on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -48,6 +49,14 @@ function SummariesBuy() {
     return date.toLocaleDateString();
   };
 
+  // Calculate total number of pages
+  const totalPages = Math.ceil(summaries.length / itemsPerPage);
+  // Generate an array for page numbers
+  const pageNumbers = [];
+  for (let r = 1; r <= totalPages; r++) {
+    pageNumbers.push(r);
+  }
+
   return (
     <>
       <div className='text-center'>
@@ -65,8 +74,8 @@ function SummariesBuy() {
       ) : (
         <div className="summary-cards-container">
           {currentItems.map((summary) => (
-            <div className="summary-cardBuy" key={summary.summary_id}>
-              <img src={`http://localhost:4000/images/${summary.summary_image}`} alt={summary.summary_title} className="summaryBuy-image" />
+            <div className="summary-cardBuy" key={summary.summary_id} style={{boxShadow:"0 4px 8px rgba(0, 0, 0, 0.2)"}}>
+              <img src={`http://localhost:4000/images/${summary.summary_image}`} alt={summary.summary_title} className="summaryBuy-image"/>
               <h3 className="summaryBuy-title">{summary.summary_title}</h3>
               <p className="summaryBuy-brief">{summary.summary_brief}</p>
               <p className="purchase-date">تم الشراء في تاريخ: {convertTimestampToDate(summary.purchaseDate)}</p>
@@ -80,15 +89,19 @@ function SummariesBuy() {
 
       {/* Pagination */}
       {summaries.length > itemsPerPage && (
-        <ul className="pagination">
-          {Array.from({ length: Math.ceil(summaries.length / itemsPerPage) }).map((_, index) => (
-            <li key={index} className={`page-item ${currentPage === index + 1 ? "active" : ""}`}>
-              <button className="page-link" onClick={() => paginate(index + 1)}>
-                {index + 1}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="d-flex justify-content-center mt-5">
+          <nav aria-label="Page navigation">
+            <ul className="pagination">
+              {pageNumbers.map((pageNumber) => (
+                <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? "active" : ""}`}>
+                  <button className="page-link" onClick={() => paginate(pageNumber)}>
+                    {pageNumber}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
       )}
     </>
   );

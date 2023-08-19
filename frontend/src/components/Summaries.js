@@ -18,7 +18,7 @@ function Summaries() {
   const [enrolledSummaries, setEnrolledSummaries] = useState([]);
 
 
-  
+
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
       const token = localStorage.getItem('token');
@@ -38,7 +38,7 @@ function Summaries() {
 
 
 
-  
+
   useEffect(() => {
     getUniversities();
     getSummaries();
@@ -83,10 +83,10 @@ function Summaries() {
   const filteredSummaries = summaries.filter((summary) => {
     const matchName = summary.summary_title && summary.summary_title.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchPublisher =summary.summary_publisher && summary.summary_publisher.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchPublisher = summary.summary_publisher && summary.summary_publisher.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchUniversity =summary.university_name && summary.university_name.toLowerCase().includes(universityFilter.toLowerCase());
-    
+    const matchUniversity = summary.university_name && summary.university_name.toLowerCase().includes(universityFilter.toLowerCase());
+
     const matchCategory = summary.category_name && summary.category_name.toLowerCase().includes(categoryFilter.toLowerCase());
 
     return (matchName || matchPublisher) && (matchUniversity || !universityFilter) && (matchCategory || !categoryFilter);
@@ -133,7 +133,6 @@ function Summaries() {
     }
 
 
-
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
 
@@ -146,10 +145,8 @@ function Summaries() {
           icon: 'info',
           confirmButtonText: 'موافق',
         });
-        return; 
+        return;
       }
-
-
 
 
       // Send a request to the server to add the summary to the cart table
@@ -164,12 +161,11 @@ function Summaries() {
 
 
 
-
       Swal.fire({
         title: 'تمت إضافة المُلخص إلى السلة',
         html: `
-          <img src="http://localhost:4000/images/${summary.summary_image}" alt="Summary Image" className="popup-image" width="265px">
-          <p className="popup-title">عنوان الملخص: ${summary.summary_title}</p>
+          <img src="http://localhost:4000/images/${summary.summary_image}" alt="Summary Image" className="popup-image mb-5" width="265px">
+          <p className="popup-title mt-3">عنوان الملخص: ${summary.summary_title}</p>
           <p className="popup-price">السعر: ${summary.summary_price} JD</p>
         `,
         showCancelButton: true,
@@ -198,9 +194,11 @@ function Summaries() {
 
 
 
+ const pageNumbers = [];
+ for (let r = 1; r <= Math.ceil(filteredSummaries.length / summariesPerPage); r++) {
+   pageNumbers.push(r);
+ }
 
-
-  const pageNumbers = Math.ceil(filteredSummaries.length / summariesPerPage);
 
   return (
     <div>
@@ -220,11 +218,7 @@ function Summaries() {
                       التصنيفات
                     </Link>
                   </Breadcrumbs>
-                  <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
-                    <Link className="text-white" to={'/'}>
-                      الصفحة الرئيسية
-                    </Link>
-                  </Breadcrumbs>
+                
                 </ol>
               </nav>
             </div>
@@ -275,7 +269,7 @@ function Summaries() {
                 <img
                   src={`http://localhost:4000/images/${summary.summary_image}`}
                   className="card-img-top shadow"
-                  alt="Summary" width="100%" height="290px"
+                  alt="Summary" width="100%" height="265px"
                 />
                 <div className="card-body text-right p-0">
                   <h5 className="card-title">{summary.summary_title}</h5>
@@ -327,28 +321,22 @@ function Summaries() {
 
       {/* Pagination */}
       {filteredSummaries.length > summariesPerPage && (
-        <div className="container my-4 d-flex justify-content-center">
-          <div className="row">
-            <nav>
-              <ul className="pagination">
-                {Array.from(Array(pageNumbers), (val, index) => (
-                  <li key={index + 1} className="page-item">
-                    <button
-                      className="page-link mt-5"
-                      style={{ borderRadius: "100%", color: "white", marginLeft: "15px", backgroundColor: "#06BBCC" }}
-                      onClick={() => paginate(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
+        <div className="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul className="pagination">
+              {pageNumbers.map((pageNumber) => (
+                <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
+                  <button
+                    className="page-link"
+                    onClick={() => paginate(pageNumber)}>
+                    {pageNumber}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       )}
-
-
     </div>
   );
 }

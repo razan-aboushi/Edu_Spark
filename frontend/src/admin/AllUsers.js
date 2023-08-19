@@ -4,21 +4,19 @@ import Swal from "sweetalert2";
 import "../css/style.css";
 
 
-function UserForm()
- {
+function UserForm() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
 
-  
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
 
   // get all the registered users in the website
-  async function fetchUsers() 
-  {
+  async function fetchUsers() {
     try {
       const response = await axios.get("http://localhost:4000/usersRegistered");
       setUsers(response.data);
@@ -29,30 +27,32 @@ function UserForm()
 
 
 
-// delete the user from the website "soft delete"
+  // delete the user from the website "soft delete"
   async function deleteUser(user_id) {
     try {
       const result = await Swal.fire({
         icon: "warning",
         title: "هل أنت متأكد؟",
-        text: "سيتم حذف المستخدم نهائيًا!",
+        text: "سيتم الأن حذف المُستخدم !",
         confirmButtonText: "نعم، احذفه!",
         cancelButtonText: "لا",
         showCancelButton: true,
         reverseButtons: true,
       });
 
-      if (result.isConfirmed) {
+      if (result.isConfirmed) 
+      {
         await axios.put(`http://localhost:4000/usersRegistered/${user_id}`, { is_deleted: true });
         setUsers(users.filter((user) => user.user_id !== user_id));
         Swal.fire({
           icon: "success",
           title: "تم الحذف",
-          text: "تم حذف المستخدم بنجاح!",
+          text: "تم حذف المُستخدم بنجاح!",
           confirmButtonText: "موافق",
         });
       }
-    } catch (error) {
+    } catch (error) 
+    {
       console.log(error);
     }
   }
@@ -93,6 +93,17 @@ function UserForm()
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
+
+
+ // TO loop on the courses and number of pages
+ const totalPages = Math.ceil(users.length / usersPerPage);
+ const pageNumbers = [];
+ for (let r = 1; r <= totalPages; r++) 
+ {
+   pageNumbers.push(r);
+ }
+
+
   // Change page
   function paginate(pageNumber) {
     setCurrentPage(pageNumber);
@@ -120,7 +131,7 @@ function UserForm()
                     <tr key={user.user_id} className="user-row">
 
                       <td>{user.name}</td>
-                      <td>{user.role === "admin"? "أدمن" : user.role==="student"?"طالب" : user.role==="teacher" ? "معلم" : null}</td>
+                      <td>{user.role === "admin" ? "أدمن" : user.role === "student" ? "طالب" : user.role === "teacher" ? "معلم" : null}</td>
                       <td>{user.email}</td>
                       <td>{user.phone_number}</td>
                       <td className="text-center">
@@ -147,17 +158,23 @@ function UserForm()
             </div>
 
             {/* Pagination */}
+            {users.length > usersPerPage && (
             <div className="d-flex justify-content-center">
-              <ul className="pagination">
-                {Array.from({ length: Math.ceil(users.length / usersPerPage) }).map((_, index) => (
-                  <li key={index} className="page-item">
-                    <button className="pagination-button" onClick={() => paginate(index + 1)}>
-                      {index + 1}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <nav aria-label="Page navigation">
+                <ul className="pagination">
+                  {pageNumbers.map((pageNumber) => (
+                    <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
+                      <button
+                        className="page-link"
+                        onClick={() => paginate(pageNumber)}>
+                        {pageNumber}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
             </div>
+            )}
           </div>
         </div>
       </div>

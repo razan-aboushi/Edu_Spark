@@ -3,8 +3,7 @@ import axios from 'axios';
 import '../css/style.css';
 
 
-function ContactMessages()
- {
+function ContactMessages() {
   const [messages, setMessages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [messagesPerPage] = useState(10);
@@ -13,7 +12,7 @@ function ContactMessages()
     getContactMessages();
   }, []);
 
-  
+
   // Get contact messages
   const getContactMessages = async () => {
     try {
@@ -28,6 +27,16 @@ function ContactMessages()
   const indexOfLastMessage = currentPage * messagesPerPage;
   const indexOfFirstMessage = indexOfLastMessage - messagesPerPage;
   const currentMessages = messages.slice(indexOfFirstMessage, indexOfLastMessage);
+
+
+
+  const totalPages = Math.ceil(messages.length / messagesPerPage);
+
+  const messagesPage = [];
+  for (let r = 1; r <= totalPages; r++) {
+    messagesPage.push(r);
+  }
+
 
   // Change page
   const paginate = (pageNumber) => {
@@ -67,16 +76,17 @@ function ContactMessages()
         </div>
       )}
 
+
       {/* Pagination */}
       {messages.length > messagesPerPage && (
         <div className="pagination-container">
           <div className="pagination">
-            {Array.from({ length: Math.ceil(messages.length / messagesPerPage) }).map((_, index) => (
+            {messagesPage.map((messagePage) => (
               <button
-                key={index}
-                className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
-                onClick={() => paginate(index + 1)}>
-                {index + 1}
+                key={messagePage}
+                className={`pagination-button ${currentPage === messagePage ? 'active' : ''}`}
+                onClick={() => paginate(messagePage)}>
+                {messagePage}
               </button>
             ))}
           </div>
@@ -90,16 +100,15 @@ export default ContactMessages;
 
 
 
-
-function ReplySection({ email }) 
-{
+function ReplySection({ email }) {
 
   return (
     <div className="reply-section">
       <a href={`mailto:${email}`}>
         <button className="ContactMessageButton">
           كتابة رّد
-        </button> </a>
+        </button>
+      </a>
     </div>
   );
 }

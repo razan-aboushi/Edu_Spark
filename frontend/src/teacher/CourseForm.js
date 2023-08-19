@@ -50,6 +50,7 @@ function CourseForm() {
 
 
 
+    // Handle inputs change
     const handleInputChange = (event = {}) => {
         const { name, value } = event.target || {};
         setCourseData({ ...courseData, [name]: value });
@@ -67,6 +68,7 @@ function CourseForm() {
     };
 
 
+    
     const handleFileChangeCourseImage = (event) => {
         const file = event.target.files[0];
         setCourseData({ ...courseData, course_image: file });
@@ -118,14 +120,14 @@ function CourseForm() {
                     button: "حسناً",
                 });
             }).catch((error) => {
-                    console.log(error);
-                    Swal.fire({
-                        title: "حدث خطأ!",
-                        text: "حدث خطأ أثناء إضافة الدورة. يرجى المحاولة مرة أخرى.",
-                        icon: "error",
-                        button: "حسناً",
-                    });
+                console.log(error);
+                Swal.fire({
+                    title: "حدث خطأ!",
+                    text: "حدث خطأ أثناء إضافة الدورة. يرجى المحاولة مرة أخرى.",
+                    icon: "error",
+                    button: "حسناً",
                 });
+            });
         } else {
             Swal.fire({
                 title: "خطأ في المصادقة!",
@@ -198,7 +200,7 @@ function CourseForm() {
                                     id="course_title"
                                     value={courseData.course_title}
                                     onChange={handleInputChange}
-                                    required/>
+                                    required />
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_image")}`}>
                                 <label htmlFor="course_image">صورة تعبّر عن الدورة المقدمة :</label>
@@ -238,7 +240,7 @@ function CourseForm() {
                                     placeholder="تفاصيل الدورة"
                                     value={courseData.course_description}
                                     onChange={handleInputChange}
-                                    required/>
+                                    required />
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("connection_channel")}`}>
                                 <label className="mb-2 mt-2" htmlFor="connection_channel">قناة الاتصال:</label>
@@ -250,7 +252,7 @@ function CourseForm() {
                                     id="connection_channel"
                                     value={courseData.connection_channel}
                                     onChange={handleInputChange}
-                                    required/>
+                                    required />
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_type")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_type">نوع الدورة:</label>
@@ -262,7 +264,7 @@ function CourseForm() {
                                     id="course_type"
                                     value={courseData.course_type}
                                     onChange={handleInputChange}
-                                    required/>
+                                    required />
                             </div>
 
                             {/* Sell or Free */}
@@ -313,7 +315,7 @@ function CourseForm() {
                                     value={courseData.course_price}
                                     onChange={handleInputChange}
                                     required
-                                    disabled={courseData.sell_or_free==="free"}
+                                    disabled={courseData.sell_or_free === "free"}
                                 />
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_duration")}`}>
@@ -342,7 +344,7 @@ function CourseForm() {
                                         id="start_date"
                                         value={courseData.start_date}
                                         onChange={handleInputChange}
-                                        required/>
+                                        required />
                                     <span className="input-group-text">إلى</span>
                                     <input
                                         className="form-control"
@@ -367,7 +369,7 @@ function CourseForm() {
                                         id="start_time"
                                         value={courseData.start_time}
                                         onChange={handleInputChange}
-                                        required/>
+                                        required />
                                     <span className="input-group-text">وقت الإنتهاء</span>
                                     <input
                                         className="form-control"
@@ -405,7 +407,8 @@ function CourseForm() {
                             {/* course Category */}
                             <div className={`form-group mt-3 mb-3 ${getInputClass("course_category")}`}>
                                 <label className="control-label" htmlFor="course_category">
-                                    التخصص                                </label>
+                                    التخصص
+                                </label>
                                 <select
                                     className="form-control"
                                     name="course_category"
@@ -420,7 +423,6 @@ function CourseForm() {
                                         </option>
                                     ))}
                                 </select>
-
                             </div>
 
 

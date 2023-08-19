@@ -3,9 +3,11 @@ import "../css/UserProfile.css";
 import SummaryForm from "./SummaryForm";
 import CourseForm from "./CourseForm";
 
-function CourseSummaryForm() {
+function CourseSummaryForm()
+ {
     const [showAddCourseForm, setShowAddCourseForm] = useState(false);
     const [showAddSummaryForm, setShowAddSummaryForm] = useState(false);
+
 
     const handleButtonClick = (formType) => {
         if (formType === "AddCourse") {
@@ -22,6 +24,7 @@ function CourseSummaryForm() {
     }
 
 
+    
     return (
         <div>
             {/* Add summary or course buttons section */}

@@ -38,6 +38,7 @@ function Index() {
   }, []);
 
 
+  // Get about us data in the about or intoduction section in home page
   useEffect(() => {
     const getAboutUsData = async () => {
       try {

@@ -11,6 +11,7 @@ function AddUniversity()
   const [selectedUniversity, setSelectedUniversity] = useState('');
   const [universities, setUniversities] = useState([]);
 
+
   useEffect(() => {
     fetchUniversities();
   }, []);
@@ -35,6 +36,7 @@ function AddUniversity()
         });
       });
   };
+
 
   const handleUniversityNameChange = (event) => {
     setUniversityName(event.target.value);
@@ -73,7 +75,8 @@ function AddUniversity()
       return;
     }
   
-    if (checkIfUniversityExists(universityName)) {
+    if (checkIfUniversityExists(universityName))
+     {
       Swal.fire({
         title: 'خطأ',
         text: ' الجامعة موجودة بالفعل',
@@ -95,9 +98,12 @@ function AddUniversity()
           icon: 'success',
           confirmButtonText: 'موافق',
         });
+
         setUniversityName('');
         setUniversityImage(null);
-        fetchUniversities(); // Fetch updated list of universities
+
+        fetchUniversities(); // get updated list of universities
+
       }).catch((error) => {
         console.error('Error:', error);
         Swal.fire({
@@ -130,7 +136,7 @@ function AddUniversity()
     formData.append('university_id', selectedUniversity);
 
     axios.post('http://localhost:4000/add-category', formData).then((response) => {
-        console.log(response.data);
+      
         Swal.fire({
           title: 'نجاح',
           text: 'تمت إضافة التخصص بنجاح',

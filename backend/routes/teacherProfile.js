@@ -21,7 +21,13 @@ router.get('/user-summaries/:user_id',teacherProfileController.getUserSummaries 
 router.post("/submitSummaryForm/:user_id",teacherProfileController.postSummaryForm);
 
 
+// get the number of subsicribers in the course 
+router.get('/courses/:course_id/subscribers',teacherProfileController.getCountOfSubsucribers);
 
+
+
+// get the number of subsicribers in the course 
+router.get('/summaries/:summary_id/subscribers',teacherProfileController.getCountOfSummariesSubsucribers);
 
 
 

@@ -43,10 +43,10 @@ function CoursesCategories() {
           <div className="row justify-content-center">
             <div className="col-lg-10 text-center">
               <h3 className="display-3 text-white animated slideInDown">
-                التخصصات                          </h3>
+                التخصصات
+              </h3>
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb justify-content-center">
-
                 </ol>
               </nav>
             </div>
@@ -74,7 +74,7 @@ function CoursesCategories() {
 
 
           {/* Categories */}
-          <div className="row" dir="ltr" mt-4>
+          <div className="row mt-5">
             {categories.length > 0 ?
               (categories.map(category => (
                 category.category_name.toLowerCase().includes(searchTerm.toLowerCase()) && (
@@ -87,7 +87,7 @@ function CoursesCategories() {
 
                           src={`http://localhost:4000/images/${category.category_image}`}
                           className="card-img-top"
-                          alt={category.category_name}   width="100%" height="250px"
+                          alt={category.category_name} width="100%" height="250px"
 
                         />
                         <div className="card-body text-center">

@@ -46,10 +46,7 @@ function AdminPanel() {
                 vision: vision,
                 vision_title: visionTitle,
                 mission: mission,
-                mission_title: missionTitle,
-                aboutpargraph1: aboutParagraph1,
-                aboutpargraph2: aboutParagraph2,
-                aboutus_title: aboutUsTitle
+                mission_title: missionTitle
             });
 
             Swal.fire({
@@ -68,6 +65,7 @@ function AdminPanel() {
             });
         }
     }
+
 
     // Handle update the about us
     async function handleAboutUsSave(e) {
@@ -118,10 +116,11 @@ function AdminPanel() {
 
 
 
-
+    // Handle update tab of two forms
     function navigateTabs(tab) {
         setActiveTab(tab);
     }
+
 
     return (
         <div className="containerDashPanel mt-5">
@@ -141,8 +140,7 @@ function AdminPanel() {
                     <Link
                         className={`nav-link ${activeTab === 'aboutUs' ? 'active' : ''}`}
                         to="#"
-                        onClick={() => navigateTabs('aboutUs')}
-                    >
+                        onClick={() => navigateTabs('aboutUs')}>
                         تعديل من نحن
                     </Link>
                 </li>
@@ -159,8 +157,7 @@ function AdminPanel() {
                                 className="form-controlDashboardPanel"
                                 id="formVisionTitle"
                                 value={visionTitle}
-                                onChange={(e) => updateVisionTitle(e.target.value)}
-                            />
+                                onChange={(e) => updateVisionTitle(e.target.value)}/>
                         </div>
                         <div className="form-groupPanelDash">
                             <label htmlFor="formVisionContent">محتوى الرؤية</label>
@@ -169,8 +166,7 @@ function AdminPanel() {
                                 id="formVisionContent"
                                 rows="3"
                                 onChange={(e) => updateVisionContent(e.target.value)}
-                                value={vision}
-                            ></textarea>
+                                value={vision} ></textarea>
                         </div>
 
                         <h2>تعديل الرسالة</h2>
@@ -232,7 +228,7 @@ function AdminPanel() {
                                 id="formAboutUsContent1"
                                 rows="3"
                                 onChange={(e) => updateAboutUsParagraph2(e.target.value)}
-                                value={ aboutParagraph2}
+                                value={aboutParagraph2}
                             ></textarea>
                         </div>
 

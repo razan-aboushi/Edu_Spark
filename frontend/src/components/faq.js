@@ -39,8 +39,7 @@ function Faq()
                   className="accordion accordion-flush"
                   id="faqlist"
                   data-aos="fade-up"
-                  data-aos-delay={100}
-                >
+                  data-aos-delay={100}>
                   <div className="accordion-item">
                     <h3 className="accordion-header">
                       <button

@@ -65,7 +65,6 @@ function Dashboard()
       <Card title="عدد الجامعات" value={numberOfUniversity} icon={<i className="fa fa-graduation-cap"></i>} />
       <Card title="الإيرادات" value={`${revenue} د.أ`} icon={<i className="fas fa-dollar-sign"></i>} />
       <Card title="المبيعات" value={`${sales} د.أ`} icon={<i className="fas fa-dollar-sign"></i>} />
-
     </div>
   );
 }
@@ -74,10 +73,7 @@ export default Dashboard;
 
 
 
-
-
-
-
+// Card component that take the title , value and icon as props from the dashboard component
 function Card({ title, value, icon }) 
 {
   return (

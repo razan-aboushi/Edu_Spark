@@ -117,18 +117,7 @@ function CheckoutPayment() {
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    if (!formData.number || !formData.name || !formData.expiry || !formData.cvv) {
-      // Display an error message if any required fields are missing
-      Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: 'يرجى ملء جميع الحقول المطلوبة',
-        showConfirmButton: false,
-        timer: 3000,
-      });
-      return;
-    }
-
+   
     // Validate the expiration date
     const currentDate = new Date();
     const expiryParts = formData.expiry.split('/');
@@ -153,6 +142,59 @@ function CheckoutPayment() {
       });
       return;
     }
+
+
+    // Validate credit card number (accepts only 16 digits)
+    if (!/^\d{16}$/.test(formData.number)) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'الرجاء إدخال رقم البطاقة المكون من 16 رقمًا',
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      return;
+    }
+
+
+    // Validate CVV (accepts only 3 numbers)
+    if (!/^\d{3}$/.test(formData.cvv)) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'الرجاء إدخال رمز CVV المكون من 3 أرقام',
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      return;
+    }
+
+    // Validate name (accepts only characters)
+    if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'الرجاء إدخال اسم صحيح',
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      return;
+    }
+
+
+
+    if (!formData.number || !formData.name || !formData.expiry || !formData.cvv) {
+      // Display an error message if any required fields are missing
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'يرجى ملء جميع الحقول المطلوبة',
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      return;
+    }
+
 
     Swal.fire({
       title: 'تأكيد الطلب',
@@ -538,9 +580,9 @@ function CheckoutPayment() {
 
 
             </p>
-            <p> عربةِ تسوقِكَ فارغة ، سارع في شراءِ             <Link to="/summaries" className='fw-bold'> مُلخص </Link> 
+            <p> عربةِ تسوقِكَ فارغة ، سارع في شراءِ             <Link to="/summaries" className='fw-bold'> مُلخص </Link>
               أو الإنضمام              <Link to="/Courses" className='fw-bold'>لدورة</Link> الأن
-              </p>
+            </p>
             <p>
               إستمر في التعلم و إحصل على المعرفة و الدرجات العالية	&hearts;
 

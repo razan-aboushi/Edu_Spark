@@ -14,12 +14,8 @@ function Article()
   const [commentsCountFetched, setCommentsCountFetched] = useState(false);
 
 
-
   // Number of articles per page
   const articlesPerPage = 6;
-
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
 
 
   // Get the current page's articles
@@ -38,7 +34,6 @@ function Article()
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchQuery(searchValue);
-
 
     if (searchValue.trim() === '') {
       setFilteredArticles(articles);
@@ -87,7 +82,7 @@ function Article()
 
 
 
-  // get all articles 
+  // get all articles in the article page
   useEffect(() => {
     const getArticles = async () => {
       try {
@@ -105,13 +100,19 @@ function Article()
 
 
 
-
   // convert the date from the timestamp to date
   const convertTimestampTOdate = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString();
   };
 
+
+  // Calculate the total number of pages and make the pagination 
+  const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
+  const pageNumbers = [];
+  for (let r = 1; r <= totalPages; r++) {
+    pageNumbers.push(r);
+  }
 
 
   return (
@@ -127,20 +128,13 @@ function Article()
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb justify-content-center">
                   <li className="breadcrumb-item text-white active" aria-current="page">
-                    مقالات
-                  </li>
+                    المقالات 
+                    </li>
                   <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
                     <Link className="text-white">
                       التصنيفات
                     </Link>
                   </Breadcrumbs>
-
-                  <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
-                    <Link className="text-white" to={"/"}>
-                      الصفحة الرئيسية
-                    </Link>
-                  </Breadcrumbs>
-
                 </ol>
               </nav>
             </div>
@@ -171,7 +165,7 @@ function Article()
       {/* Article posts list */}
       <div className="row gy-4 posts-list">
         {currentArticles.map((article) => (
-          <div className="col-lg-6 col-md-12" key={article.article_id}>
+          <div className="col-lg-6 col-md-12" key={article.article_id}  style={{boxShadow:"0px 0px 10px rgba(0, 0, 0, 0.4)"}}>
             <article className="d-flex flex-column">
               <div className="post-img">
                 <img src={`http://localhost:4000/images/${article.article_image}`} alt="صورة المقالة" className="img-fluid" width="100%" height="290px" />
@@ -206,10 +200,10 @@ function Article()
       {/* Article pagination */}
       <div className="blog-pagination">
         <ul className="justify-content-center">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <li key={index} className={currentPage === index + 1 ? 'active' : ''}>
-              <Link to="#" onClick={() => handlePageChange(index + 1)}>
-                {index + 1}
+          {pageNumbers.map((pageNumber) => (
+            <li key={pageNumber} className={currentPage === pageNumber ? 'active' : ''}>
+              <Link to="#" onClick={() => handlePageChange(pageNumber)}>
+                {pageNumber}
               </Link>
             </li>
           ))}
@@ -219,5 +213,6 @@ function Article()
     </div>
   );
 }
+
 
 export default Article;

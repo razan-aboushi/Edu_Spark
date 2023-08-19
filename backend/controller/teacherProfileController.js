@@ -250,6 +250,47 @@ const getUserSummaries =(req, res) => {
 
 
 
+// get the number of subscribers for a course
+const getCountOfSubsucribers = (req, res) => {
+  const { course_id } = req.params;
+
+  const query = `SELECT COUNT(*) AS subscriberCount FROM course_enrollments WHERE course_id = ?`;
+
+  connection.query(query, [course_id], (error, results) => {
+    if (error) {
+      console.error('Error retrieving subscriber count:', error);
+      res.status(500).json({ error: 'An error occurred while retrieving the subscriber count.' });
+    } else {
+      const subscriberCount = results[0].subscriberCount;
+      res.json({ subscriberCount });
+    }
+  });
+}
+
+
+
+// get the number of buy for a summary
+const getCountOfSummariesSubsucribers = (req, res) => {
+  const { summary_id } = req.params;
+
+  const query = `SELECT COUNT(*) AS subscriberCount FROM summary_enrollments WHERE summary_id = ?`;
+
+  connection.query(query, [summary_id], (error, results) => {
+    if (error) {
+      console.error('Error retrieving subscriber count:', error);
+      res.status(500).json({ error: 'An error occurred while retrieving the subscriber count.' });
+    } else {
+      const subscriberCount = results[0].subscriberCount;
+      res.json({ subscriberCount });
+    }
+  });
+}
+
+
+
+
+
+
 module.exports = {
-  postCourseForm, postSummaryForm,getUserCourses,getUserSummaries
+  postCourseForm, postSummaryForm,getUserCourses,getUserSummaries ,getCountOfSubsucribers ,getCountOfSummariesSubsucribers
 };

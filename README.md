@@ -29,7 +29,7 @@
 
 
 
-## 💻⚙️ And I used the technological tools that to complete this project:
+## 💻⚙️ I used the technological tools that to complete this project:
  
  + Figma: Used for designing the user interface.
  + Trello : the visual tool that help to manage any type of project, workflow, or task tracking.

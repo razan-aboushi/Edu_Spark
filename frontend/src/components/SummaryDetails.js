@@ -150,7 +150,10 @@ function SummaryDetails()
       <Card.Img
           src={`http://localhost:4000/images/${summary.summary_image}`}
           alt="Course Image"
-          className="course-image"  style={{width:"100%" , backgroundSize:"cover" ,height:"390px"}}
+          className="course-image"  style={{ width: "100%",
+          backgroundSize: "cover",
+          height: "420px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
         />
         <Card.Body className="summaryDe-body">
           <Card.Title className="course-title">{summary.summary_title}</Card.Title>
@@ -172,7 +175,7 @@ function SummaryDetails()
           </Card.Text>
           <div className="course-description-wrapper">
             <Card.Text className="course-description">
-              <span>{summary.summary_description}</span>
+              <span> وصف المُلخص : {summary.summary_description}</span>
             </Card.Text>
           </div>
           <div className="social-icons mt-3">
