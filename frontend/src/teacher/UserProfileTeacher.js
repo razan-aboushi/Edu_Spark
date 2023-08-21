@@ -73,7 +73,7 @@ function UserProfileTeacher() {
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('summary-buy')}>
-                مُلخصاتي المُشتراة
+                المُلخصات المُشتراة
               </span>
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'manage-courses' ? 'active' : ''}`}

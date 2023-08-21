@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import axios from 'axios';
 import '../css/style.css';
@@ -10,15 +10,27 @@ function Summaries() {
   const [summaries, setSummaries] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [universityFilter, setUniversityFilter] = useState('');
-  const [categoryFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [universities, setUniversities] = useState([]);
+  const [enrolledSummaries, setEnrolledSummaries] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [summariesPerPage] = useState(6);
-  const [universities, setUniversities] = useState([]);
-  const { universityId } = useParams();
-  const [enrolledSummaries, setEnrolledSummaries] = useState([]);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    getUniversities();
+  }, []);
+
+  useEffect(() => {
+    handleInputChange();
+  }, []);
 
 
 
+
+  // Get the summaries that the user byu to check if the user buy it before now or not
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
       const token = localStorage.getItem('token');
@@ -38,19 +50,7 @@ function Summaries() {
 
 
 
-
-  useEffect(() => {
-    getUniversities();
-    getSummaries();
-    handleInputChange();
-  }, []);
-
-  useEffect(() => {
-    handleInputChange();
-  }, [universityId]);
-
-
-
+  // Get the universities in dropdown list
   const getUniversities = async () => {
     try {
       const response = await axios.get('http://localhost:4000/universities');
@@ -62,39 +62,62 @@ function Summaries() {
 
 
 
+  // Handle the change of the dropdown list of the university and category
   const handleInputChange = (event = {}) => {
     const { name, value } = event.target || {};
 
     if (name === 'summary_university') {
       setUniversityFilter(value);
+
+      const universityId = parseInt(value);
+      axios.get(`http://localhost:4000/universities/${universityId}/categories`).then((response) => {
+        setCategories(response.data);
+      }).catch((error) => {
+        console.error(error);
+      });
     }
 
-  };
-
-  const getSummaries = async () => {
-    try {
-      const response = await axios.get('http://localhost:4000/summaries');
-      setSummaries(response.data);
-    } catch (error) {
-      console.error('Error fetching summaries:', error);
+    if (name === 'category') {
+      setCategoryFilter(value);
     }
   };
 
+
+  // Get all summaries in the summary page
+  useEffect(() => {
+    const getSummaries = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/summaries');
+        setSummaries(response.data);
+      } catch (error) {
+        console.error('Error fetching summaries:', error);
+      }
+    };
+
+    getSummaries();
+  }, []);
+
+
+
+
+  // Make filters on the summaries
   const filteredSummaries = summaries.filter((summary) => {
+
     const matchName = summary.summary_title && summary.summary_title.toLowerCase().includes(searchTerm.toLowerCase());
-
     const matchPublisher = summary.summary_publisher && summary.summary_publisher.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchUniversity = universityFilter === '' || summary.university_id === parseInt(universityFilter);
+    const matchCategory = summary.category_name.toLowerCase().includes(categoryFilter.toLowerCase());
 
-    const matchUniversity = summary.university_name && summary.university_name.toLowerCase().includes(universityFilter.toLowerCase());
-
-    const matchCategory = summary.category_name && summary.category_name.toLowerCase().includes(categoryFilter.toLowerCase());
-
-    return (matchName || matchPublisher) && (matchUniversity || !universityFilter) && (matchCategory || !categoryFilter);
+    return (matchName || matchPublisher) && matchUniversity && (matchCategory || categoryFilter === '');
   });
 
+
+
+  // Render the summaries in the page based on pagination
   const indexOfLastSummary = currentPage * summariesPerPage;
   const indexOfFirstSummary = indexOfLastSummary - summariesPerPage;
   const currentSummaries = filteredSummaries.slice(indexOfFirstSummary, indexOfLastSummary);
+
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -105,7 +128,6 @@ function Summaries() {
     setCurrentPage(pageNumber);
   };
 
-  const navigate = useNavigate();
 
 
 
@@ -132,7 +154,6 @@ function Summaries() {
       return;
     }
 
-
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
 
@@ -141,7 +162,7 @@ function Summaries() {
       const response = await axios.get(`http://localhost:4000/cart/${user_id}/${summary.summary_id}`);
       if (response.data.exists) {
         Swal.fire({
-          title: 'الملخص موجود بالفعل بالسلة',
+          title: 'المُلخص موجود بالفعل بالسلة',
           icon: 'info',
           confirmButtonText: 'موافق',
         });
@@ -160,16 +181,16 @@ function Summaries() {
       });
 
 
-
       Swal.fire({
         title: 'تمت إضافة المُلخص إلى السلة',
         html: `
           <img src="http://localhost:4000/images/${summary.summary_image}" alt="Summary Image" className="popup-image mb-5" width="265px">
           <p className="popup-title mt-3">عنوان الملخص: ${summary.summary_title}</p>
-          <p className="popup-price">السعر: ${summary.summary_price} JD</p>
-        `,
+          <p className="popup-price">السعر: ${summary.summary_price === "0" ? "مجاني" : `${summary.summary_price} د.أ`}</p>
+          `,
         showCancelButton: true,
         confirmButtonText: 'موافق',
+        cancelButtonText: 'إلغاء',  
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
@@ -193,11 +214,11 @@ function Summaries() {
   };
 
 
-
- const pageNumbers = [];
- for (let r = 1; r <= Math.ceil(filteredSummaries.length / summariesPerPage); r++) {
-   pageNumbers.push(r);
- }
+  // Mathe the page numbers for pagination
+  const pageNumbers = [];
+  for (let r = 1; r <= Math.ceil(filteredSummaries.length / summariesPerPage); r++) {
+    pageNumbers.push(r);
+  }
 
 
   return (
@@ -218,7 +239,6 @@ function Summaries() {
                       التصنيفات
                     </Link>
                   </Breadcrumbs>
-                
                 </ol>
               </nav>
             </div>
@@ -226,6 +246,7 @@ function Summaries() {
         </div>
       </div>
       {/* Header End */}
+
 
       {/* Search Bar and Filters */}
       <div className="container my-4">
@@ -239,26 +260,42 @@ function Summaries() {
               onChange={handleSearch}
             />
           </div>
+
           <div className="col-lg-4">
             <select
               className="form-select"
               name="summary_university"
               value={universityFilter}
-              onChange={handleInputChange}
-            >
+              onChange={handleInputChange}>
               <option value="">كل الجامعات</option>
               {universities.map((university) => (
-                <option key={university.university_id} value={university.university_name}>
+                <option key={university.university_id} value={university.university_id}>
                   {university.university_name}
                 </option>
               ))}
             </select>
           </div>
 
+          <div className="col-lg-4">
+            <select
+              className="form-select"
+              name="category"
+              value={categoryFilter}
+              onChange={handleInputChange}>
+              <option value="">كل التخصصات</option>
+              {categories.length > 0 ? (
+                categories.map((category) => (
+                  <option key={category.category_id} value={category.category_name}>
+                    {category.category_name}
+                  </option>
+                ))
+              ) : (
+                <option value=""> "إختر جامعة " تحميل التخصصات...</option>
+              )}
+            </select>
+          </div>
         </div>
       </div>
-
-
 
       {/* Summaries */}
       <div className="container">
@@ -317,10 +354,8 @@ function Summaries() {
       </div>
 
 
-
-
       {/* Pagination */}
-      {filteredSummaries.length > summariesPerPage && (
+      {summaries.length > summariesPerPage && (
         <div className="d-flex justify-content-center">
           <nav aria-label="Page navigation">
             <ul className="pagination">
@@ -340,5 +375,6 @@ function Summaries() {
     </div>
   );
 }
+
 
 export default Summaries;

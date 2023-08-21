@@ -6,7 +6,8 @@ import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
-function CheckoutPayment() {
+function CheckoutPayment()
+ {
   const [tab, setTab] = useState('creditCard');
   const [focus, setFocus] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +24,12 @@ function CheckoutPayment() {
   });
 
   const [phone_number, setFormDataOrange] = useState([]);
+
+
+  const token = localStorage.getItem('token');
+  const decodedToken = token ? jwt_decode(token) : null;
+  const user_id = decodedToken?.userId;
+
 
 
   useEffect(() => {
@@ -42,15 +49,11 @@ function CheckoutPayment() {
   useEffect(() => {
     const getUserProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          const decodedToken = jwt_decode(token);
-          const user_id = decodedToken.userId;
-          const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
-          // Fill in the phone number with the user's data
-          setFormDataOrange(response.data.phone_number);
+        const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
+        // Fill in the phone number with the user's data
+        setFormDataOrange(response.data.phone_number);
 
-        }
+
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -65,9 +68,6 @@ function CheckoutPayment() {
   // get the cart items in the cart
   async function fetchCartItems() {
     try {
-      const token = localStorage.getItem('token');
-      const decodedToken = token ? jwt_decode(token) : null;
-      const user_id = decodedToken?.userId;
 
       const response = await axios.get(`http://localhost:4000/getAllCartItems/${user_id}`);
       const cartItems = response.data;
@@ -117,7 +117,7 @@ function CheckoutPayment() {
   function handleFormSubmit(event) {
     event.preventDefault();
 
-   
+
     // Validate the expiration date
     const currentDate = new Date();
     const expiryParts = formData.expiry.split('/');
@@ -136,7 +136,7 @@ function CheckoutPayment() {
       Swal.fire({
         position: 'center',
         icon: 'error',
-        title: 'تاريخ الإنتهاء غير صالح',
+        title: 'تاريخ إنتهاء البطاقة غير صالح',
         showConfirmButton: false,
         timer: 3000,
       });
@@ -180,7 +180,6 @@ function CheckoutPayment() {
       });
       return;
     }
-
 
 
     if (!formData.number || !formData.name || !formData.expiry || !formData.cvv) {
@@ -331,7 +330,7 @@ function CheckoutPayment() {
 
     Swal.fire({
       title: 'تأكيد الطلب',
-      text: `هل أنت متأكد أنك ترغب في المتابعة مع عملية الدفع؟ المبلغ الإجمالي: ${total}`,
+      text: `هل أنت متأكد أنك ترغب في متابعة عملية الدفع؟ المبلغ الإجمالي: ${total}`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'نعم، تابع للدفع',
@@ -544,7 +543,7 @@ function CheckoutPayment() {
                               </div>
                               <div className="d-flex justify-content-between align-items-center">
                                 <div>
-                                  <p>{item.price} JD</p>
+                                  <p>{item.price === "0" ? "مجاني" : `${item.price} د.أ`}</p>
                                 </div>
                               </div>
                             </div>))}

@@ -44,10 +44,14 @@ function SummariesBuy() {
     }
   };
 
+
+  // Convert the timestamp to date
   const convertTimestampToDate = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString();
   };
+
+
 
   // Calculate total number of pages
   const totalPages = Math.ceil(summaries.length / itemsPerPage);
@@ -61,7 +65,7 @@ function SummariesBuy() {
     <>
       <div className='text-center'>
         <h6 className="section-title bg-white text-center text-primary px-3 mt-5">
-          "مُلخصاتي"
+          "المُلخصات التي قمت بشرائها"
         </h6>
       </div>
 

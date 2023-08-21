@@ -3,8 +3,7 @@ import "../css/style.css";
 import { Link } from 'react-router-dom';
 import logo from '../img/KeepMeOnLogo.png'
 
-function Footer() 
-{
+function Footer() {
 
 
   return (
@@ -40,10 +39,10 @@ function Footer()
                     الجامعات
                   </Link>
                   <Link className="btnLinks btn-link" to="/Article" target="_blank">
-                    مقالات
+                    المقالات
                   </Link>
                   <Link className="btnLinks btn-link" to="/Summaries" target="_blank">
-                    مُلخصات
+                    جميع المُلخصات
                   </Link>
                   <Link className="btnLinks btn-link" to="/faq" target="_blank">
                     الأسئلة الشائعة
@@ -52,7 +51,7 @@ function Footer()
                 <div className="col-lg-3 col-md-6 d-flex text-end" style={{ flexDirection: "column" }}>
                   <h4 className="text-white mb-3 ">اتصل بنا</h4>
                   <p className="mb-2">
-                    120 شارع، الزرقاء، الأردن
+                    الزرقاء ، الأردن
                     <i className="fa fa-map-marker-alt ms-2 " />
 
                   </p>
@@ -61,45 +60,45 @@ function Footer()
                     <i className="fa fa-phone-alt ms-2 " />
 
                   </p>
-                  <p className="mb-2">
-                    info@EduSpark.com
-                    <i className="fa fa-envelope ms-2" />
 
+                  <p className="mb-2">
+                    <a href="mailto:info@EduSpark.com" className="email-link">
+                      info@EduSpark.com
+                      <i className="fa fa-envelope ms-2" />
+                    </a>
                   </p>
+
+
                   <div className="pt-2 d-flex text-end" style={{ flexDirection: "row-reverse" }}>
                     <Link
                       className="btnSocial btn-outline-light btn-social"
                       to="https://twitter.com/razanalqadoumi?s=09"
-                      target="_blank"
-                    >
+                      target="_blank">
                       <i className="fab fa-twitter" />
                     </Link>
                     <Link
                       className="btnSocial btn-outline-light btn-social"
                       to="https://www.facebook.com/rooza.alqadoumi?mibextid=ZbWKwL"
-                      target="_blank"
-                    >
+                      target="_blank">
                       <i className="fab fa-facebook-f" />
                     </Link>
                     <Link
                       className="btnSocial btn-outline-light btn-social"
                       to="https://instagram.com/razan_alqadoumi?igshid=ZDdkNTZiNTM="
-                      target="_blank"
-                    >
+                      target="_blank">
                       <i className="fab fa-instagram" />
                     </Link>
                     <Link
                       className="btnSocial btn-outline-light btn-social"
                       to="https://www.linkedin.com/in/razan-aboushi"
-                      target="_blank"
-                    >
+                      target="_blank">
                       <i className="fab fa-linkedin-in" />
                     </Link>
                   </div>
                 </div>
                 {/* Add the logo here */}
                 <div className="col-lg-3 col-md-6 d-flex justify-content-end align-items-center">
-                  <img src={logo} alt="Logo" className="footer-logo" width="70%" height="79%" />
+                  <img src={logo} alt="Logo" className="footer-logo" width="65%" height="79%" />
                 </div>
               </div>
             </div>

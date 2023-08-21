@@ -7,6 +7,11 @@ function ManageCourses() {
   const [summaries, setSummaries] = useState([]);
   const [subscriberCounts, setSubscriberCounts] = useState({});
   const [subscriberCountSummaries, setSubscriberCountsSummaries] = useState({});
+  const [currentCoursePage, setCurrentCoursePage] = useState(1);
+  const [currentSummaryPage, setCurrentSummaryPage] = useState(1);
+  const itemsPerPage = 4;
+
+
 
   useEffect(() => {
     getCourses();
@@ -104,13 +109,47 @@ function ManageCourses() {
     }
   };
 
+
+
+
+  const handleCoursePageChange = (pageNumber) => {
+    setCurrentCoursePage(pageNumber);
+  };
+
+  const handleSummaryPageChange = (pageNumber) => {
+    setCurrentSummaryPage(pageNumber);
+  };
+
+  const renderItems = (data, currentPage, renderFunction) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex).map(renderFunction);
+  };
+
+
+  // Pagination for the summary
+  const totalCoursePages = Math.ceil(courses.length / itemsPerPage);
+  const pageNumbersCourses = [];
+  for (let r = 1; r <= totalCoursePages; r++) {
+    pageNumbersCourses.push(r);
+  }
+
+
+  // Pagination for the summary
+  const totalSummaryPages = Math.ceil(summaries.length / itemsPerPage);
+  const pageNumbers = [];
+  for (let r = 1; r <= totalSummaryPages; r++) {
+    pageNumbers.push(r);
+  }
+
+
   return (
     <section id="ManageCourses" className="text-right mt-5">
       <h4 className="text-center">دوراتي المُقدمة</h4>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
 
         {courses.length > 0 ? (
-          courses.map((course) => (
+          renderItems(courses, currentCoursePage, course => (
             <div
               style={{
                 width: '300px',
@@ -179,14 +218,32 @@ function ManageCourses() {
               </div>
             </div>
           ))) : (<div className='mt-3'>لم تقّم بإضافة أيّة دورة حتى الأن</div>)}
+
+
       </div>
+
+      {totalCoursePages > 1 && (
+        <ul className="pagination justify-content-center mt-4">
+          {pageNumbersCourses.map((pageNumber) => (
+            <li key={pageNumber} className={`page-item ${currentCoursePage === pageNumber ? 'active' : ''}`}>
+              <button className="page-link" onClick={() => handleCoursePageChange(pageNumber)}>
+                {pageNumber}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+
+
+
 
       {/* Section to display user added summaries */}
       <section className="text-right mt-5 mb-5">
         <h4 className="text-center">مُلخصاتي المُضافة</h4>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
           {summaries.length > 0 ? (
-            summaries.map((summary) => (
+            renderItems(summaries, currentSummaryPage, summary => (
               <div
                 style={{
                   width: '300px',
@@ -253,6 +310,20 @@ function ManageCourses() {
             <div>لم تقّم بإضافة أيّة مُلخص حتى الأن</div>
           )}
         </div>
+
+
+        {totalSummaryPages > 1 && (
+          <ul className="pagination justify-content-center mt-4">
+            {pageNumbers.map((pageNumber) => (
+              <li key={pageNumber} className={`page-item ${currentSummaryPage === pageNumber ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => handleSummaryPageChange(pageNumber)}>
+                  {pageNumber}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
       </section>
     </section>
   );

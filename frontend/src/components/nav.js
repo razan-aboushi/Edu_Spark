@@ -25,6 +25,8 @@ function Nav()
         const decodedToken = jwt_decode(token);
         const roleId = decodedToken.role;
         setUserRole(roleId);
+      } else {
+        setUserRole(0); 
       }
     };
 
@@ -93,6 +95,7 @@ function Nav()
             onClick={()=>setIsNavbarOpen(!isNavbarOpen)}>
             <span className="navbar-toggler-icon"></span>
           </button>
+
 
           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`} id="navbarCollapse">
             <ul className="navbar-nav ms-auto" style={{marginRight:"30px"}}>
@@ -169,7 +172,6 @@ function Nav()
                   className="py-2 px-2 mb-2 mt-1 me-5 ms-2"
                   onClick={() => handleTabClick('سلة الشراء')}
                   style={{ borderRadius: '25px' }}>
-
 
                   <FontAwesomeIcon icon={faShoppingCart} className="ms-1" size="2x" />
                   <span className="badge bg-primary" style={{ borderRadius: "100%", transform: 'scaleX(-1)' }}>{itemCount}</span>

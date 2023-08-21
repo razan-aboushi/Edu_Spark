@@ -13,8 +13,14 @@ function ArticlesHome()
   useEffect(() => {
     async function getSomeArticles() {
       try {
-        const response = await axios.get('http://localhost:4000/articlesHomePage');
-        setArticles(response.data.articles);
+        const savedArticles = localStorage.getItem('cachedArticles');
+        if (savedArticles) {
+          setArticles(JSON.parse(savedArticles));
+        } else {
+          const response = await axios.get('http://localhost:4000/articlesHomePage');
+          setArticles(response.data.articles);
+          localStorage.setItem('cachedArticles', JSON.stringify(response.data.articles));
+        }
       } catch (error) {
         console.error('Error fetching articles:', error);
       }
@@ -22,6 +28,7 @@ function ArticlesHome()
 
     getSomeArticles();
   }, []);
+
 
 
 

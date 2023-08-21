@@ -18,11 +18,17 @@ function ListTodos() {
     e.preventDefault();
 
     if (!description) {
+      Swal.fire({
+        icon: "error",
+        title: "من فضلك",
+        text: "لم تقُّم بكتابة أي مُهمة ، أضّف واحدة لتتمكن من الإستمرارِ "
+      });
       return;
     }
 
     try {
       const toDoData = { description, user_id };
+
       await axios.post("http://localhost:4000/todos", toDoData);
       getTodos();
       setDescription("");
@@ -30,6 +36,7 @@ function ListTodos() {
       console.error(err.message);
     }
   };
+
 
 
   // delete to do
@@ -56,6 +63,32 @@ function ListTodos() {
   };
 
 
+  // Clear all todos
+  const clearAllTodos = async () => {
+    try {
+      const result = await Swal.fire({
+        title: "تأكيد الحذف",
+        text: "هل أنت متأكد أنك تريد حذف جميع المهام؟",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "نعم",
+        cancelButtonText: "لا",
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#06BBCC",
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:4000/deleteAlltodos/${user_id}`);
+        getTodos();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+
+
 
   // get all the to dos for this person
   const getTodos = async () => {
@@ -73,6 +106,7 @@ function ListTodos() {
   }, []);
 
 
+  
   // Edit on the to do "description"
   const handleEditTodoBoxOpen = async (todo_id) => {
     const selectedTodo = todos.find((todo) => todo.todo_id === todo_id);
@@ -166,7 +200,7 @@ function ListTodos() {
         </form>
       </div>
 
-      <div className="d-flex justify-content-center mt-5">
+      <div className="d-flex justify-content-center mt-5 mb-5">
         <table className="table w-75">
           <thead>
             <tr className="text-center">
@@ -199,6 +233,15 @@ function ListTodos() {
           </tbody>
         </table>
       </div>
+
+      {todos.length > 1 ? (
+        <div className="d-flex justify-content-center mt-5">
+          <button className="btn btn-danger" onClick={clearAllTodos}>
+            حذف جميع المهام
+          </button>
+        </div>
+      ) : null}
+
     </Fragment>
   );
 }

@@ -17,7 +17,24 @@ function CourseCalendar() {
     const getMyCourses = async () => {
       try {
         const response = await axios.get(`http://localhost:4000/reservationCourses/${user_id}`);
-        setCourses(response.data);
+        
+
+        const currentDate = new Date();
+        
+        const sortedCourses = response.data.sort((a, b) => {
+          if (new Date(a.start_date) > currentDate && new Date(b.start_date) > currentDate) {
+            return new Date(a.start_date) - new Date(b.start_date); // Sort upcoming courses by start_date
+          } else if (new Date(a.start_date) <= currentDate && new Date(b.start_date) > currentDate) {
+            return 1; // Move ongoing courses to the end
+          } else if (new Date(a.start_date) > currentDate && new Date(b.start_date) <= currentDate) {
+            return -1; // Move upcoming courses to the beginning
+          } else {
+            return new Date(b.start_date) - new Date(a.start_date); // Sort ongoing courses by start_date
+          }
+        });
+
+        setCourses(sortedCourses);
+
       } catch (error) {
         console.error(error);
       }
@@ -26,29 +43,25 @@ function CourseCalendar() {
     getMyCourses();
   }, []);
 
-  // convert the timestamp to date
+
+  // Convert the timestamp date to normal date
   function formatDate(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleDateString('en-US');
   }
 
-  // Function to check if a course has ended
+  // Check if the course end by compare its date with the current date
   function hasCourseEnded(endDate) {
     const currentDate = new Date();
     return new Date(endDate) < currentDate;
   }
 
-  // Get current courses to display on the current page, sorted by start_date
-  const sortedCourses = courses.slice().sort((a, b) => new Date(b.start_date) - new Date(a.end_date));
-    
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-  const currentCourses = sortedCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+  const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
 
 
-
-
-  // Pagination
+  // Make the pagination
   const totalPages = Math.ceil(courses.length / coursesPerPage);
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -56,14 +69,11 @@ function CourseCalendar() {
   }
 
 
-  // Function to handle page change
   function paginate(pageNumber) {
     setCurrentPage(pageNumber);
   }
 
-
   return (
-
     <section id="CourseCalender">
       <div className="container mt-5 mb-3">
         <div className="row">
@@ -74,41 +84,45 @@ function CourseCalendar() {
               </div>
               <div className="card-bodyCalender">
                 {currentCourses.length === 0 ? (
-                  <p className="text-center mt-5">لا توجد مواعيد دورات قريبة حتى الأن ، سارع في حجز دورة و إكتسب المعرفة</p>
+                  <p className="text-center mt-5">لا توجد مواعيد دورات قريبة حتى الأن، سارع في حجز دورة و اكتسب المعرفة</p>
                 ) : (
                   <div className="list-group">
                     {currentCourses.map((course) => (
-                      <>
+                      <div
+                        className={`list-group-item list-group-item-action ${hasCourseEnded(course.end_date) ? 'ended-course' : ''}`}
+                        key={course.course_id}
+                      >
                         {hasCourseEnded(course.end_date) ? (
-                          <div className="list-group-item list-group-item-action" key={course.course_id}>
+                          // Render ended course details
+                          <>
                             <h5 className="mb-3">{course.course_title}</h5>
-                            <p> وصف الدورة :{course.course_brief}</p>
-                            <h6 className="mb-3">تاريخ بداية الدورة : من {formatDate(course.start_date)} إلى {formatDate(course.end_date)}</h6>
+                            <p>وصف الدورة: {course.course_brief}</p>
+                            <h6 className="mb-3">تاريخ بداية الدورة: من {formatDate(course.start_date)} إلى {formatDate(course.end_date)}</h6>
                             <h6>الوقت: من {course.start_time} إلى {course.end_time}</h6>
-                            <h6 >موقع تقديم الكورس: أونلاين </h6>
-                            <p className='mt-4' style={{ color: "red" }}>لقد إنتهى موعد تقديم الدورة</p>
-                          </div>
+                            <h6>موقع تقديم الكورس: أونلاين</h6>
+                            <p className='mt-4' style={{ color: "red" }}>لقد انتهى موعد تقديم الدورة</p>
+                          </>
                         ) : (
+                          // Render ongoing course details
                           <Link
                             target='_blank'
                             key={course.course_id}
                             to={course.connection_channel}
-                            className="list-group-item list-group-item-action">
+                            className="list-group-item list-group-item-action"
+                          >
                             <h5 className="mb-3">{course.course_title}</h5>
-                            <p> وصف الدورة :{course.course_brief}</p>
-                            <h6 className="mb-3">تاريخ بداية الدورة : من {formatDate(course.start_date)} إلى {formatDate(course.end_date)}</h6>
+                            <p>وصف الدورة: {course.course_brief}</p>
+                            <h6 className="mb-3">تاريخ بداية الدورة: من {formatDate(course.start_date)} إلى {formatDate(course.end_date)}</h6>
                             <h6>الوقت: من {course.start_time} إلى {course.end_time}</h6>
-                            <h6 >موقع تقديم الكورس: أونلاين </h6>
-                            <p className='mt-4' style={{ color: "red" }}>إنقر للبدء</p>
+                            <h6>موقع تقديم الكورس: أونلاين</h6>
+                            <p className='mt-4' style={{ color: "red" }}>انقر للبدء</p>
                           </Link>
                         )}
-                      </>
+                      </div>
                     ))}
                   </div>
                 )}
 
-
-                {/* Pagination for the page */}
                 {courses.length > coursesPerPage && (
                   <nav className="mt-4">
                     <ul className="pagination justify-content-center">

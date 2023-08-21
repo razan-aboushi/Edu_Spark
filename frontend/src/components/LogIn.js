@@ -5,13 +5,16 @@ import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../css/style.css';
 
-function LogIn({ fetchUserData }) {
+
+function LogIn({ fetchUserData }) 
+{
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
 
   // Save the email and password in local storage
   useEffect(() => {
@@ -24,7 +27,6 @@ function LogIn({ fetchUserData }) {
       setRememberMe(true);
     }
   }, []);
-
 
 
   // Handle log in form submit
@@ -41,12 +43,12 @@ function LogIn({ fetchUserData }) {
           localStorage.setItem('password', password);
         }
 
-        const { role } = response.data;
-        console.log(response.data);
-
         // save the token in local storage
         const { token } = response.data;
         localStorage.setItem('token', token);
+
+        const { role } = response.data;
+        console.log(response.data);
 
 
         if (role === 1) {
@@ -70,8 +72,10 @@ function LogIn({ fetchUserData }) {
 
   };
 
+
+
   return (
-    <section className="vh-100" style={{ marginTop: '80px' }}>
+    <section className="vh-100" style={{ marginTop: '30px' }}>
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12 col-md-5 mb-5">
@@ -154,26 +158,7 @@ function LogIn({ fetchUserData }) {
                   تسجيل الدخول
                 </button>
 
-                <div className="divider align-items-center my-4">
-                  <div className="divider d-flex align-items-center my-4">
-                    <p className="text-center fw-bold mx-3 mb-0">أو</p>
-                  </div>
-                  <div className="bttso d-flex flex-row align-items-center justify-content-center justify-content-lg-center">
-                    <p className="lead fw-bold mb-2 me-3 ">تسجيل الدخول باستخدام</p>
-                  </div>
-
-                  <div className="bttso d-flex flex-row align-items-center justify-content-center">
-
-                    <button
-                      style={{ width: '35px', height: '35px', borderRadius: '10px' }}
-                      type="button"
-                      className="btn-primary btn-floating mx-1"
-                    >
-                      <i className="fab fa-google" />
-                    </button>
-
-                  </div>
-                </div>
+             
 
                 <div className="text-right mt-5">
                   <p>

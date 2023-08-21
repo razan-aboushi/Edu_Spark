@@ -3,7 +3,8 @@ import '../css/style.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-function AddArticleForm() {
+function AddArticleForm() 
+{
   const [articleData, setArticleData] = useState({
     article_title: '',
     article_brief: '',
@@ -42,37 +43,45 @@ function AddArticleForm() {
   async function onSubmit(event) {
     event.preventDefault();
 
-    try {
-      const formData = new FormData();
-      formData.append('article_title', articleData.article_title);
-      formData.append('article_brief', articleData.article_brief);
-      formData.append('article_content', articleData.article_content);
-      formData.append('article_content2', articleData.article_content2);
-      formData.append('article_image', articleData.article_image);
+    // Show a confirmation modal before submitting
+    const confirmResult = await Swal.fire({
+      title: 'تأكيد الإضافة',
+      text: 'هل أنت متأكد أنك تريد إضافة المقالة؟',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'نعم, أضف المقالة',
+      cancelButtonText: 'لا, إلغاء',
+    });
 
-      await axios.post('http://localhost:4000/AddArticle', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+    if (confirmResult.isConfirmed) {
+      try {
+        const formData = new FormData();
+        formData.append('article_title', articleData.article_title);
+        formData.append('article_brief', articleData.article_brief);
+        formData.append('article_content', articleData.article_content);
+        formData.append('article_content2', articleData.article_content2);
+        formData.append('article_image', articleData.article_image);
 
-      // Show success message
-      Swal.fire('نجاح', 'تمت إضافة المقال بنجاح!', 'success');
+        await axios.post('http://localhost:4000/AddArticle', formData);
 
-      // Clear the form data "Reset the form"
-      setArticleData({
-        article_title: '',
-        article_brief: '',
-        article_content: '',
-        article_content2: '',
-        article_image: null,
-      });
+        // Show success message
+        Swal.fire('نجاح', 'تمت إضافة المقالة بنجاح!', 'success');
 
-    } catch (error) {
-      // Show error message
-      Swal.fire('خطأ', 'فشل في إضافة المقالة', 'error');
+        // Clear the form data "Reset the form"
+        setArticleData({
+          article_title: '',
+          article_brief: '',
+          article_content: '',
+          article_content2: '',
+          article_image: null,
+        });
+      } catch (error) {
+        // Show error message
+        Swal.fire('خطأ', 'فشل في إضافة المقالة', 'error');
+      }
     }
   }
+
 
 
   // Save the article draft

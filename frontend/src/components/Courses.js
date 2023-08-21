@@ -12,18 +12,19 @@ function Courses() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [universities, setUniversities] = useState([]);
   const [categories, setCategories] = useState([]);
-  const { universityId } = useState();
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 6;
+  const navigate = useNavigate();
 
+  
   useEffect(() => {
     getUniversities();
   }, []);
 
   useEffect(() => {
     handleInputChange();
-  }, [universityId]);
+  }, []);
 
 
   // get the enrolled courses for the user to check if he get this course before now or not
@@ -58,32 +59,28 @@ function Courses() {
 
 
 
-
-
-
-// Handle when inputs in filters change 
+  // Handle when inputs in filters change 
   const handleInputChange = (event = {}) => {
     const { name, value } = event.target || {};
-  
+
     if (name === 'course_university') {
       setUniversityFilter(value);
-  
+
       const universityId = parseInt(value);
       axios.get(`http://localhost:4000/universities/${universityId}/categories`).then((response) => {
         setCategories(response.data);
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.error(error);
       });
     }
-  
+
     if (name === 'category') {
-      setCategoryFilter(value); 
+      setCategoryFilter(value);
     }
   };
-  
 
-// get all courses 
+
+  // get all courses 
   useEffect(() => {
     axios.get('http://localhost:4000/courses').then((response) => {
       setCourses(response.data);
@@ -93,6 +90,10 @@ function Courses() {
   }, []);
 
 
+
+
+  const currentDate = new Date(); 
+
   // filter the courses by name , brief and publisher name
   const filteredCourses = courses.filter((course) => {
     const matchName = course.course_title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -100,7 +101,13 @@ function Courses() {
     const matchUniversity = universityFilter === '' || course.university_id === parseInt(universityFilter);
     const matchCategory = course.category_name.toLowerCase().includes(categoryFilter.toLowerCase());
 
-    return (matchName || matchPublisher) && matchUniversity && (matchCategory || categoryFilter === '');
+
+    // Check if the course end_date is in the past (before the current date)
+    const courseEndDate = new Date(course.end_date);
+    const courseHasEnded = courseEndDate < currentDate;
+
+
+    return (matchName || matchPublisher) && matchUniversity && (matchCategory || categoryFilter === '') && !courseHasEnded;
   });
 
 
@@ -114,7 +121,6 @@ function Courses() {
     return date.toLocaleDateString('en-US');
   };
 
-  const navigate = useNavigate();
 
 
   // Handle add the course to cart for the user to get it and complete checkOut
@@ -173,10 +179,11 @@ function Courses() {
         html: `
           <img src="http://localhost:4000/images/${course.course_image}" alt="course Image" className="popup-image" width="265px">
           <p className="popup-title">عنوان الدورة: ${course.course_title}</p>
-          <p className="popup-price">السعر: ${course.course_price} JD</p>
-        `,
+          <p className="popup-price">السعر: ${course.course_price === "0" ? "مجاني" : `${course.course_price} د.أ`}</p>
+          `,
         showCancelButton: true,
         confirmButtonText: 'موافق',
+        cancelButtonText: 'إلغاء',  
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
@@ -188,7 +195,7 @@ function Courses() {
           await axios.delete(`http://localhost:4000/cartItemCourse/${user_id}/${course.course_id}`);
 
           Swal.fire({
-            title: 'تم إلغاء الطلب بنجاح',
+            title: 'تم إلغاءالطلب بنجاح',
             icon: 'success',
             confirmButtonText: 'موافق',
           });
@@ -209,12 +216,11 @@ function Courses() {
   // TO loop on the courses and number of pages
   const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
   const pageNumbers = [];
-  for (let r = 1; r <= totalPages; r++) 
-  {
+  for (let r = 1; r <= totalPages; r++) {
     pageNumbers.push(r);
   }
 
-  
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -237,7 +243,7 @@ function Courses() {
                       التصنيفات
                     </Link>
                   </Breadcrumbs>
-                
+
                 </ol>
               </nav>
             </div>
@@ -289,6 +295,8 @@ function Courses() {
           </div>
         </div>
       </div>
+
+      
       <div className="container-fluid py-5">
         <div className="container">
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
@@ -339,12 +347,11 @@ function Courses() {
                       المزيد عن الدورة
                     </Link>
                     <Link>
-                    <button
+                      <button
                         className="btn-primary my-button mt-3"
                         id="download-btn me-1"
                         onClick={() => handleAddToCart(course)}
-                        disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}
-                      >
+                        disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}>
                         {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'لقد تم الإضمام لها مسبقاً' : 'الإنضمام للدورة'}
                       </button>
                     </Link>

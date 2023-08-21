@@ -2,28 +2,35 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import OwlCarousel from 'react-owl-carousel';
-import "../lib/owlcarousel/assets/owl.carousel.css"
+import "../lib/owlcarousel/assets/owl.carousel.css";
 import '../lib/owlcarousel/assets/owl.theme.default.css';
 
-
-function UniversityHome() 
-{
+function UniversityHome() {
   const [universities, setUniversities] = useState([]);
 
   useEffect(() => {
-    const gethUniversities = async () => {
+    const getLocalStorageUniversities = () => {
+      const savedData = localStorage.getItem('cachedUniversities');
+      if (savedData) {
+        setUniversities(JSON.parse(savedData));
+      }
+    };
+
+    getLocalStorageUniversities();
+
+    const getUniversities = async () => {
       try {
         const response = await axios.get('http://localhost:4000/universities');
         setUniversities(response.data);
+        localStorage.setItem('cachedUniversities', JSON.stringify(response.data));
       } catch (error) {
         console.error(error);
       }
     };
-  
-    gethUniversities();
-  }, []);
-  
 
+    getUniversities();
+
+  }, []);
 
   return (
     <section className="ftco-section mb-5" dir="ltr" style={{ marginTop: "100px" }}>
@@ -46,41 +53,38 @@ function UniversityHome()
               responsive={{
                 0: { items: 1 },
                 768: { items: 3 },
-                992: { items: 4 }
+                992: { items: 4 },
               }}>
-
-              {universities.length > 0 ? (
-
-                universities.map(university => (
+              {universities.length > 0 ?  (
+                universities.map((university) => (
                   <div className="item" key={university.university_id}>
                     <div className="work">
                       <div
                         className="img d-flex align-items-center justify-content-center rounded"
-                        style={{ backgroundImage: `url(http://localhost:4000/images/${university.university_image})` }}>
+                        style={{
+                          backgroundImage: `url(http://localhost:4000/images/${university.university_image})`,
+                        }}>
                         <Link
                           to={`/coursesCategories/${university.university_id}`}
                           className="icon d-flex align-items-center justify-content-center">
-                          <span className="bi bi-search"/>
+                          <span className="bi bi-search" />
                         </Link>
                       </div>
                       <div className="text pt-3 w-100 text-center">
                         <h5>
-                          <Link
-                            to={`/coursesCategories/${university.university_id}`}>
+                          <Link to={`/coursesCategories/${university.university_id}`}>
                             {university.university_name}
                           </Link>
                         </h5>
                       </div>
                     </div>
                   </div>
-                )))
-                : (
-
-                  <div>
-                    يتم تحميل الجامعات الأن ... طابَ يومك
-                  </div>
-
-                )}
+                ))
+              ) : (
+                <div className="text-center">
+                  يتم تحميل الجامعات الأن ... طابَ يومك
+                </div>
+              )}
             </OwlCarousel>
           </div>
         </div>

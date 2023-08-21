@@ -103,10 +103,12 @@ function SummariesHome() {
         html: `
           <img src="http://localhost:4000/images/${summary.summary_image}" alt="Summary" className="popup-image" width="265px">
           <p className="popup-title">عنوان المُلخص: ${summary.summary_title}</p>
-          <p className="popup-price">السعر: ${summary.summary_price} JD</p>
+          <p className="popup-price">السعر: ${summary.summary_price === "0" ? "مجاني" : `${summary.summary_price} د.أ`}</p>
         `,
         showCancelButton: true,
         confirmButtonText: 'موافق',
+        cancelButtonText: 'إلغاء',  
+
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {

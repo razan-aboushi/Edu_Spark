@@ -18,6 +18,8 @@ const todo=require('./routes/todo');
 const cart =require('./routes/cart');
 const resetPassword = require('./routes/reSetPassword');
 const coursesAndsummaries=require('./routes/summaryAndCourses');
+
+
 const dotenv =require('dotenv');
 dotenv.config({path:'config.env'});
 const port = process.env.PORT;
@@ -46,7 +48,6 @@ app.use(todo);
 app.use(cart);
 app.use(resetPassword);
 app.use(coursesAndsummaries);
-
 
 
 

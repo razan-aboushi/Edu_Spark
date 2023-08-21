@@ -94,10 +94,11 @@ function CourseDetails() {
         html: `
           <img src="http://localhost:4000/images/${course.course_image}" alt="course Image" className="popup-image" width="265px">
           <p className="popup-title">عنوان الدورة: ${course.course_title}</p>
-          <p className="popup-price">السعر: ${course.course_price} JD</p>
+          <p className="popup-price">السعر: ${course.course_price === "0" ? "مجاني" : `${course.course_price} د.أ`}</p>
         `,
         showCancelButton: true,
         confirmButtonText: 'موافق',
+        cancelButtonText: 'إلغاء',  
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {

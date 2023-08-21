@@ -164,6 +164,12 @@ function ArticleDetails() {
   };
 
 
+  // Convert the date to normal-local date formate
+  const convertTimestampTOdate = (timestamp) => {
+
+    return new Date(timestamp).toLocaleDateString();
+
+  }
 
 
   if (!article) {
@@ -197,7 +203,7 @@ function ArticleDetails() {
           <section id="blog" className="blog">
             <div className="container" data-aos="fade-up">
               <div className="row g-5">
-                <div className="col-lg-9">
+                <div className="col-lg-10">
                   <article className="blog-details">
                     <div className="post-img">
                       <img src={`http://localhost:4000/images/${article.article_image}`}
@@ -207,6 +213,12 @@ function ArticleDetails() {
                       />
                     </div>
                     <h4 className="title">{article.article_title}</h4>
+                    <li className="d-flex align-items-center mt-2">
+                      <i className="bi bi-clock ms-2" />
+                      <time dateTime={article.created_at}>
+                        {convertTimestampTOdate(article.created_at)}
+                      </time>
+                    </li>
                     <div className="meta-top">
                       {article.article_brief}
                     </div>

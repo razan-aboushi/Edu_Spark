@@ -49,9 +49,8 @@ function Sidebar({ fetchUserData })
     }).then(async (result) => {
       if (result.isConfirmed) {
         localStorage.removeItem('token');
-        navigate('/LogIn');
         fetchUserData();
-        window.location.reload();
+        navigate('/LogIn');
       }
     });
   }

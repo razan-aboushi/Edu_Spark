@@ -15,6 +15,7 @@ router.put("/todos/:todo_id", todoController.updateTodo);
 // Delete a to do
 router.delete("/todos/:todo_id", todoController.deleteTodo);
 
-
+// Delete all to dos 
+router.delete("/deleteAlltodos/:user_id", todoController.deleteAllTodos);
 
 module.exports = router;

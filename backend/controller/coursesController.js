@@ -10,18 +10,18 @@ const getAllCourses = (req, res) => {
     INNER JOIN categories ON courses.category_id = categories.category_id
     INNER JOIN users ON courses.user_id = users.user_id
     WHERE courses.course_status = 'مقبول'
-
+    ORDER BY courses.course_id DESC
   `;
-    connection.query(query, (error, results) => {
+  
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching courses:', error);
+      res.status(500).json({ error: 'Failed to fetch courses from the database' });
+      return;
+    }
 
-      if (error) {
-        console.error('Error fetching courses:', error);
-        res.status(500).json({ error: 'Failed to fetch courses from the database' });
-        return;
-      }
-
-      res.json(results);
-    });
+    res.json(results);
+  });
 };
 
 

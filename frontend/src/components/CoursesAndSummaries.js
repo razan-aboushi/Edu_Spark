@@ -7,8 +7,7 @@ import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
 
-function CoursesAndSummaries() 
-{
+function CoursesAndSummaries() {
   const { university_id, category_id } = useParams();
 
   const [courses, setCourses] = useState([]);
@@ -16,12 +15,15 @@ function CoursesAndSummaries()
   const [searchQuery, setSearchQuery] = useState('');
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [enrolledSummaries, setEnrolledSummaries] = useState([]);
+  const [currentCoursePage, setCurrentCoursePage] = useState(1);
+  const [currentSummaryPage, setCurrentSummaryPage] = useState(1);
+  const itemsPerPage = 6;
+  const navigate = useNavigate();
 
 
 
-
+// Get the summaries that the user joined to check if the user join this course before now or not
   useEffect(() => {
-    // Fetch enrolled courses
     const fetchEnrolledCourses = async () => {
       const token = localStorage.getItem('token');
       const decodedToken = token ? jwt_decode(token) : null;
@@ -40,7 +42,7 @@ function CoursesAndSummaries()
 
 
 
-
+// Get the summaries that the user purchase to check if the user buy then before now or not
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
       const token = localStorage.getItem('token');
@@ -66,17 +68,23 @@ function CoursesAndSummaries()
     const getCourses = async () => {
       try {
         const response = await axios.get(`http://localhost:4000/coursesByCategory/${university_id}/${category_id}`);
-        setCourses(response.data);
+        
+        // Filter out courses that have ended
+        const currentDate = new Date();
+        const activeCourses = response.data.filter(course => new Date(course.end_date) >= currentDate);
+        
+        setCourses(activeCourses);
       } catch (error) {
         console.log(error);
       }
     };
-
+  
     getCourses();
   }, [university_id, category_id]);
-
-
   
+
+
+
   // useEffect hook to fetch summaries based on university and category IDs
   useEffect(() => {
     const getSummaries = async () => {
@@ -91,14 +99,48 @@ function CoursesAndSummaries()
     getSummaries();
   }, [university_id, category_id]);
 
-  const navigate = useNavigate();
+
+
+
+  const handleCoursePageChange = (pageNumber) => {
+    setCurrentCoursePage(pageNumber);
+  };
+
+  const handleSummaryPageChange = (pageNumber) => {
+    setCurrentSummaryPage(pageNumber);
+  };
+
+
+
+  const renderItems = (data, currentPage, renderFunction) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex).map(renderFunction);
+  };
 
 
 
 
+  // Pagination for the summary
+  const totalCoursePages = Math.ceil(courses.length / itemsPerPage);
+  const pageNumbersCourses = [];
+  for (let r = 1; r <= totalCoursePages; r++) {
+    pageNumbersCourses.push(r);
+  }
+
+
+  // Pagination for the summary
+  const totalSummaryPages = Math.ceil(summaries.length / itemsPerPage);
+  const pageNumbers = [];
+  for (let r = 1; r <= totalSummaryPages; r++) {
+    pageNumbers.push(r);
+  }
+
+
+
+  // Handle add summaries or courses to user cart 
   const handleAddToCart = async (item, itemType) => {
     const token = localStorage.getItem('token');
-
 
 
     if (!token) {
@@ -249,7 +291,7 @@ function CoursesAndSummaries()
         <p className="text-center">لا توجد دورات حتى الآن.</p>
       ) : (
         <div className="d-flex flex-wrap justify-content-center mt-5">
-          {courses.map((course, index) => (
+          {renderItems(courses, currentCoursePage, (course, index) => (
             <div className="courseCat-card p-3 shadow mb-4 m-4 mx-3" key={index} style={{ width: '400px', height: 'auto' }}>
               <img className="shadow" src={`http://localhost:4000/images/${course.course_image}`} alt="Course" width="100%" height="280px" />
               <h4 className='mt-2'>{course.course_title}</h4>
@@ -291,13 +333,26 @@ function CoursesAndSummaries()
       )}
 
 
+      {totalCoursePages > 1 && (
+        <ul className="pagination justify-content-center m-5">
+          {pageNumbersCourses.map((pageNumber) => (
+            <li key={pageNumber} className={`page-item ${currentCoursePage === pageNumber ? 'active' : ''}`}>
+              <button className="page-link" onClick={() => handleCoursePageChange(pageNumber)}>
+                {pageNumber}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+
 
       <h3 className="text-center mt-5">المُلخصات</h3>
       {summaries.length === 0 ? (
         <p className="text-center">لا توجد مُلخصات حتى الآن.</p>
       ) : (
         <div className="d-flex flex-wrap justify-content-center mt-5">
-          {summaries.map((summary, index) => (
+          {renderItems(summaries, currentSummaryPage, (summary, index) => (
             <div className="summary-card p-3 shadow m-4 mb-4 mx-3" key={index} style={{ width: '400px', height: 'auto' }}>
               <img className="shadow" src={`http://localhost:4000/images/${summary.summary_image}`} alt="Summary" width="100%" height="280px" />
               <h4 className='mt-2'>{summary.summary_title}</h4>
@@ -329,6 +384,21 @@ function CoursesAndSummaries()
           ))}
         </div>
       )}
+
+
+
+      {totalSummaryPages > 1 && (
+        <ul className="pagination justify-content-center">
+          {pageNumbers.map((pageNumber) => (
+            <li key={pageNumber} className={`page-item ${currentSummaryPage === pageNumber ? 'active' : ''}`}>
+              <button className="page-link" onClick={() => handleSummaryPageChange(pageNumber)}>
+                {pageNumber}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
 
     </div>
   );

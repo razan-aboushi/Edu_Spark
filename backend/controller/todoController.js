@@ -95,6 +95,21 @@ const getAllTodoTasks = (req, res) => {
 
 
 
+const deleteAllTodos = (req, res) => {
+  const { user_id } = req.params;
+
+  const deleteQuery = 'DELETE FROM todos WHERE user_id = ?';
+
+  connection.query(deleteQuery, [user_id], (err, result) => {
+    if (err) {
+      console.error('Error deleting todos:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      console.log('Deleted all todos for user:', user_id);
+      res.status(200).json({ message: 'All todos deleted successfully' });
+    }
+  });
+};
 
 
 
@@ -106,5 +121,5 @@ module.exports = {
   updateTodo,
   deleteTodo,
   getAllTodoTasks,
-  postTodoTasks, 
+  postTodoTasks, deleteAllTodos
 };

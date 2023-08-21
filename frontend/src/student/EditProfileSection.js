@@ -5,7 +5,8 @@ import "../css/UserProfile.css";
 import Swal from 'sweetalert2';
 import bcrypt from 'bcryptjs';
 
-function EditProfileSection() {
+function EditProfileSection() 
+{
   const [userProfile, setUserProfile] = useState([]);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -111,13 +112,11 @@ function EditProfileSection() {
               <div className="cardImage">
                 <div
                   className="rounded-top text-white d-flex flex-row"
-                  style={{ backgroundColor: "#06BBCC", height: 200 }}
-                >
+                  style={{ backgroundColor: "#06BBCC", height: 200 }}>
                   <div
                     className="ms-4 mt-5 d-flex flex-column"
-                    style={{ width: 150 }}
-                  ></div>
-                  <div className="ms-2" style={{ marginTop: 130 }}>
+                    style={{ width: 20 }}></div>
+                  <div className="ms-2" style={{ marginTop: 110 }}>
                     إسمك هنا
                     <h5>{name}</h5>
                   </div>
@@ -134,7 +133,7 @@ function EditProfileSection() {
                     <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-12">
                       <form id="EditProfileForm" className="mt-4">
                         <div className="form-groupAdd">
-                          <label htmlFor="FullUname" className="text-left">
+                          <label htmlFor="FullUname">
                             الإسم الكامل
                           </label>
                           <input
@@ -146,9 +145,8 @@ function EditProfileSection() {
                             onChange={(e) => setName(e.target.value)}/>
                         </div>
                        
-
                         <div className="form-groupAdd">
-                          <label htmlFor="phone" className="text-left">
+                          <label htmlFor="phone">
                             رقم الهاتف
                           </label>
                           <input
@@ -160,7 +158,7 @@ function EditProfileSection() {
                             onChange={(e) => setPhoneNumber(e.target.value)}/>
                         </div>
                         <div className="form-groupAdd">
-                          <label htmlFor="birthdate" className="text-left">
+                          <label htmlFor="birthdate">
                             تاريخ الميلاد
                           </label>
                           <input
@@ -171,7 +169,7 @@ function EditProfileSection() {
                             onChange={(e) => setBirthdate(e.target.value)}/>
                         </div>
                         <div className="form-groupAdd">
-                          <label htmlFor="password" className="text-left">
+                          <label htmlFor="password">
                             كلمة المرور
                           </label>
                           <input
