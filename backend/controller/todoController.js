@@ -83,7 +83,6 @@ const getAllTodoTasks = (req, res) => {
         res.status(500).json({ error: 'An error occurred while retrieving todos.' });
       } else {
         res.json(result);
-        console.log(result)
       }
     });
   } catch (err) {

@@ -42,7 +42,10 @@ function Contact() {
       Swal.fire({
         icon: 'error',
         title: 'الحقول مطلوبة',
-        text: 'يرجى ملء جميع الحقول المطلوبة'
+        text: 'من فضلك ، يرجى ملء جميع الحقول المطلوبة ',
+        showCancelButton: true,
+        confirmButtonText: 'موافق',
+        cancelButtonText: 'إلغاء',  
       });
       return;
     }
@@ -219,7 +222,7 @@ function Contact() {
               </div>
               <div className="ms-3">
                 <h5 className="text-primary">البريد الإلكتروني</h5>
-                <p className="mb-0">EduSpark@gmail.com</p>
+                <p className="mb-0">info@EduSpark.com</p>
               </div>
             </div>
           </div>

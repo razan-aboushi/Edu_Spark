@@ -7,30 +7,31 @@ import "../css/UserProfile.css";
 function UserProfile() {
   const [userProfile, setUserProfile] = useState([]);
 
+  const token = localStorage.getItem('token');
+  const decodedToken = jwt_decode(token);
+  const user_id = decodedToken.userId;
+
+
   useEffect(() => {
     const getUserProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          const decodedToken = jwt_decode(token);
-          const user_id = decodedToken.userId;
 
-          const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
-          const formattedProfile = {
-            ...response.data,
-            birthdate: new Date(response.data.birthdate).toLocaleDateString(), 
-          };
-          setUserProfile(formattedProfile);
-        }
+        const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
+        const formattedProfile = {
+          ...response.data,
+          birthdate: new Date(response.data.birthdate).toLocaleDateString(),
+        };
+        setUserProfile(formattedProfile);
+
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
     };
 
     getUserProfile();
-  }, []);
+  }, [user_id]);
 
-  
+
   return (
     <section id="UserProfile" className="mt-5">
       <div className="container-fluid d-flex justify-content-center mb-2">
@@ -40,11 +41,11 @@ function UserProfile() {
               <h4 className="text-white">الحساب الشخصي</h4>
             </div>
             <div className="panel-bodyUserProfile">
-              
-              <div className="col-md-12 col-xs-8 col-sm-12 col-lg-8" style={{width:"350px"}}>
+
+              <div className="col-md-12 col-xs-8 col-sm-12 col-lg-8" style={{ width: "350px" }}>
                 <div className="ContainerProfileSection"></div>
                 <hr />
-                <ul className="ContainerProfileSection details" style={{fontSize:"18px"}}>
+                <ul className="ContainerProfileSection details" style={{ fontSize: "18px" }}>
                   <li>
                     <p>
                       <span className="bi bi-person one" style={{ width: 50 }} />
@@ -72,10 +73,15 @@ function UserProfile() {
                   </li>
                   <li>
                     <p>
-                      <span className="fa fa-mars-double one" style={{ width: 50 }} />
-                      {userProfile.gender==="female"?"أنثى" : "ذكر"}
+                      {userProfile.gender === "female" ? (
+                        <span className="fa fa-venus one" style={{ width: 50 }} /> // Use female icon
+                      ) : (
+                        <span className="fa fa-mars one" style={{ width: 50 }} /> // Use  male icon
+                      )}
+                      {userProfile.gender === "female" ? "أنثى" : "ذكر"}
                     </p>
                   </li>
+
                 </ul>
                 <hr />
               </div>

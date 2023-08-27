@@ -99,8 +99,6 @@ const postSummaryForm = (req, res) => {
 
 
 
-
-
 // post the course to database
 const postCourseForm = (req, res) => {
   upload.single('course_image')(req, res, (error) => {

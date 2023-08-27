@@ -107,7 +107,7 @@ function SummariesHome() {
         `,
         showCancelButton: true,
         confirmButtonText: 'موافق',
-        cancelButtonText: 'إلغاء',  
+        cancelButtonText: 'إلغاء',
 
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
@@ -156,7 +156,7 @@ function SummariesHome() {
               <div className="card-body">
                 <h5 className="card-title">{summary.summary_title}</h5>
                 <p className="card-text">{summary.summary_brief}</p>
-                <ul className="list-group list-group-flush">
+                <ul className="list-group1 list-group-flush">
                   <li className="list-group-item" id="priceOfSum">
                     السعر: {summary.summary_price === "0" ? (
                       <span style={{ color: 'green' }}>مجاني</span>

@@ -32,7 +32,7 @@ function ManageCourses() {
 
         // get subscriber counts for each course
         const courseIds = response.data.map(course => course.course_id);
-        console.log(courseIds)
+        
         const subscriberCounts = await Promise.all(courseIds.map(async courseId => {
           const subscriberResponse = await axios.get(`http://localhost:4000/courses/${courseId}/subscribers`);
           return {

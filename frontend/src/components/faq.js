@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import "../css/style.css";
 
 
-function Faq() 
-{
+function Faq() {
   return (
     <div>
       <main>
@@ -195,7 +194,7 @@ function Faq()
                       data-bs-parent="#faqlist"
                     >
                       <div className="accordion-body mt-4">
-                        هناك العديد من التصنيفات المتعلقة بالكليات في الجامعات المختلفة، يمكنك مشاهدتها من هنا <Link to="coursesCategories">تصنيفات رئيسية</Link>.
+                        هناك العديد من التصنيفات المتعلقة بالكليات في الجامعات المختلفة
                       </div>
                     </div>
                   </div>

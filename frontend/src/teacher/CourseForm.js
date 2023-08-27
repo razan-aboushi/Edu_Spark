@@ -3,12 +3,11 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import "../css/UserProfile.css";
 import jwt_decode from 'jwt-decode';
-import { useParams } from 'react-router-dom';
+
 
 function CourseForm() {
     const [categories, setCategories] = useState([]);
     const [universities, setUniversities] = useState([]);
-    const { universityId } = useParams();
 
 
     const [courseData, setCourseData] = useState({
@@ -36,10 +35,10 @@ function CourseForm() {
 
     useEffect(() => {
         handleInputChange();
-    }, [universityId]);
+    }, []);
 
 
-    // get universities
+    // get universities to render them in the dropdawn list
     useEffect(() => {
         axios.get("http://localhost:4000/universities").then((response) => {
             setUniversities(response.data);
@@ -90,7 +89,6 @@ function CourseForm() {
         if (token) {
             const decodedToken = jwt_decode(token);
             const user_id = decodedToken.userId;
-            console.log(user_id)
 
             axios.post(`http://localhost:4000/addCourseForm/${user_id}`, formData).then((response) => {
                 setCourseData({
@@ -115,7 +113,7 @@ function CourseForm() {
                 });
                 Swal.fire({
                     title: "تم إضافة الدورة بنجاح!",
-                    text: " سيتم إرسال الدورة للمشرف للمراجعة والموافقة عليها ، شكراً لك",
+                    text: " سيتم إرسال الدورة للمشرف للمراجعة والموافقة عليها ، شكراً لك و لوقتك",
                     icon: "success",
                     button: "حسناً",
                 });
@@ -128,14 +126,7 @@ function CourseForm() {
                     button: "حسناً",
                 });
             });
-        } else {
-            Swal.fire({
-                title: "خطأ في المصادقة!",
-                text: "يجب تسجيل الدخول لإضافة دورة.",
-                icon: "error",
-                button: "حسناً",
-            });
-        }
+        } 
     };
 
 
@@ -432,7 +423,7 @@ function CourseForm() {
                                 <input
                                     className="form-control"
                                     type="url"
-                                    placeholder="اكتب رابط صفحة الفيسبوك "
+                                    placeholder="أدخل رابط الفيسبوك الخاص بك"
                                     name="facebook_link"
                                     id="facebook_link"
                                     value={courseData.facebook_link}
@@ -445,7 +436,7 @@ function CourseForm() {
                                 <input
                                     className="form-control"
                                     type="url"
-                                    placeholder="اكتب رابط صفحة لينكد إن"
+                                    placeholder=" أدخل رابط حسابك على لينكد إن"
                                     name="linkedin_link"
                                     id="linkedin_link"
                                     value={courseData.linkedin_link}

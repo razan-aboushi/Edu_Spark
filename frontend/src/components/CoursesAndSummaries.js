@@ -22,7 +22,8 @@ function CoursesAndSummaries() {
 
 
 
-// Get the summaries that the user joined to check if the user join this course before now or not
+
+  // Get the summaries that the user joined to check if the user join this course before now or not
   useEffect(() => {
     const fetchEnrolledCourses = async () => {
       const token = localStorage.getItem('token');
@@ -42,7 +43,7 @@ function CoursesAndSummaries() {
 
 
 
-// Get the summaries that the user purchase to check if the user buy then before now or not
+  // Get the summaries that the user purchase to check if the user buy then before now or not
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
       const token = localStorage.getItem('token');
@@ -68,20 +69,20 @@ function CoursesAndSummaries() {
     const getCourses = async () => {
       try {
         const response = await axios.get(`http://localhost:4000/coursesByCategory/${university_id}/${category_id}`);
-        
+
         // Filter out courses that have ended
         const currentDate = new Date();
         const activeCourses = response.data.filter(course => new Date(course.end_date) >= currentDate);
-        
+
         setCourses(activeCourses);
       } catch (error) {
         console.log(error);
       }
     };
-  
+
     getCourses();
   }, [university_id, category_id]);
-  
+
 
 
 
@@ -171,7 +172,7 @@ function CoursesAndSummaries() {
 
       if (response.data.exists) {
         Swal.fire({
-          title: `هذا ${itemType} موجود بالفعل في السلة. يرجى استكمال عملية الدفع.`,
+          title: `هذا ${itemType === "course" ? "الدورة" : "المُلخص"} موجود بالفعل في السلة. يرجى استكمال عملية الدفع.`,
           icon: 'info',
           confirmButtonText: 'متابعة',
         });
@@ -188,21 +189,20 @@ function CoursesAndSummaries() {
 
         await axios.post(`http://localhost:4000/addToCart`, newItem);
 
-
         Swal.fire({
-          title: `تمت إضافة ${itemType.charAt(0).toUpperCase() + itemType.slice(1)} إلى السلة`,
+          title: `تمت إضافة ${itemType === "course" ? "الدورة" : "المُلخص"} إلى السلة`,
           html: `
-            <img src="http://localhost:4000/images/${item[`${itemType}_image`]}" alt="صورة ${itemType}" className="popup-image" width="265px">
-            <p className="popup-title">${item[`${itemType}_title`]}</p>
-            <p className="popup-price">السعر: ${item[`${itemType}_price`]} د.أ</p>
+            <img src="http://localhost:4000/images/${item[`${itemType}_image`]}" alt="صورة ${itemType}" className="popup-image mb-4" width="265px">
+            <p className="popup-title mt-3">${item[`${itemType}_title`]}</p>
+            <p className="popup-price">السعر: ${item[`${itemType}_price`] === "0" ? "مجاني" : item[`${itemType}_price`]} د.أ</p>
           `,
           showCancelButton: false,
           confirmButtonText: 'إضافة للسلة',
           showLoaderOnConfirm: true,
           allowOutsideClick: () => !Swal.isLoading(),
-
-
         });
+
+
       }
     } catch (error) {
       Swal.fire({
@@ -216,41 +216,31 @@ function CoursesAndSummaries() {
 
 
 
+  // Function to convert a timestamp to a formatted date string
   const convertDateFormate = (timestamp) => {
-    // Function to convert a timestamp to a formatted date string
     const date = new Date(timestamp);
     return date.toLocaleDateString();
   };
 
+
+  // Function to handle search query changes
   const handleSearch = (query) => {
-    // Function to handle search query changes
     setSearchQuery(query);
   };
 
-  useEffect(() => {
-    // useEffect hook to perform search when the searchQuery state changes
-    const delaySearch = setTimeout(() => {
-      if (searchQuery.trim() !== '') {
-        console.log('Perform search with query:', searchQuery);
-        search();
-      }
-    }, 100);
 
-    return () => clearTimeout(delaySearch);
-  }, [searchQuery]);
 
-  const search = async () => {
-    // Function to perform the search
-    try {
-      const response = await axios.get(`http://localhost:4000/search/${searchQuery}`);
-      const { courses: searchCourses, summaries: searchSummaries } = response.data;
+  // Filter courses and summaries based on search query
+  const filteredCourses = courses.filter(course =>
+    course.course_title.toLowerCase().includes(searchQuery.toLowerCase()) || course.publisher_name.toLowerCase().includes(searchQuery.toLowerCase()));
 
-      setCourses(searchCourses);
-      setSummaries(searchSummaries);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+  const filteredSummaries = summaries.filter(summary =>
+    summary.summary_title.toLowerCase().includes(searchQuery.toLowerCase()) || summary.publisher_name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+
+
+
   return (
     <div>
       <div className="container-fluid bg-primary py-5 mb-3 page-headerSummariesCourses" dir="ltr">
@@ -275,11 +265,10 @@ function CoursesAndSummaries() {
               <input
                 type="text"
                 className="form-control"
-                placeholder="ابحث عن الملخصات والدورات..."
+                placeholder="ابحث عن المُلخصات والدورات..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
               />
-
             </div>
           </div>
         </div>
@@ -291,13 +280,13 @@ function CoursesAndSummaries() {
         <p className="text-center">لا توجد دورات حتى الآن.</p>
       ) : (
         <div className="d-flex flex-wrap justify-content-center mt-5">
-          {renderItems(courses, currentCoursePage, (course, index) => (
-            <div className="courseCat-card p-3 shadow mb-4 m-4 mx-3" key={index} style={{ width: '400px', height: 'auto' }}>
+          {renderItems(filteredCourses, currentCoursePage, (course) => (
+            <div className="courseCat-card p-3 shadow mb-4 m-4 mx-3" key={course.course_id} style={{ width: '400px', height: 'auto' }}>
               <img className="shadow" src={`http://localhost:4000/images/${course.course_image}`} alt="Course" width="100%" height="280px" />
               <h4 className='mt-2'>{course.course_title}</h4>
               <p>{course.course_brief}</p>
               <p>
-                <FaMoneyBill className="icon" />
+                <FaMoneyBill className="icon ms-1" />
 
 
                 السعر: {course.course_price === "0" ? (
@@ -309,11 +298,11 @@ function CoursesAndSummaries() {
 
               </p>
               <p>
-                <FaCalendarAlt className="icon" /> التاريخ : {convertDateFormate(course.start_date)} -{' '}
+                <FaCalendarAlt className="icon ms-1" /> التاريخ : {convertDateFormate(course.start_date)} -{' '}
                 {convertDateFormate(course.end_date)}
               </p>
               <p>
-                <FaUser className="icon" /> الناشر: {course.publisher_name}
+                <FaUser className="icon ms-1" /> الناشر: {course.publisher_name}
               </p>
               <div className="button-section d-flex justify-content-center">
                 <button className="join-course-btn buttonInAddArticle ms-3" onClick={() => handleAddToCart(course, 'course')}
@@ -352,20 +341,20 @@ function CoursesAndSummaries() {
         <p className="text-center">لا توجد مُلخصات حتى الآن.</p>
       ) : (
         <div className="d-flex flex-wrap justify-content-center mt-5">
-          {renderItems(summaries, currentSummaryPage, (summary, index) => (
-            <div className="summary-card p-3 shadow m-4 mb-4 mx-3" key={index} style={{ width: '400px', height: 'auto' }}>
+          {renderItems(filteredSummaries, currentSummaryPage, (summary) => (
+            <div className="summary-card p-3 shadow m-4 mb-4 mx-3" key={summary.summary_id} style={{ width: '400px', height: 'auto' }}>
               <img className="shadow" src={`http://localhost:4000/images/${summary.summary_image}`} alt="Summary" width="100%" height="280px" />
               <h4 className='mt-2'>{summary.summary_title}</h4>
               <p>{summary.summary_brief}</p>
               <p>
-                <FaMoneyBill className="icon" />
+                <FaMoneyBill className="icon ms-1" />
                 السعر: {summary.summary_price === "0" ? (
                   <span style={{ color: 'green' }}>مجاني</span>
                 ) : (
                   <span>{summary.summary_price} د.أ</span>
                 )}            </p>
               <p>
-                <FaUser className="icon" /> الناشر: {summary.publisher_name}
+                <FaUser className="icon ms-1" /> الناشر: {summary.publisher_name}
               </p>
               <div className="button-section d-flex justify-content-center">
                 <button className="join-course-btn buttonInAddArticle ms-3" onClick={() => handleAddToCart(summary, 'summary')}

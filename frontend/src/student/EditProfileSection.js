@@ -5,52 +5,54 @@ import "../css/UserProfile.css";
 import Swal from 'sweetalert2';
 import bcrypt from 'bcryptjs';
 
-function EditProfileSection() 
-{
+function EditProfileSection() {
   const [userProfile, setUserProfile] = useState([]);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
   const [birthdate, setBirthdate] = useState('');
 
+
+  const token = localStorage.getItem('token');
+  const decodedToken = token ? jwt_decode(token) : null;
+  const user_id = decodedToken ? decodedToken.userId : null;
+
+
   // To get the user data and fill them in the inputs
   useEffect(() => {
     const getUserProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          const decodedToken = jwt_decode(token);
-          const user_id = decodedToken.userId;
-          const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
 
-          const passwordFromInput = password;
+        const response = await axios.get(`http://localhost:4000/user-profile/${user_id}`);
 
-          // Decrypt the password
-          const decryptedPassword = await bcrypt.compare(passwordFromInput, response.data.password);
+        const passwordFromInput = password;
 
-          const formattedProfile = {
-            ...response.data,
-            birthdate: response.data.birthdate ? new Date(response.data.birthdate).toISOString().slice(0, 10) : '',
-            password: decryptedPassword ? passwordFromInput : '',
-          };
+        // Decrypt the password
+        const decryptedPassword = await bcrypt.compare(passwordFromInput, response.data.password);
 
-          setUserProfile(formattedProfile);
-          setName(formattedProfile.name);
-          setPhoneNumber(formattedProfile.phone_number);
-          setBirthdate(formattedProfile.birthdate);
-          setPassword(formattedProfile.password);
-        }
+        const formattedProfile = {
+          ...response.data,
+          birthdate: response.data.birthdate ? new Date(response.data.birthdate).toISOString().slice(0, 10) : '',
+          password: decryptedPassword ? passwordFromInput : '',
+        };
+
+        setUserProfile(formattedProfile);
+        setName(formattedProfile.name);
+        setPhoneNumber(formattedProfile.phone_number);
+        setBirthdate(formattedProfile.birthdate);
+        setPassword(formattedProfile.password);
+
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
     };
 
     getUserProfile();
-  }, []);
+  }, [user_id]);
 
 
 
-// Handle edit user profile
+  // Handle edit user profile
   const handleUpdateProfile = async () => {
 
     try {
@@ -70,7 +72,7 @@ function EditProfileSection()
             name,
             phone_number,
             birthdate,
-            
+            password
           };
 
           if (password) {
@@ -80,21 +82,14 @@ function EditProfileSection()
             updatedUserData.password = encryptedPassword;
           }
 
-          const token = localStorage.getItem('token');
-          if (token) {
-            const decodedToken = jwt_decode(token);
-            const user_id = decodedToken.userId;
+          axios.put(`http://localhost:4000/userUpdateInfo/${user_id}`, updatedUserData).then((response) => {
+            Swal.fire('نجاح', 'تم تحديث الملف الشخصي بنجاح!', 'success');
+          }).catch((error) => {
+            console.error('حدث خطأ أثناء تحديث ملف المستخدم:', error);
+            Swal.fire('خطأ', 'فشل تحديث الملف الشخصي.', 'error');
+          });
 
-            axios.put(`http://localhost:4000/userUpdateInfo/${user_id}`, updatedUserData).then((response) => {
-                Swal.fire('نجاح', 'تم تحديث الملف الشخصي بنجاح!', 'success');
-              }).catch((error) => {
-                console.error('حدث خطأ أثناء تحديث ملف المستخدم:', error);
-                Swal.fire('خطأ', 'فشل تحديث الملف الشخصي.', 'error');
-              });
-          }
         }
-
-      
       });
     } catch (error) {
       console.error('An error occurred while getting the user data:', error);
@@ -102,7 +97,7 @@ function EditProfileSection()
   };
 
 
-  
+
   return (
     <>
       <section id="EditProfile" className="text-right mt-5">
@@ -142,9 +137,9 @@ function EditProfileSection()
                             id="FullUname"
                             placeholder="إسمك"
                             value={name}
-                            onChange={(e) => setName(e.target.value)}/>
+                            onChange={(e) => setName(e.target.value)} />
                         </div>
-                       
+
                         <div className="form-groupAdd">
                           <label htmlFor="phone">
                             رقم الهاتف
@@ -155,7 +150,7 @@ function EditProfileSection()
                             id="phone"
                             placeholder="70577727 962+"
                             value={phone_number}
-                            onChange={(e) => setPhoneNumber(e.target.value)}/>
+                            onChange={(e) => setPhoneNumber(e.target.value)} />
                         </div>
                         <div className="form-groupAdd">
                           <label htmlFor="birthdate">
@@ -166,7 +161,7 @@ function EditProfileSection()
                             className="form-control"
                             id="birthdate"
                             value={birthdate}
-                            onChange={(e) => setBirthdate(e.target.value)}/>
+                            onChange={(e) => setBirthdate(e.target.value)} />
                         </div>
                         <div className="form-groupAdd">
                           <label htmlFor="password">
@@ -178,7 +173,7 @@ function EditProfileSection()
                             id="password"
                             placeholder="أدخل كلمة المرور"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}/>
+                            onChange={(e) => setPassword(e.target.value)} />
                         </div>
 
                         <div className="text-right mt-5 d-flex justify-content-center">

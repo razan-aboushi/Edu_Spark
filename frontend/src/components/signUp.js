@@ -264,7 +264,7 @@ function SignUp({ fetchUserData }) {
                   />{" "}
                   أنثى
                 </div>
-                {errors.gender && <span className="error mb-3">{errors.gender}</span>}
+                {errors.gender && <span className="error mb-4">{errors.gender}</span>}
 
                 <div className="form-group12 mb-3">
                   <label htmlFor="role" className="me-3">
@@ -296,7 +296,7 @@ function SignUp({ fetchUserData }) {
                     id="pass"
                     placeholder="كلمة المرور"
                     value={values.password}
-                    onChange={(e) => setValues({ ...values, password: e.target.value })}/>
+                    onChange={(e) => setValues({ ...values, password: e.target.value })} />
                   {errors.password && <span className="error">{errors.password}</span>}
                 </div>
 
@@ -312,7 +312,7 @@ function SignUp({ fetchUserData }) {
                     id="re_pass"
                     placeholder="أعد إدخال كلمة المرور"
                     value={values.re_pass}
-                    onChange={(e) => setValues({ ...values, re_pass: e.target.value })}/>
+                    onChange={(e) => setValues({ ...values, re_pass: e.target.value })} />
                   {errors.re_pass && <span className="error">{errors.re_pass}</span>}
                 </div>
 
@@ -324,7 +324,7 @@ function SignUp({ fetchUserData }) {
                     id="agree-term"
                     className="agree-term"
                     checked={values.agreeTerm}
-                    onChange={(e) => setValues({ ...values, agreeTerm: e.target.checked })}/>
+                    onChange={(e) => setValues({ ...values, agreeTerm: e.target.checked })} />
                   <label className="signUpInput me-2" htmlFor="agree-term">
                     <span>
                       <span />
@@ -343,14 +343,14 @@ function SignUp({ fetchUserData }) {
                     name="submit"
                     id="submit"
                     className="form-submit btn btn-primary"
-                    value="تسجيل"/>
+                    value="تسجيل" />
                 </div>
 
                 <div className="ms-3 term-service">
 
                   لديك حساب بالفعل؟
                   <HashLink to="/login#login" className='me-1'>
-                    قُم بتسجيل الدخول من هنا
+                    تسجيل الدخول
                   </HashLink>
 
 

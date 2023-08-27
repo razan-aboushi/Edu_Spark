@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
-function CheckoutPayment()
- {
+function CheckoutPayment() {
   const [tab, setTab] = useState('creditCard');
   const [focus, setFocus] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [summariesId, setSummariesId] = useState([]);
   const [coursesId, setCoursesId] = useState([]);
-
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     cvv: '',
@@ -38,6 +37,7 @@ function CheckoutPayment()
     setIsLoggedIn(userLoggedIn);
   }, []);
 
+
   // Function to check if the user is logged in
   function checkUserLoggedIn() {
     const token = localStorage.getItem('token');
@@ -60,7 +60,7 @@ function CheckoutPayment()
     };
 
     getUserProfile();
-  }, []);
+  }, [user_id]);
 
 
 
@@ -104,7 +104,7 @@ function CheckoutPayment()
 
 
   // Calculate sub-total
-  const subtotal = cartItems.reduce((total, item) => total + parseFloat(item.price), 0);
+  const subtotal = cartItems.reduce((fItemsPrice, item) => fItemsPrice + parseFloat(item.price), 0);
   // Calculate fees (15%)
   const fees = subtotal * 0.15;
   const total = subtotal + fees;
@@ -169,7 +169,7 @@ function CheckoutPayment()
       return;
     }
 
-    // Validate name (accepts only characters)
+    // Validate name (accepts only characters) , allows letters (both uppercase and lowercase) and whitespace characters
     if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
       Swal.fire({
         position: 'center',
@@ -421,7 +421,6 @@ function CheckoutPayment()
 
         }).catch((error) => {
           console.error(error);
-          // Handle error
         });
       }
     });
@@ -453,10 +452,6 @@ function CheckoutPayment()
   function removeItemFromCart(itemId) {
     const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
     setCartItems(updatedCartItems);
-
-    const token = localStorage.getItem('token');
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.userId;
 
     // Make a DELETE request to remove the item from the database
     axios.delete(`http://localhost:4000/removeCartItemsFromCart/${user_id}/${itemId}`).then((response) => {
@@ -553,16 +548,15 @@ function CheckoutPayment()
                               <div className="cardPay shadow">
                                 <div className="card-body p-4">
                                   <h4>تفاصيل الدفع:</h4>
-                                  <p>المجموع الفرعي: {parseFloat(subtotal).toFixed(1)} JD</p>
-                                  <p>إجمالي المبلغ: {parseFloat(total).toFixed(1)} JD</p>
+                                  <p>المجموع الفرعي: {parseFloat(subtotal).toFixed(1)} د.أ</p>
+                                  <p>إجمالي المبلغ: {parseFloat(total).toFixed(1)} د.أ</p>
                                   <p>
-                                    سيتم إضافة رسوم رمزية "15%" ستكون شاملة ضريبة القيمة المضافة نشكر تعاونكم.
+                                    سيتم إضافة رسوم رمزية "15%" ستكون شاملة ضريبة القيمة المُضافة نشكر تعاونكم.
                                   </p>
                                 </div>
                               </div>
                             </div>
                           </div>
-
                         </div>
                       </div>
                     </div>
@@ -579,8 +573,8 @@ function CheckoutPayment()
 
 
             </p>
-            <p> عربةِ تسوقِكَ فارغة ، سارع في شراءِ             <Link to="/summaries" className='fw-bold'> مُلخص </Link>
-              أو الإنضمام              <Link to="/Courses" className='fw-bold'>لدورة</Link> الأن
+            <p> عربةِ تسوقِكَ فارغة ، سارع في شراءِ <Link to="/summaries" className='fw-bold'> مُلخص </Link>
+              أو  الإنضمام<Link to="/Courses" className='fw-bold'> لدورة </Link> الأن
             </p>
             <p>
               إستمر في التعلم و إحصل على المعرفة و الدرجات العالية	&hearts;
@@ -609,9 +603,9 @@ function CheckoutPayment()
               showCloseButton: true
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.href = '/login';
+                navigate('/login');
               } else if (result.dismiss === Swal.DismissReason.cancel) {
-                window.location.href = '/signup';
+                navigate('/signup');
               }
             })
           }>
@@ -645,6 +639,7 @@ function CheckoutPayment()
                       </button>
                     </div>
 
+
                     <div className="mt-3">
                       {tab === "creditCard" && (
                         <div className="cardPayment">
@@ -669,7 +664,7 @@ function CheckoutPayment()
                                   minLength="16"
                                   maxLength="16"
                                   onChange={handleInputChangePayment}
-                                  onFocus={(e) => setFocus(e.target.name)}
+                                  onFocus={(e) => setFocus(e.target.value)}
                                 />
                               </div>
                               <div className="mb-3">
@@ -683,7 +678,7 @@ function CheckoutPayment()
                                   pattern="[A-Za-zء-ي\s]+"
                                   title="يرجى إدخال أحرف فقط"
                                   onChange={handleInputChangePayment}
-                                  onFocus={(e) => setFocus(e.target.name)}
+                                  onFocus={(e) => setFocus(e.target.value)}
                                 />
                               </div>
                               <div className="row mb-3">
@@ -697,7 +692,7 @@ function CheckoutPayment()
                                     maxLength="7"
                                     pattern="(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})"
                                     onChange={handleInputChangePayment}
-                                    onFocus={(e) => setFocus(e.target.name)}
+                                    onFocus={(e) => setFocus(e.target.value)}
                                     required
                                   />
 
@@ -714,7 +709,7 @@ function CheckoutPayment()
                                     minLength="3"
                                     maxLength="3"
                                     onChange={handleInputChangePayment}
-                                    onFocus={(e) => setFocus(e.target.name)}
+                                    onFocus={(e) => setFocus(e.target.value)}
                                   />
                                 </div>
                               </div>
@@ -729,6 +724,7 @@ function CheckoutPayment()
                         </div>
 
                       )}
+
                       {/* Orange money */}
                       {tab === "orangeMoney" && (
                         <div className="cardPayment">

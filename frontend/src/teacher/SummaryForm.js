@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Swal from "sweetalert2";
 import "../css/UserProfile.css";
-import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+
+
 
 function SummaryForm() {
     const [summaryData, setSummaryData] = useState({
@@ -22,7 +23,6 @@ function SummaryForm() {
 
     const [categories, setCategories] = useState([]);
     const [university, setUniversity] = useState([]);
-    const { universityId } = useParams();
 
 
 
@@ -45,7 +45,7 @@ function SummaryForm() {
 
     useEffect(() => {
         handleInputChange();
-    }, [universityId]);
+    }, []);
 
 
 
@@ -101,7 +101,6 @@ function SummaryForm() {
         if (token) {
             const decodedToken = jwt_decode(token);
             const user_id = decodedToken.userId;
-            console.log(user_id)
 
             if (summary_file && summary_image) {
                 const formData = new FormData();
@@ -122,14 +121,14 @@ function SummaryForm() {
                     // Reset form fields
                     setSummaryData({
                         summary_title: "",
-                        summary_image: null,
+                        summary_image: "",
                         summary_brief: "",
                         summary_description: "",
                         sell_or_free: "",
                         summary_price: "",
                         summary_category: "",
                         summary_university: "",
-                        summary_file: null,
+                        summary_file: "",
                         facebook_link: "",
                         linkedin_link: "",
                     });
@@ -157,6 +156,7 @@ function SummaryForm() {
         }
     };
 
+    
     const isRequiredField = (field) => {
         return (
             field === "summary_title" ||
@@ -186,6 +186,7 @@ function SummaryForm() {
         return "";
     };
 
+
     return (
         <div className="page-wrapper p-t-100 p-b-50">
             <div className="container">
@@ -202,7 +203,7 @@ function SummaryForm() {
                             {/* Summary Title */}
                             <div className={`form-group mt-3 ${getInputClass("summary_title")}`}>
                                 <label className="control-label" htmlFor="summary_title">
-                                    عنوان الملخص
+                                    عنوان المُلخص
                                 </label>
                                 <input
                                     className="form-control"
@@ -212,7 +213,7 @@ function SummaryForm() {
                                     id="summary_title"
                                     value={summaryData.summary_title}
                                     onChange={handleInputChange}
-                                    required />
+                                  required   />
                             </div>
 
                             {/* Summary Image */}
@@ -227,7 +228,7 @@ function SummaryForm() {
                                     id="summary_image"
                                     accept="image/*"
                                     onChange={handleFileimageChange}
-                                    required />
+                                    required/>
                             </div>
 
                             {/* Summary Description */}
@@ -322,8 +323,7 @@ function SummaryForm() {
                                     id="summary_university"
                                     value={summaryData.summary_university}
                                     onChange={(e) => handleInputChange(e)}
-                                    required
-                                >
+                                    required>
                                     <option value="">اختر الجامعة</option>
                                     {university.map((university) => (
                                         <option key={university.university_id} value={university.university_id}>
@@ -354,7 +354,6 @@ function SummaryForm() {
                                         </option>
                                     ))}
                                 </select>
-
                             </div>
 
 
@@ -383,7 +382,7 @@ function SummaryForm() {
                                 <input
                                     className="form-control"
                                     type="text"
-                                    placeholder="أدخل رابط الفيسبوك"
+                                    placeholder="أدخل رابط الفيسبوك الخاص بك"
                                     name="facebook_link"
                                     id="summary_facebook"
                                     value={summaryData.facebook_link}
@@ -399,7 +398,7 @@ function SummaryForm() {
                                 <input
                                     className="form-control"
                                     type="text"
-                                    placeholder="أدخل رابط LinkedIn"
+                                    placeholder=" أدخل رابط حسابك على لينكد إن"
                                     name="linkedin_link"
                                     id="summary_linkedin"
                                     value={summaryData.linkedin_link}

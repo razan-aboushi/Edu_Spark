@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 
-function ResetPassword()
- {
+function ResetPassword() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -42,10 +41,10 @@ function ResetPassword()
         if (resetResponse.status === 200) {
           setSuccess('تم إعادة تعيين كلمة المرور بنجاح!');
         } else {
-          setError('فشلت عملية إعادة تعيين كلمة المرور.');
+          setError('فشلت عملية إعادة تعيين كلمة المرور ، يرجى المحاولة مرة أخرى');
         }
       } else {
-        setError('البريد الإلكتروني أو رقم الهاتف غير موجودين الرجاء التأكد منهما ثم إعادة المحاولة.');
+        setError('البريد الإلكتروني أو رقم الهاتف غير موجودين الرجاء التأكد منهما أو من إدخالهما ثم إعادة المحاولة.');
       }
     } catch (error) {
       setError('حدث خطأ أثناء إعادة تعيين كلمة المرور.');
@@ -70,7 +69,7 @@ function ResetPassword()
                 style={{ width: '100%' }}
                 placeholder="أدخل البريد الإلكتروني"
                 value={email}
-                onChange={(event)=> setEmail(event.target.value)}/>
+                onChange={(event) => setEmail(event.target.value)} />
             </div>
 
             <div className="form-group">
@@ -82,7 +81,7 @@ function ResetPassword()
                 style={{ width: '100%' }}
                 placeholder="أدخل رقم الهاتف"
                 value={phone}
-                onChange={(event)=>setPhone(event.target.value)}/>
+                onChange={(event) => setPhone(event.target.value)} />
             </div>
 
             <div className="form-group">
@@ -94,7 +93,7 @@ function ResetPassword()
                 style={{ width: '100%' }}
                 placeholder="أدخل كلمة المرور الجديدة"
                 value={password}
-                onChange={(event)=>setPassword(event.target.value)}/>
+                onChange={(event) => setPassword(event.target.value)} />
             </div>
 
             <div className="form-group">
@@ -104,9 +103,9 @@ function ResetPassword()
                 id="confirmPassword"
                 className="form-control mb-4"
                 style={{ width: '100%' }}
-                placeholder="أدخل تأكيد كلمة المرور"
+                placeholder="أعّد كتابة كلمة المرور مرة أخرى"
                 value={confirmPassword}
-                onChange={(event)=>setConfirmPassword(event.target.value)}/>
+                onChange={(event) => setConfirmPassword(event.target.value)} />
             </div>
 
             {success && <p className="text-success text-center mt-3">{success}</p>}

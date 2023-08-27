@@ -62,14 +62,20 @@ function CoursesCategories() {
           </div>
 
           {/* Search Bar */}
-          <div className="text-center">
-            <input
-              type="text"
-              placeholder="ابحث عن التخصص..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="form-control w-50 mx-auto mb-5"
-            />
+          <div className="container my-2">
+            <div className="row justify-content-center">
+              <div className="col-lg-6">
+                <div className="input-group mb-3">
+                  <input
+                    type="text"
+                    placeholder="ابحث عن التخصص..."
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    className="form-control"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
 

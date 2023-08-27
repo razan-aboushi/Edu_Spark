@@ -9,10 +9,12 @@ function CourseCalendar() {
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 2;
 
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwt_decode(token) : null;
     const user_id = decodedToken?.userId;
+
 
     const getMyCourses = async () => {
       try {
@@ -44,6 +46,8 @@ function CourseCalendar() {
   }, []);
 
 
+
+
   // Convert the timestamp date to normal date
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -69,9 +73,11 @@ function CourseCalendar() {
   }
 
 
-  function paginate(pageNumber) {
+  function paginate(pageNumber) 
+  {
     setCurrentPage(pageNumber);
   }
+
 
   return (
     <section id="CourseCalender">
@@ -84,14 +90,14 @@ function CourseCalendar() {
               </div>
               <div className="card-bodyCalender">
                 {currentCourses.length === 0 ? (
-                  <p className="text-center mt-5">لا توجد مواعيد دورات قريبة حتى الأن، سارع في حجز دورة و اكتسب المعرفة</p>
+                  <p className="text-center mt-5"> لا توجد مواعيد دورات قريبة حتى الأن ، سارع في حجز دورة و اكتسب المعرفة &#129321; </p>
                 ) : (
                   <div className="list-group">
                     {currentCourses.map((course) => (
                       <div
                         className={`list-group-item list-group-item-action ${hasCourseEnded(course.end_date) ? 'ended-course' : ''}`}
-                        key={course.course_id}
-                      >
+                        key={course.course_id}>
+
                         {hasCourseEnded(course.end_date) ? (
                           // Render ended course details
                           <>
@@ -108,8 +114,7 @@ function CourseCalendar() {
                             target='_blank'
                             key={course.course_id}
                             to={course.connection_channel}
-                            className="list-group-item list-group-item-action"
-                          >
+                            className="list-group-item list-group-item-action">
                             <h5 className="mb-3">{course.course_title}</h5>
                             <p>وصف الدورة: {course.course_brief}</p>
                             <h6 className="mb-3">تاريخ بداية الدورة: من {formatDate(course.start_date)} إلى {formatDate(course.end_date)}</h6>

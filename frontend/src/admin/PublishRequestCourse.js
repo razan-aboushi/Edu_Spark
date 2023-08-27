@@ -40,6 +40,7 @@ function PublishRequestCourse()
         },
         showCancelButton: true,
         confirmButtonText: 'رفض',
+        cancelButtonText: 'إلغاء',
         showLoaderOnConfirm: true,
         preConfirm: (inputValue) => {
           if (inputValue) {

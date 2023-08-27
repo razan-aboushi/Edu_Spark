@@ -12,6 +12,7 @@ const SignUpRegister = (req, res) => {
   const birthdate = req.body.birthdate;
   const gender = req.body.gender;
 
+
   // Check if email already exists
   const checkEmailQuery = 'SELECT * FROM users WHERE email = ?';
   connection.query(checkEmailQuery, [email], (emailError, emailResults) => {
@@ -28,9 +29,10 @@ const SignUpRegister = (req, res) => {
       });
     }
 
-    // Hash the password
+    // Hash the Password before saving it to database and compare with hashed value when logging in
     bcrypt.hash(password, 10, (hashError, hashedPassword) => {
-      if (hashError) {
+      if (hashError) 
+      {
         console.error('Error hashing password:', hashError);
         return res.status(500).json({
           error: 'Internal server error'
@@ -48,7 +50,8 @@ const SignUpRegister = (req, res) => {
           });
         }
 
-        if (results.affectedRows > 0) {
+        if (results.affectedRows > 0) 
+        {
           const userId = results.insertId;
 
           try {

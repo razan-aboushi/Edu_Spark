@@ -43,38 +43,40 @@ function UserProfileTeacher() {
       <header>
         <nav className="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
 
-          <button
+           <button
             type="button"
             className="navbar-toggler me-4"
-            onClick={()=>setIsNavbarOpen(!isNavbarOpen)}>
+            onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
             <span className="navbar-toggler-icon pointer-link" />
-          </button>
-          <div className={`collapse navbar-collapse ${isNavbarOpen ?'show' : ''}`}>
+           </button>
+           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`}>
 
             <div className="navbar-nav ms-auto p-4 p-lg-0">
 
               <Link
                 to="/"
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === null ? 'active' : ''}`} style={{color:"#06BBCC "}}>
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === null ? 'active' : ''}`} style={{ color: "#06BBCC " }}>
                 الصفحة الرئيسية
               </Link>
-
 
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('todo-list')}>
                 قائمة المهام
               </span>
+
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'add-course' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('add-course')}>
                 إضافة دورة أو مُلخص
               </span>
+
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('summary-buy')}>
                 المُلخصات المُشتراة
               </span>
+
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'manage-courses' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('manage-courses')}>
@@ -91,6 +93,7 @@ function UserProfileTeacher() {
                 onClick={() => handleSectionClick('edit-profile')}>
                 تعديل الملف الشخصي
               </span>
+
               <span
                 className={`nav-item pointer-link nav-link scrollto ${activeSection === 'profile' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('profile')}>
@@ -101,6 +104,7 @@ function UserProfileTeacher() {
           </div>
         </nav>
       </header>
+      
       <main>
         {activeSection === 'profile' && <UserProfile />}
         {activeSection === 'edit-profile' && <EditProfileSection />}

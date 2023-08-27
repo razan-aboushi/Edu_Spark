@@ -13,10 +13,6 @@ router.get('/summariesByCategory/:university_id/:category_id',summariesAndCourse
 
 
 
-// search filter on the courses and summaries
-router.get('/search/:query',summariesAndCoursesController.searchCoursesSummary );
-
-
 
 module.exports=router;
 

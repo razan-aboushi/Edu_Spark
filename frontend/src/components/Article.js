@@ -5,8 +5,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { HashLink } from 'react-router-hash-link';
 import axios from 'axios';
 
-function Article() 
-{
+function Article() {
   const [currentPage, setCurrentPage] = useState(1);
   const [articles, setArticles] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,14 +39,14 @@ function Article()
     }
     else {
       // Filter articles based on search query
-      const filteredArticles = articles.filter(
-        (article) =>
+      const filteredArticles = articles.filter((article) =>
           (article.article_title && article.article_title.toLowerCase().includes(searchValue.toLowerCase())) ||
           (article.article_brief && article.article_brief.toLowerCase().includes(searchValue.toLowerCase()))
       );
 
       setFilteredArticles(filteredArticles);
     }
+
     setCurrentPage(1);
   };
 
@@ -62,10 +61,7 @@ function Article()
         const response = await axios.post('http://localhost:4000/comments/count', { articleId });
         const commentsCountMap = response.data.commentsCountMap;
 
-        const updatedArticles = articles.map((article) => ({
-          ...article,
-          comments: commentsCountMap[article.article_id] || 0,
-        }));
+        const updatedArticles = articles.map((article) => ({...article,comments: commentsCountMap[article.article_id] || 0}));
 
         setArticles(updatedArticles);
         setFilteredArticles(updatedArticles);
@@ -128,8 +124,8 @@ function Article()
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb justify-content-center">
                   <li className="breadcrumb-item text-white active" aria-current="page">
-                    المقالات 
-                    </li>
+                    المقالات
+                  </li>
                   <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
                     <Link className="text-white">
                       التصنيفات
@@ -165,7 +161,7 @@ function Article()
       {/* Article posts list */}
       <div className="row gy-4 posts-list">
         {currentArticles.map((article) => (
-          <div className="col-lg-6 col-md-12" key={article.article_id}  style={{boxShadow:"0px 0px 10px rgba(0, 0, 0, 0.4)"}}>
+          <div className="col-lg-6 col-md-12" key={article.article_id} style={{ boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.4)" }}>
             <article className="d-flex flex-column">
               <div className="post-img">
                 <img src={`http://localhost:4000/images/${article.article_image}`} alt="صورة المقالة" className="img-fluid" width="100%" height="290px" />
@@ -197,17 +193,22 @@ function Article()
       </div>
       {/* End Article posts list */}
 
+
       {/* Article pagination */}
-      <div className="blog-pagination">
-        <ul className="justify-content-center">
-          {pageNumbers.map((pageNumber) => (
-            <li key={pageNumber} className={currentPage === pageNumber ? 'active' : ''}>
-              <Link to="#" onClick={() => handlePageChange(pageNumber)}>
-                {pageNumber}
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <div className="d-flex justify-content-center mt-5">
+        <nav aria-label="Page navigation">
+          <ul className="pagination">
+            {pageNumbers.map((pageNumber) => (
+              <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(pageNumber)}>
+                  {pageNumber}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
       {/* End Article pagination */}
     </div>

@@ -21,7 +21,8 @@ function ListTodos() {
       Swal.fire({
         icon: "error",
         title: "من فضلك",
-        text: "لم تقُّم بكتابة أي مُهمة ، أضّف واحدة لتتمكن من الإستمرارِ "
+        text: "لم تقُّم بكتابة أي مُهمة ، أضّف واحدة لتتمكن من الإستمرارِ ",
+        confirmButtonText: 'موافق'
       });
       return;
     }
@@ -106,7 +107,7 @@ function ListTodos() {
   }, []);
 
 
-  
+
   // Edit on the to do "description"
   const handleEditTodoBoxOpen = async (todo_id) => {
     const selectedTodo = todos.find((todo) => todo.todo_id === todo_id);
@@ -147,7 +148,7 @@ function ListTodos() {
         const updatedTodo = { ...selectedTodo, description: updatedDescription };
         setSelectedTodo(updatedTodo);
         await axios.put(`http://localhost:4000/todos/${selectedTodo.todo_id}`, {
-          description: updatedDescription,
+          description: updatedDescription
         });
         handleTodoUpdate(updatedTodo);
         getTodos();
@@ -210,26 +211,27 @@ function ListTodos() {
             </tr>
           </thead>
           <tbody>
-            {todos.map((todo) => (
-              <tr key={todo.todo_id}>
-                <td>{todo.description}</td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-warning"
-                    onClick={() => handleEditTodoBoxOpen(todo.todo_id)}>
-                    تعديل
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deleteTodo(todo.todo_id)}>
-                    حذف
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {todos.length > 0 ? (
+              todos.map((todo) => (
+                <tr key={todo.todo_id}>
+                  <td>{todo.description}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-warning"
+                      onClick={() => handleEditTodoBoxOpen(todo.todo_id)}>
+                      تعديل
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => deleteTodo(todo.todo_id)}>
+                      حذف
+                    </button>
+                  </td>
+                </tr>
+              ))) : (<div className="text-center mt-5">هيا بنا لنقّم بكتابةِ مهمةٍ جديدةٍ و نبدأ بالتخطيطِ لهذا اليوم   &#128512;&#128150;</div>)}
           </tbody>
         </table>
       </div>

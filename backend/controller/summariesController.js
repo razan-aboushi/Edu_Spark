@@ -2,8 +2,7 @@ const connection = require('../models/dbConnect');
 
 const getAllSummaries = (req, res) => {
   const query = `
-      SELECT summaries.summary_id, summaries.summary_title, summaries.summary_brief, summaries.summary_price, summaries.summary_image,
-             universities.university_name, categories.category_name, users.name AS summary_publisher
+      SELECT summaries.*, universities.university_name, categories.category_name, users.name AS summary_publisher
       FROM summaries
       INNER JOIN universities ON summaries.university_id = universities.university_id
       INNER JOIN categories ON summaries.category_id = categories.category_id

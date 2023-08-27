@@ -17,7 +17,7 @@ function Courses() {
   const coursesPerPage = 6;
   const navigate = useNavigate();
 
-  
+
   useEffect(() => {
     getUniversities();
   }, []);
@@ -92,7 +92,7 @@ function Courses() {
 
 
 
-  const currentDate = new Date(); 
+  const currentDate = new Date();
 
   // filter the courses by name , brief and publisher name
   const filteredCourses = courses.filter((course) => {
@@ -183,7 +183,7 @@ function Courses() {
           `,
         showCancelButton: true,
         confirmButtonText: 'موافق',
-        cancelButtonText: 'إلغاء',  
+        cancelButtonText: 'إلغاء',
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
@@ -296,69 +296,72 @@ function Courses() {
         </div>
       </div>
 
-      
+
       <div className="container-fluid py-5">
         <div className="container">
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
-            {currentCourses.map((course) => (
-              <div className="col mb-4 shadow" key={course.course_id}>
-                <div className="course-item bg-light shadow-sm rounded">
-                  <div className="position-relative overflow-hidden">
-                    <img src={`http://localhost:4000/images/${course.course_image}`} alt="صورة الكورس" style={{ width: "100%", height: "250px" }} />
-                  </div>
-                  <div className="text-left p-4 pb-0">
-                    <h5 className="mb-4">{course.course_title}</h5>
-                    <p className="mb-2 text-right">
-                      السعر: {course.course_price === "0" ? (
-                        <span style={{ color: 'green' }}>مجاني</span>
-                      ) : (
-                        <span>{course.course_price} د.أ</span>
-                      )}
-                    </p>
-                    <p className="mb-4">{course.course_brief}</p>
-                    <div>
-                      <small className="text-muted">
-                        تاريخ الدورة:
-                        <i className="fa fa-clock me-2 ms-1" />
-                        من {formatDate(course.start_date)}
-                        <i className="fa fa-clock me-2 ms-1" />
-                        إلى {formatDate(course.end_date)}
-                      </small>
+            {currentCourses.length > 0 ? (
+              currentCourses.map((course) => (
+                <div className="col mb-4 shadow" key={course.course_id}>
+                  <div className="course-item bg-light shadow-sm rounded">
+                    <div className="position-relative overflow-hidden">
+                      <img src={`http://localhost:4000/images/${course.course_image}`} alt="صورة الكورس" style={{ width: "100%", height: "250px" }} />
                     </div>
-                    <div className="d-flex justify-content-start mt-3 mb-2">
-                      <small className="text-muted">
-                        <i className="fa fa-graduation-cap me-2 ms-1" />
-                        {course.university_name}
-                      </small>
-                      <small className="text-muted">
-                        <i className="fa fa-tag me-2 ms-1" />
-                        {course.category_name}
-                      </small>
+                    <div className="text-left p-4 pb-0">
+                      <h5 className="mb-4">{course.course_title}</h5>
+                      <p className="mb-2 text-right">
+                        السعر: {course.course_price === "0" ? (
+                          <span style={{ color: 'green' }}>مجاني</span>
+                        ) : (
+                          <span>{course.course_price} د.أ</span>
+                        )}
+                      </p>
+                      <p className="mb-4">{course.course_brief}</p>
+                      <div>
+                        <small className="text-muted">
+                          تاريخ الدورة:
+                          <i className="fa fa-clock me-2 ms-1" />
+                          من {formatDate(course.start_date)}
+                          <i className="fa fa-clock me-2 ms-1" />
+                          إلى {formatDate(course.end_date)}
+                        </small>
+                      </div>
+                      <div className="d-flex justify-content-start mt-3 mb-2">
+                        <small className="text-muted">
+                          <i className="fa fa-graduation-cap me-2 ms-1" />
+                          {course.university_name}
+                        </small>
+                        <small className="text-muted">
+                          <i className="fa fa-tag me-2 ms-1" />
+                          {course.category_name}
+                        </small>
+                      </div>
+                      <div className="d-flex border-top">
+                        <small className="flex-fill text-center border-end py-2 mt-2">
+                          <i className="fa fa-user-tie text-primary me-2 ms-1" />
+                          {course.publisher_name}
+                        </small>
+                      </div>
                     </div>
-                    <div className="d-flex border-top">
-                      <small className="flex-fill text-center border-end py-2 mt-2">
-                        <i className="fa fa-user-tie text-primary me-2 ms-1" />
-                        {course.publisher_name}
-                      </small>
+                    <div className="p-4 pt-0 d-flex justify-content-center card-footer">
+                      <Link to={`/CourseDetails/${course.course_id}`} className="btn-primary my-button  ms-2 mt-3">
+                        المزيد عن الدورة
+                      </Link>
+                      <Link>
+                        <button
+                          className="btn-primary my-button mt-3"
+                          id="download-btn me-1"
+                          onClick={() => handleAddToCart(course)}
+                          disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}>
+                          {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'لقد تم الإضمام لها مسبقاً' : 'الإنضمام للدورة'}
+                        </button>
+                      </Link>
                     </div>
-                  </div>
-                  <div className="p-4 pt-0 d-flex justify-content-center card-footer">
-                    <Link to={`/CourseDetails/${course.course_id}`} className="btn-primary my-button  ms-2 mt-3">
-                      المزيد عن الدورة
-                    </Link>
-                    <Link>
-                      <button
-                        className="btn-primary my-button mt-3"
-                        id="download-btn me-1"
-                        onClick={() => handleAddToCart(course)}
-                        disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}>
-                        {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'لقد تم الإضمام لها مسبقاً' : 'الإنضمام للدورة'}
-                      </button>
-                    </Link>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))) : (<div className='mt-5 text-center'>
+                لا يوجد دورات في هذا التخصص لحد الأن
+              </div>)}
           </div>
         </div>
       </div>

@@ -6,8 +6,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../css/style.css';
 
 
-function LogIn({ fetchUserData }) 
-{
+function LogIn({ fetchUserData }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -158,14 +157,14 @@ function LogIn({ fetchUserData })
                   تسجيل الدخول
                 </button>
 
-             
+
 
                 <div className="text-right mt-5">
                   <p>
                     ليس لديك حساب؟
                     <HashLink to="/signUp" className="fw-bold">
                       {' '}
-                      سجّل الآن
+                      إنشاء حساب جديد
                     </HashLink>
                   </p>
 

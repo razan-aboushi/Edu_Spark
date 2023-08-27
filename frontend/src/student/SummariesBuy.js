@@ -72,13 +72,13 @@ function SummariesBuy() {
       {currentItems.length === 0 ? (
         <div className="summary-cards-container" style={{ marginTop: "100px" }}>
           <div className="no-summaries-message">
-            <p>لا توجد مُلخصات مُشتراة حتى الأن، سارع في الحصول على واحد و قُد تُعلمك نحو الأفضل.</p>
+             <p> لا توجد مُلخصات مُشتراة حتى الأن، سارع في الحصول على واحد و قُد تُعلمك نحو الأفضل. &#128525; </p>
           </div>
         </div>
       ) : (
-        <div className="summary-cards-container">
+        <div className="summary-cards-container mb-4">
           {currentItems.map((summary) => (
-            <div className="summary-cardBuy" key={summary.summary_id} style={{boxShadow:"0 4px 8px rgba(0, 0, 0, 0.2)"}}>
+            <div className="summary-cardBuy" key={summary.summary_id} style={{boxShadow:"0 4px 8px rgba(0, 0, 0, 0.3)"}}>
               <img src={`http://localhost:4000/images/${summary.summary_image}`} alt={summary.summary_title} className="summaryBuy-image"/>
               <h3 className="summaryBuy-title">{summary.summary_title}</h3>
               <p className="summaryBuy-brief">{summary.summary_brief}</p>

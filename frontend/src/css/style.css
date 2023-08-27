@@ -2274,20 +2274,20 @@ margin-top: 5px;
 }
 
 .inner-hmv:hover .icon-box-hmv {
-    border: 3px solid #3312ee;
+    border: 3px solid rgb(24, 29, 56);;
 }
 
 .inner-hmv:hover .icon-box-hmv i {
-    color: #380ca9;
+    color: rgb(24, 29, 56);;
 }
 
 .inner-hmv:hover h3 {
-    color: rgb(23, 41, 184);
+    color: rgb(24, 29, 56);;
 }
 
 .tr-pa {
     font-size: 170px;
-    color: #3312ee;
+    color: rgb(24, 29, 56);;
     position: absolute;
     top: -20px;
     left: -10px;
@@ -3209,10 +3209,11 @@ margin-top: 5px;
       
       .ContactMessageButton {
         margin-top: 10px;
-        padding: 5px 10px;
-        background-color: #007bff;
+        padding: 8px 10px;
+        background-color: #06BBCC;
         color: #fff;
         border: none;
+        border-radius: 20px;
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
@@ -3646,3 +3647,9 @@ margin-top: 5px;
 
 }
 
+
+
+
+.DashboardCards.with-box-shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+}

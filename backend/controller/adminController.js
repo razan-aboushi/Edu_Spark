@@ -1,3 +1,4 @@
+const { error } = require('console');
 const connection = require('../models/dbConnect');
 const multer = require('multer');
 const path = require('path');
@@ -30,11 +31,10 @@ const upload = multer({ storage: storage });
 /////////////////////////////////////////////////////
 
 
-
+// get all data from the about us table to admin page
 const getAllDataInAboutUs = async (req, res) => {
 
   connection.promise().query('SELECT * FROM about_us').then(([rows]) => {
-    console.log(rows)
     res.json(rows);
   }).catch((error) => {
     console.error('Error fetching data:', error);
@@ -64,7 +64,7 @@ const updateVisionMission = async (req, res) => {
 
 
 
-// Update about us
+// Update about us data
 const updateAboutUs = async (req, res) => {
   const { aboutus_title, aboutpargraph1, aboutpargraph2 } = req.body;
 
@@ -134,6 +134,8 @@ const allContactUsMessages = async (req, res) => {
     res.json(results);
   });
 };
+
+
 
 
 
@@ -214,6 +216,7 @@ const writeAndPostArticles = (req, res) => {
     });
   });
 };
+
 
 
 
@@ -622,7 +625,39 @@ const getApprovedSummaries = (req, res) => {
 
 
 
+// get the count of courses 
+const getCountOfCourses = (req, res) => {
+  const query = "SELECT COUNT(*) AS courseCount FROM courses"; 
 
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching count of courses:', err);
+      res.status(500).json({ error: 'An error occurred' });
+      return;
+    }
+
+    const courseCount = results[0].courseCount;  
+    res.json({ count: courseCount }); 
+  });
+}
+
+
+
+// get the count of summaries 
+const getCountOfSummaries = (req, res) => {
+  const query = "SELECT COUNT(*) AS summaryCount FROM summaries"; 
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching count of summaries:', err);
+      res.status(500).json({ error: 'An error occurred' });
+      return;
+    }
+
+    const summaryCount = results[0].summaryCount;  
+    res.json({ count: summaryCount });       
+  });
+}
 
 
 
@@ -637,5 +672,6 @@ module.exports = {
   getContactUsMessagesNumber, postUniversity, postCategories, getPendingSumaries,
   updateSummaryApproveStatus, updateSummarRejectStatus, getAllPendingCourses,
   updateCourseStatusApprove, updateCourseStatusReject, readMessagesContactUs,
-  getRevenueOfTheWebSite, getSalesInTheWebSite, getUniversityNumberInTheWebSite, getApprovedCourses, getApprovedSummaries
+  getRevenueOfTheWebSite, getSalesInTheWebSite, getUniversityNumberInTheWebSite, getApprovedCourses,
+   getApprovedSummaries ,getCountOfCourses,getCountOfSummaries
 };

@@ -45,7 +45,7 @@ function About() {
                   معلومات عنا            </h1>
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb justify-content-center">
-                  <li
+                    <li
                       className="breadcrumb-item text-white active"
                       aria-current="page">
                       معلومات عنا
@@ -55,7 +55,7 @@ function About() {
                         الصفحة الرئيسية
                       </Link>
                     </Breadcrumbs>
-                  
+
                   </ol>
                 </nav>
               </div>
@@ -79,9 +79,9 @@ function About() {
               <div className="service-item text-center pt-3">
                 <div className="p-4">
                   <i className="fa fa-3x bi bi-book text-primary mb-4" />
-                  <h5 className="mb-3">الكورسات و الملخصات</h5>
+                  <h5 className="mb-3">الكورسات و المُلخصات</h5>
                   <p>
-                    ملخصات سلسة ومنظمة لموادك الجامعية.
+                    مُلخصات سلسة ومنظمة لموادك الجامعية.
                   </p>
                 </div>
               </div>
@@ -156,6 +156,7 @@ function About() {
         </div>
       </div>
       {/* About End */}
+
 
       {/* Start of mission and vision section */}
       <div className="hmv-box">

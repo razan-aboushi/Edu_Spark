@@ -18,8 +18,7 @@ import ApprovedContent from './ApprovedContent';
 import axios from 'axios';
 
 
-function Sidebar({ fetchUserData }) 
-{
+function Sidebar({ fetchUserData }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeLink, setActiveLink] = useState('/DashBoard');
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
@@ -56,10 +55,12 @@ function Sidebar({ fetchUserData })
   }
 
 
-
+  // when open and close the side bar
   function toggleSidebar() {
     setIsSidebarOpen(!isSidebarOpen);
   }
+
+
 
   // Store the active link in the local storage
   useEffect(() => {
@@ -70,6 +71,7 @@ function Sidebar({ fetchUserData })
 
     getUnreadMessagesCount();
   }, []);
+
 
 
   // get the count of unread messages of the contact us messages on side bar 
@@ -95,6 +97,7 @@ function Sidebar({ fetchUserData })
     }
   }
 
+
   return (
     <div className="row m-0" style={{ overflowX: "hidden" }}>
       <div className={`col-2 sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
@@ -108,7 +111,7 @@ function Sidebar({ fetchUserData })
             className={`sidebar-link ${activeLink === '/AdminProfile' ? 'active' : ''}`}
             onClick={() => handleLinkClick('/AdminProfile')}>
             <FontAwesomeIcon icon={faUser} className='ms-2' />
-            صفحة الحساب
+            الحساب الشخصي
           </button>
         </div>
 
@@ -118,7 +121,7 @@ function Sidebar({ fetchUserData })
               className={`sidebar-link ${activeLink === '/DashBoard' ? 'active' : ''}`}
               onClick={() => handleLinkClick('/DashBoard')}>
               <FontAwesomeIcon icon={faChartBar} className='ms-2' />
-              لوحة التحكم
+              إحصائيات الموقع
             </button>
           </li>
 
@@ -127,7 +130,7 @@ function Sidebar({ fetchUserData })
               className={`sidebar-link ${activeLink === '/AdminPanel' ? 'active' : ''}`}
               onClick={() => handleLinkClick('/AdminPanel')}>
               <FontAwesomeIcon icon={faPastafarianism} className='ms-2' />
-              لوحة الإدارة
+              تغيير مُحتوى الموقع
             </button>
           </li>
 
@@ -209,6 +212,7 @@ function Sidebar({ fetchUserData })
           <div className={`bar ${isSidebarOpen ? 'open' : ''}`}></div>
           <div className={`bar ${isSidebarOpen ? 'open' : ''}`}></div>
         </div>
+
       </div>
 
       <div className="col">
@@ -223,6 +227,7 @@ function Sidebar({ fetchUserData })
         {activeLink === '/AdminProfile' && <AdminProfile />}
         {activeLink === '/AddUniversity' && <AddUniversity />}
       </div>
+
     </div>
   );
 }

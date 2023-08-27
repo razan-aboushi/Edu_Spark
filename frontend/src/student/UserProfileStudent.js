@@ -23,9 +23,9 @@ function UserProfileStudent() {
     {
       setActiveSection(activeTabFromLocalStorage);
     } else {
-      setActiveSection('profile');
+      setActiveSection(activeSection);
     }
-  }, []);
+  }, [activeSection]);
 
 
 

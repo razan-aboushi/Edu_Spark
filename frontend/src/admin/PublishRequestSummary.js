@@ -38,6 +38,7 @@ function PublishRequest()
         },
         showCancelButton: true,
         confirmButtonText: 'رفض',
+        cancelButtonText: 'إلغاء',
         showLoaderOnConfirm: true,
         preConfirm: (inputValue) => {
           if (inputValue) {

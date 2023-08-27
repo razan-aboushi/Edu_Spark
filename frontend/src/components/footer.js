@@ -112,8 +112,7 @@ function Footer() {
                     {" "}    ،  جميع الحقوق محفوظة. تم تطويره بواسطة{" "}
                     <Link
                       style={{ color: "#06BBCC" }}
-                      to="https://github.com/razan-aboushi" target='_blank'
-                    >
+                      to="https://github.com/razan-aboushi" target='_blank'>
                       رزان عبوشي
                     </Link>
                   </div>

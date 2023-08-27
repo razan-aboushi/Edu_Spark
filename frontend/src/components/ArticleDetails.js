@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -7,13 +7,15 @@ import "../css/style.css";
 
 
 
-function ArticleDetails() {
+function ArticleDetails() 
+{
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState('');
   const [showComments, setShowComments] = useState(false);
-
+  const navigate = useNavigate();
   const { article_id } = useParams();
+  
   const token = localStorage.getItem('token');
   const decodedToken = token ? jwt_decode(token) : null;
   const user_id = decodedToken ? decodedToken.userId : null;
@@ -68,7 +70,7 @@ function ArticleDetails() {
         showCloseButton: true,
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.href = '/login';
+          navigate('/login');
 
         }
       });
@@ -101,6 +103,7 @@ function ArticleDetails() {
         user_id: user_id,
         article_id: article_id,
       });
+
       // Clear the comment form
       setMessage('');
 
@@ -139,6 +142,7 @@ function ArticleDetails() {
   const deleteComment = async (commentId) => {
     try {
       await axios.delete(`http://localhost:4000/comments/${commentId}`);
+
       // Refresh the comments after deletion
       getComments();
       Swal.fire('نجاح', 'تم حذف التعليق بنجاح!', 'success');
@@ -148,12 +152,15 @@ function ArticleDetails() {
     }
   };
 
+
+
   // Function to edit a comment
   const editComment = async (commentId, updatedContent) => {
     try {
       await axios.put(`http://localhost:4000/comments/${commentId}`, {
         comment_content: updatedContent,
       });
+
       // Refresh the comments after editing
       getComments();
       Swal.fire('نجاح', 'تم تعديل التعليق بنجاح!', 'success');
@@ -164,7 +171,7 @@ function ArticleDetails() {
   };
 
 
-  // Convert the date to normal-local date formate
+  // Convert the date to a string "normal-local date formate"
   const convertTimestampTOdate = (timestamp) => {
 
     return new Date(timestamp).toLocaleDateString();
@@ -207,7 +214,7 @@ function ArticleDetails() {
                   <article className="blog-details">
                     <div className="post-img">
                       <img src={`http://localhost:4000/images/${article.article_image}`}
-                        alt="صورة"
+                        alt="صورة المقالة"
                         className="img-fluid"
                         width="100%"
                       />

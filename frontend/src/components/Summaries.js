@@ -190,7 +190,7 @@ function Summaries() {
           `,
         showCancelButton: true,
         confirmButtonText: 'موافق',
-        cancelButtonText: 'إلغاء',  
+        cancelButtonText: 'إلغاء',
         showLoaderOnConfirm: true,
         allowOutsideClick: () => !Swal.isLoading(),
         customClass: {
@@ -300,56 +300,57 @@ function Summaries() {
       {/* Summaries */}
       <div className="container">
         <div className="row">
-          {currentSummaries.map((summary) => (
-            <div className="col-lg-4 col-md-6 col-sm-12 mt-3" key={summary.summary_id}>
-              <div className="cardSummaries">
-                <img
-                  src={`http://localhost:4000/images/${summary.summary_image}`}
-                  className="card-img-top shadow"
-                  alt="Summary" width="100%" height="265px"
-                />
-                <div className="card-body text-right p-0">
-                  <h5 className="card-title">{summary.summary_title}</h5>
-                  <p className="card-text">{summary.summary_brief}</p>
-                  <ul className="list-group list-group-flush p-0">
-                    <li className="list-group-item" id="priceOfSum">
-                      <i className="bi bi-cash-stack me-2"></i>
+          {currentSummaries.length > 0 ? (
+            currentSummaries.map((summary) => (
+              <div className="col-lg-4 col-md-6 col-sm-12 mt-3" key={summary.summary_id}>
+                <div className="cardSummaries">
+                  <img
+                    src={`http://localhost:4000/images/${summary.summary_image}`}
+                    className="card-img-top shadow"
+                    alt="Summary" width="100%" height="265px"
+                  />
+                  <div className="card-body text-right p-0">
+                    <h5 className="card-title">{summary.summary_title}</h5>
+                    <p className="card-text">{summary.summary_brief}</p>
+                    <ul className="list-group list-group-flush p-0">
+                      <li className="list-group-item" id="priceOfSum">
+                        <i className="bi bi-cash-stack ms-2"></i>
 
 
-                      السعر: {summary.summary_price === "0" ? (
-                        <span style={{ color: 'green' }}>مجاني</span>
-                      ) : (
-                        <span>{summary.summary_price} د.أ</span>
-                      )}
+                        السعر: {summary.summary_price === "0" ? (
+                          <span style={{ color: 'green' }}>مجاني</span>
+                        ) : (
+                          <span>{summary.summary_price} د.أ</span>
+                        )}
 
-                    </li>
+                      </li>
 
-                    <li className="list-group-item">
-                      <i className="bi bi-bookmark-check me-2"></i>
-                      التخصص: {summary.category_name}
-                    </li>
-                    <li className="list-group-item">
-                      <i className="bi bi-building me-2"></i>
-                      الجامعة: {summary.university_name}
-                    </li>
-                    <li className="list-group-item">
-                      <i className="bi bi-person me-2"></i>
-                      الناشر: {summary.summary_publisher}
-                    </li>
-                  </ul>
-                </div>
-                <div className="card-footer mt-3">
-                  <Link className="btn btn-primary ms-3" to={`/SummaryDetails/${summary.summary_id}`}>
-                    عرض التفاصيل
-                  </Link>
-                  <button className="btn btn-primary btn-sm" onClick={() => handleAddToCart(summary)}
-                    disabled={enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id)}>
-                    {enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id) ? 'لقد تمَّ شرائهُ مسبقاً' : 'شراء المُلخص'}
-                  </button>
+                      <li className="list-group-item">
+                        <i className="bi bi-bookmark-check ms-2"></i>
+                        التخصص: {summary.category_name}
+                      </li>
+                      <li className="list-group-item">
+                        <i className="bi bi-building ms-2"></i>
+                        الجامعة: {summary.university_name}
+                      </li>
+                      <li className="list-group-item">
+                        <i className="bi bi-person ms-2"></i>
+                        الناشر: {summary.summary_publisher}
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="card-footer mt-3">
+                    <Link className="btn btn-primary ms-3" to={`/SummaryDetails/${summary.summary_id}`}>
+                      عرض التفاصيل
+                    </Link>
+                    <button className="btn btn-primary btn-sm" onClick={() => handleAddToCart(summary)}
+                      disabled={enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id)}>
+                      {enrolledSummaries.some((enrolledSummaries) => enrolledSummaries.summary_id === summary.summary_id) ? 'لقد تمَّ شرائهُ مسبقاً' : 'شراء المُلخص'}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))) : (<div className='mt-5 text-center'>  لا يوجد مُلخصات في هذا التخصص لحد الأن  </div>)}
         </div>
       </div>
 
