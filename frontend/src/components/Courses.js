@@ -152,7 +152,6 @@ function Courses() {
     try {
       // Check if the course already exists in the cart table
       const response = await axios.get(`http://localhost:4000/cartCourse/${user_id}/${course.course_id}`);
-      console.log(response);
       if (response.data.exists) {
         Swal.fire({
           title: 'الدورة موجود بالفعل بالسلة',

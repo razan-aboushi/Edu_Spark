@@ -55,7 +55,7 @@ function UserProfileTeacher() {
 
               <Link
                 to="/"
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === null ? 'active' : ''}`} style={{ color: "#06BBCC " }}>
+                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'home' ? 'active' : ''}`} style={{ color: "#06BBCC " }}>
                 الصفحة الرئيسية
               </Link>
 

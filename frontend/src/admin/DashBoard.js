@@ -3,6 +3,22 @@ import axios from 'axios';
 import '../css/style.css';
 
 
+
+
+// Card component that take the title , value and icon as props from the dashboard component
+function Card({ title, value, icon }) {
+  return (
+    <div className="DashboardCards with-box-shadow">
+      <div className="card-icon">{icon}</div>
+      <h4>{title}</h4>
+      <p className="paragraph">{value}</p>
+    </div>
+
+  );
+}
+
+
+
 function Dashboard() {
   const [numberOfStudents, setNumberOfStudents] = useState(0);
   const [numberOfExplainers, setNumberOfExplainers] = useState(0);
@@ -90,17 +106,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-
-
-// Card component that take the title , value and icon as props from the dashboard component
-function Card({ title, value, icon }) {
-  return (
-    <div className="DashboardCards with-box-shadow">
-      <div className="card-icon">{icon}</div>
-      <h4>{title}</h4>
-      <p className="paragraph">{value}</p>
-    </div>
-
-  );
-}

@@ -46,6 +46,13 @@ function ResetPassword() {
       } else {
         setError('البريد الإلكتروني أو رقم الهاتف غير موجودين الرجاء التأكد منهما أو من إدخالهما ثم إعادة المحاولة.');
       }
+
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setPhone('');
+
+
     } catch (error) {
       setError('حدث خطأ أثناء إعادة تعيين كلمة المرور.');
       console.error(error);
@@ -108,8 +115,7 @@ function ResetPassword() {
                 onChange={(event) => setConfirmPassword(event.target.value)} />
             </div>
 
-            {success && <p className="text-success text-center mt-3">{success}</p>}
-            {error && <p className="text-danger text-center mt-3">{error}</p>}
+            {success ? <p className="text-success text-center mt-3">{success}</p> : error ? <p className="text-danger text-center mt-3">{error}</p> : null}
 
             <div className="text-center">
               <button type="submit" className="btn btn-primary rounded-pill">

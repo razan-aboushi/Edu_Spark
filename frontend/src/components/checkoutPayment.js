@@ -145,16 +145,17 @@ function CheckoutPayment() {
 
 
     // Validate credit card number (accepts only 16 digits)
-    if (!/^\d{16}$/.test(formData.number)) {
+    if (!/^(4\d{15}|5\d{15})$/.test(formData.number)) {
       Swal.fire({
         position: 'center',
         icon: 'error',
-        title: 'الرجاء إدخال رقم البطاقة المكون من 16 رقمًا',
+        title: 'الرجاء إدخال رقم بطاقة صالح (Visa أو MasterCard)',
         showConfirmButton: false,
         timer: 3000,
       });
       return;
     }
+    
 
 
     // Validate CVV (accepts only 3 numbers)
@@ -659,7 +660,7 @@ function CheckoutPayment() {
                                   className="form-control"
                                   type="tel"
                                   name="number"
-                                  placeholder="رقم البطاقة"
+                                  placeholder="بطاقة ال visa تبدأ برقم 4 ، و بطاقة ال mastercard تبدأ برقم 5"
                                   value={formData.number}
                                   minLength="16"
                                   maxLength="16"
@@ -704,7 +705,7 @@ function CheckoutPayment() {
                                     className="form-control"
                                     type="tel"
                                     name="cvv"
-                                    placeholder="CVV"
+                                    placeholder="CVV (Card Verification Value)"
                                     value={formData.cvv}
                                     minLength="3"
                                     maxLength="3"

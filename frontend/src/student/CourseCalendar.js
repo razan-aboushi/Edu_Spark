@@ -20,7 +20,6 @@ function CourseCalendar() {
       try {
         const response = await axios.get(`http://localhost:4000/reservationCourses/${user_id}`);
         
-
         const currentDate = new Date();
         
         const sortedCourses = response.data.sort((a, b) => {
@@ -99,7 +98,6 @@ function CourseCalendar() {
                         key={course.course_id}>
 
                         {hasCourseEnded(course.end_date) ? (
-                          // Render ended course details
                           <>
                             <h5 className="mb-3">{course.course_title}</h5>
                             <p>وصف الدورة: {course.course_brief}</p>

@@ -137,7 +137,7 @@ function ListTodos() {
         preConfirm: () => {
           const updatedDescription = document.getElementById("swal-description").value;
           if (!updatedDescription) {
-            Swal.showValidationMessage("يجب إدخال وصف المهمة");
+            Swal.showValidationMessage("يجب إدخال وصف للمهمة");
           }
           return updatedDescription;
         },

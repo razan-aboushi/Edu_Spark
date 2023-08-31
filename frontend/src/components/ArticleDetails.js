@@ -62,7 +62,7 @@ function ArticleDetails()
       // User is not logged in, show a message to prompt login
       Swal.fire({
         title: 'تسجيل الدخول مطلوب',
-        text: 'يجب عليك تسجيل الدخول لكتابة تعليق.',
+        text: 'يجب عليك تسجيل الدخول لإضافةِ تعليق.',
         icon: 'warning',
         confirmButtonText: 'تسجيل الدخول',
         cancelButtonText: 'إلغاء',

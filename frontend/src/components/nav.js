@@ -126,28 +126,28 @@ function Nav()
                 <div className="dropdown-menu text-end me-5">
                   <Link
                     to={'/University'}
-                    className="dropdown-item"
+                    className={`dropdown-item ${activeTab === 'الجامعات' ? 'active' : ''}`}
                     onClick={() => handleTabClick('الجامعات')}>
                     الجامعات
                     <FontAwesomeIcon icon={faGraduationCap} className="ms-2" />
                   </Link>
                   <Link
                     to={'/Courses'}
-                    className="dropdown-item"
+                    className={`dropdown-item ${activeTab === 'الدورات' ? 'active' : ''}`}
                     onClick={() => handleTabClick('الدورات')}>
                     الدورات
                     <FontAwesomeIcon icon={faBook} className="ms-2" />
                   </Link>
                   <Link
                     to={'/Article'}
-                    className="dropdown-item"
+                    className={`dropdown-item ${activeTab === 'المقال' ? 'active' : ''}`}
                     onClick={() => handleTabClick('المقال')}>
                     المقالات
                     <FontAwesomeIcon icon={faNewspaper} className="ms-2" />
                   </Link>
                   <Link
                     to={'/Summaries'}
-                    className="dropdown-item"
+                    className={`dropdown-item ${activeTab === 'الملخصات' ? 'active' : ''}`}
                     onClick={() => handleTabClick('الملخصات')}>
                     المُلخصات
                     <FontAwesomeIcon icon={faBook} className="ms-2" />
@@ -169,7 +169,7 @@ function Nav()
               <div className='mb-3 mt-3 me-2' style={{ transform: 'scaleX(-1)' }}>
                 <Link
                   to="/checkoutPayment"
-                  className="py-2 px-2 mb-2 mt-1 me-5 ms-2"
+                  className={`py-2 px-2 mb-2 mt-1 me-5 ms-2 ${activeTab === 'سلة الشراء' ? 'active' : ''}`}
                   onClick={() => handleTabClick('سلة الشراء')}
                   style={{ borderRadius: '25px' }}>
 

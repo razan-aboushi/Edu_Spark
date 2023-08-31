@@ -58,7 +58,9 @@ function Article() {
     const getCommentsCount = async () => {
       try {
         const articleId = articles.map((article) => article.article_id);
+        
         const response = await axios.post('http://localhost:4000/comments/count', { articleId });
+        // return object that have the ID of the article and value is the number of comments for it
         const commentsCountMap = response.data.commentsCountMap;
 
         const updatedArticles = articles.map((article) => ({...article,comments: commentsCountMap[article.article_id] || 0}));

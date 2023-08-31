@@ -136,7 +136,7 @@ function SignUp({ fetchUserData }) {
       errors.gender = 'نوع الجنس مطلوب';
     }
     if (!data.role) {
-      errors.role = 'نوع المستخدم مطلوب';
+      errors.role = 'فئة المستخدم مطلوب';
     }
 
     if (!data.password) {
@@ -145,7 +145,11 @@ function SignUp({ fetchUserData }) {
       errors.password = ' يجب أن تحتوي كلمة المرور على الأقل على 8 أحرف بالإضافة لوجود حرف كبير و أحرف صغيرة و رقم من ضمنها';
     }
 
-    if (data.password !== data.re_pass) {
+    if(!data.re_pass)
+    {
+      errors.re_pass="أدخل كلمة المرور و تأكيدها";
+    }
+   else if (data.password !== data.re_pass) {
       errors.re_pass = 'كلمة المرور غير متطابقة';
     }
 

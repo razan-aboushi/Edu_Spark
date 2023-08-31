@@ -20,10 +20,6 @@ const articlesAll = (req, res) => {
 const getCountOfComments = (req, res) => {
   const { articleId } = req.body;
 
-  if (!Array.isArray(articleId) || articleId.length === 0) {
-    res.status(400).json({ error: 'Invalid articleId parameter' });
-    return;
-  }
 
   const query = `
     SELECT article_id, COUNT(comment_id) AS comments_count
@@ -85,9 +81,8 @@ const getAllCommentsForArticle = (req, res) => {
     INNER JOIN users ON comments.user_id = users.user_id
     WHERE comments.article_id = ?
   `;
-  const values = [article_id];
 
-  connection.query(query, values, (err, results) => {
+  connection.query(query, [article_id], (err, results) => {
     if (err) {
       console.error('Error fetching comments:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -125,43 +120,50 @@ const InsertComments = (req, res) => {
 
 
 
-
 // Edit the comment
-const editUserComment = async (req, res) => {
+const editUserComment = (req, res) => {
   const { commentId } = req.params;
   const { comment_content } = req.body;
 
-  try {
-    const updateCommentQuery = `
+  const updateCommentQuery = `
       UPDATE comments
       SET comment_content = ?
       WHERE comment_id = ?;
     `;
-    await connection.promise().query(updateCommentQuery, [comment_content, commentId]);
-    res.sendStatus(200);
-  } catch (error) {
-    console.error('Error editing comment:', error);
-    res.sendStatus(500);
-  }
+  connection.query(updateCommentQuery, [comment_content, commentId], error => {
+
+    if (error) {
+      console.error('Error editing comment:', error);
+      res.sendStatus(500);
+    }
+    else {
+      res.sendStatus(200);
+    }
+  });
 }
 
 
 
+
+
 // Delete the user a comment
-const deleteUserComment = async (req, res) => {
+const deleteUserComment = (req, res) => {
   const { commentId } = req.params;
 
-  try {
-    const deleteCommentQuery = `
+
+  const deleteCommentQuery = `
       DELETE FROM comments
       WHERE comment_id = ?;
     `;
-    await connection.promise().query(deleteCommentQuery, [commentId]);
-    res.sendStatus(200);
-  } catch (error) {
-    console.error('Error deleting comment:', error);
-    res.sendStatus(500);
-  }
+  connection.query(deleteCommentQuery, [commentId], error => {
+
+    if (error) {
+      console.error('Error deleting comment:', error);
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
 }
 
 
@@ -171,5 +173,5 @@ const deleteUserComment = async (req, res) => {
 module.exports = {
 
   getarticlesbyID,
-  articlesAll, getAllCommentsForArticle, InsertComments , getCountOfComments,editUserComment,deleteUserComment
+  articlesAll, getAllCommentsForArticle, InsertComments, getCountOfComments, editUserComment, deleteUserComment
 }
