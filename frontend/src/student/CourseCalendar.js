@@ -84,7 +84,7 @@ function CourseCalendar() {
         <div className="row">
           <div className="col-md-6 mx-auto">
             <div className="cardCalender">
-              <div className="card-header" style={{ backgroundColor: "#06BBCC" }}>
+              <div className="card-header backgroundColorTurquoise">
                 <h4 className="text-center">موعد الدورات القادمة</h4>
               </div>
               <div className="card-bodyCalender">

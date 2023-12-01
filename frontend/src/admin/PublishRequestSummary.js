@@ -72,7 +72,7 @@ function PublishRequest()
   }, []);
 
   
-  // Get the the summaries that have the pending status
+  // Get the summaries that have the pending status
   const getPendingSummaries = async () => {
     try {
       const response = await axios.get('http://localhost:4000/summaries/pending');

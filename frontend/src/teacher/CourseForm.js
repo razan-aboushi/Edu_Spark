@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import axios from 'axios';
 import Swal from "sweetalert2";
 import "../css/UserProfile.css";
@@ -31,14 +31,12 @@ function CourseForm() {
     });
 
 
-
-
     useEffect(() => {
         handleInputChange();
     }, []);
 
 
-    // get universities to render them in the dropdawn list
+    // get universities to render them in the dropdown list
     useEffect(() => {
         axios.get("http://localhost:4000/universities").then((response) => {
             setUniversities(response.data);
@@ -48,11 +46,10 @@ function CourseForm() {
     }, []);
 
 
-
     // Handle inputs change
     const handleInputChange = (event = {}) => {
-        const { name, value } = event.target || {};
-        setCourseData({ ...courseData, [name]: value });
+        const {name, value} = event.target || {};
+        setCourseData({...courseData, [name]: value});
 
         // get the categories based on selected university to render them in dropdown list
         if (name === "course_university") {
@@ -67,12 +64,10 @@ function CourseForm() {
     };
 
 
-    
     const handleFileChangeCourseImage = (event) => {
         const file = event.target.files[0];
-        setCourseData({ ...courseData, course_image: file });
+        setCourseData({...courseData, course_image: file});
     };
-
 
 
     // submit the course form to add a new course
@@ -126,9 +121,8 @@ function CourseForm() {
                     button: "حسناً",
                 });
             });
-        } 
+        }
     };
-
 
 
     // Mark the inputs as required
@@ -170,8 +164,6 @@ function CourseForm() {
     };
 
 
-
-
     return (
         <div className="page-wrapper p-t-100 p-b-50">
             <div className="container">
@@ -191,7 +183,7 @@ function CourseForm() {
                                     id="course_title"
                                     value={courseData.course_title}
                                     onChange={handleInputChange}
-                                    required />
+                                    required/>
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_image")}`}>
                                 <label htmlFor="course_image">صورة تعبّر عن الدورة المقدمة :</label>
@@ -202,7 +194,7 @@ function CourseForm() {
                                         name="course_image"
                                         id="course_image"
                                         onChange={handleFileChangeCourseImage}
-                                        required />
+                                        required/>
                                 </div>
                                 <small className="form-text text-muted">
                                     رفع صورة الدورة. الحجم الأقصى للملف هو 50 ميغابايت.
@@ -222,7 +214,8 @@ function CourseForm() {
                                 />
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_description")}`}>
-                                <label className="mb-2 mt-2" htmlFor="course_description">تفاصيل عن الدورة و أهميتها:</label>
+                                <label className="mb-2 mt-2" htmlFor="course_description">تفاصيل عن الدورة و
+                                    أهميتها:</label>
                                 <textarea
                                     className="form-control"
                                     name="course_description"
@@ -231,7 +224,7 @@ function CourseForm() {
                                     placeholder="تفاصيل الدورة"
                                     value={courseData.course_description}
                                     onChange={handleInputChange}
-                                    required />
+                                    required/>
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("connection_channel")}`}>
                                 <label className="mb-2 mt-2" htmlFor="connection_channel">قناة الاتصال:</label>
@@ -243,7 +236,7 @@ function CourseForm() {
                                     id="connection_channel"
                                     value={courseData.connection_channel}
                                     onChange={handleInputChange}
-                                    required />
+                                    required/>
                             </div>
                             <div className={`form-group mt-3 ${getInputClass("course_type")}`}>
                                 <label className="mb-2 mt-2" htmlFor="course_type">نوع الدورة:</label>
@@ -255,7 +248,7 @@ function CourseForm() {
                                     id="course_type"
                                     value={courseData.course_type}
                                     onChange={handleInputChange}
-                                    required />
+                                    required/>
                             </div>
 
                             {/* Sell or Free */}
@@ -278,7 +271,7 @@ function CourseForm() {
                                         مجاني
                                     </label>
                                 </div>
-                                <div className="form-check  mt-3" >
+                                <div className="form-check  mt-3">
                                     <input
                                         className="form-check-input"
                                         type="radio"
@@ -335,7 +328,7 @@ function CourseForm() {
                                         id="start_date"
                                         value={courseData.start_date}
                                         onChange={handleInputChange}
-                                        required />
+                                        required/>
                                     <span className="input-group-text">إلى</span>
                                     <input
                                         className="form-control"
@@ -344,7 +337,7 @@ function CourseForm() {
                                         id="end_date"
                                         value={courseData.end_date}
                                         onChange={handleInputChange}
-                                        required />
+                                        required/>
                                 </div>
                             </div>
 
@@ -360,7 +353,7 @@ function CourseForm() {
                                         id="start_time"
                                         value={courseData.start_time}
                                         onChange={handleInputChange}
-                                        required />
+                                        required/>
                                     <span className="input-group-text">وقت الإنتهاء</span>
                                     <input
                                         className="form-control"
@@ -417,7 +410,6 @@ function CourseForm() {
                             </div>
 
 
-
                             <div className={`form-group mt-3 mb-3 ${getInputClass("facebook_link")}`}>
                                 <label className="mb-2 mt-2" htmlFor="facebook_link">رابط الفيسبوك:</label>
                                 <input
@@ -428,7 +420,7 @@ function CourseForm() {
                                     id="facebook_link"
                                     value={courseData.facebook_link}
                                     onChange={handleInputChange}
-                                    required />
+                                    required/>
                             </div>
 
                             <div className={`form-group mt-3 mb-3 ${getInputClass("linkedin_link")}`}>
@@ -441,7 +433,7 @@ function CourseForm() {
                                     id="linkedin_link"
                                     value={courseData.linkedin_link}
                                     onChange={handleInputChange}
-                                    required />
+                                    required/>
                             </div>
 
 

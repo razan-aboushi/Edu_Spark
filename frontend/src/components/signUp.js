@@ -77,7 +77,7 @@ function SignUp({ fetchUserData }) {
 
 
   useEffect(() => {
-    // Fetch the email of the users from the database to check if is exists or not
+    // Fetch the email of the users from the database to check if it is existing or not
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:4000/usersEmailCheck');

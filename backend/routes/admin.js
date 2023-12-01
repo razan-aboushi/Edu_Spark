@@ -4,7 +4,6 @@ const adminController = require('../controller/adminController');
 
 
 
-
 // Update about us and vision and mission 
 router.get('/about_missionVisionData', adminController.getAllDataInAboutUs);
 
@@ -21,7 +20,6 @@ router.get('/usersRegistered', adminController.getAllUsers);
 
 // delete user from the website
 router.put('/usersRegistered/:user_id', adminController.softDeleteUserFromWS);
-
 
 
 // get all contact us meesages 
@@ -42,7 +40,6 @@ router.post('/AddArticle', adminController.writeAndPostArticles);
 
 // get the number of contact us messages 
 router.get('/unreadMessagesCount', adminController.getAllContactsCounts);
-
 
 
 // update the user role in the website
@@ -69,7 +66,7 @@ router.post('/add-category', adminController.postCategories);
 
 
 // get all the pending summaries
-router.get('/summaries/pending', adminController.getPendingSumaries);
+router.get('/summaries/pending', adminController.getPendingSummaries);
 
 
 
@@ -78,7 +75,7 @@ router.put('/summaries/:id/approveSummary', adminController.updateSummaryApprove
 
 
 // update the summary status to reject
-router.put('/summaries/:id/rejectSummary', adminController.updateSummarRejectStatus);
+router.put('/summaries/:id/rejectSummary', adminController.updateSummaryRejectStatus);
 
 
 // get all the pending courses

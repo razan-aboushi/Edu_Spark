@@ -55,47 +55,47 @@ function UserProfileTeacher() {
 
               <Link
                 to="/"
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'home' ? 'active' : ''}`} style={{ color: "#06BBCC " }}>
+                className={`nav-item pointer-link nav-link colorTurquoise ${activeSection === 'home' ? 'active' : ''}`}>
                 الصفحة الرئيسية
               </Link>
 
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'todo-list' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('todo-list')}>
                 قائمة المهام
               </span>
 
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'add-course' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'add-course' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('add-course')}>
                 إضافة دورة أو مُلخص
               </span>
 
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'summary-buy' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('summary-buy')}>
                 المُلخصات المُشتراة
               </span>
 
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'manage-courses' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'manage-courses' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('manage-courses')}>
                 دوراتي المُقدمة
               </span>
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'course-calendar' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'course-calendar' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('course-calendar')}>
                 تواريخ دوراتي
               </span>
 
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'edit-profile' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'edit-profile' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('edit-profile')}>
                 تعديل الملف الشخصي
               </span>
 
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'profile' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'profile' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('profile')}>
                 الملف الشخصي
               </span>

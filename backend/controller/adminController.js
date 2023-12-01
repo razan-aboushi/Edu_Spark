@@ -86,7 +86,19 @@ const updateAboutUs = async (req, res) => {
 
 // get all the users in the database 
 const getAllUsers = (req, res) => {
-  const query = `SELECT users.*, roles.name AS role FROM users INNER JOIN roles ON users.role_id = roles.id WHERE is_deleted='0'`;
+  const { userName, userRole } = req.query;
+
+  let query = `SELECT users.*, roles.name AS role FROM users INNER JOIN roles ON users.role_id = roles.id WHERE is_deleted='0'`;
+
+  // Add filters for username and role if provided
+  if (userName) {
+    query += ` AND users.name LIKE '%${userName}%'`;
+  }
+
+  if (userRole) {
+    query += ` AND roles.name = '${userRole}'`;
+  }
+
   connection.query(query, (error, results) => {
     if (error) {
       console.error('Error retrieving users: ', error);
@@ -95,7 +107,8 @@ const getAllUsers = (req, res) => {
     }
     res.json(results);
   });
-}
+};
+
 
 
 
@@ -443,7 +456,7 @@ const postCategories = (req, res) => {
 
 
 // Get the pending summaries
-const getPendingSumaries = (req, res) => {
+const getPendingSummaries = (req, res) => {
   const query = `
     SELECT summaries.*, users.email , users.name
     FROM summaries
@@ -486,7 +499,7 @@ const updateSummaryApproveStatus = (req, res) => {
 
 
 // Update the summary status to reject summary
-const updateSummarRejectStatus = (req, res) => {
+const updateSummaryRejectStatus = (req, res) => {
   const { id } = req.params;
   const { reason } = req.body;
 
@@ -669,8 +682,8 @@ module.exports = {
   updateAboutUs, getAllUsers, softDeleteUserFromWS, allContactUsMessages,
   getAdminDataProfile, updateAdminProfileData, writeAndPostArticles, getAllContactsCounts,
   updateUserRole, getStudentNumberInWebsite, getExplainerNumberInWebsite,
-  getContactUsMessagesNumber, postUniversity, postCategories, getPendingSumaries,
-  updateSummaryApproveStatus, updateSummarRejectStatus, getAllPendingCourses,
+  getContactUsMessagesNumber, postUniversity, postCategories, getPendingSummaries,
+  updateSummaryApproveStatus, updateSummaryRejectStatus, getAllPendingCourses,
   updateCourseStatusApprove, updateCourseStatusReject, readMessagesContactUs,
   getRevenueOfTheWebSite, getSalesInTheWebSite, getUniversityNumberInTheWebSite, getApprovedCourses,
    getApprovedSummaries ,getCountOfCourses,getCountOfSummaries

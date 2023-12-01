@@ -38,7 +38,7 @@ function Index() {
   }, []);
 
 
-  // Get about us data in the about or intoduction section in home page
+  // Get about us data in the about or introduction section in home page
   useEffect(() => {
     const getAboutUsData = async () => {
       try {
@@ -68,6 +68,7 @@ function Index() {
                   className="img-fluid"
                   src={homeSlider}
                   alt="slider of the home page"
+                  width="auto" height="auto"
                 />
                 <div
                   className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end"
@@ -106,6 +107,7 @@ function Index() {
                   className="img-fluid"
                   src={slider2}
                   alt="صورة"
+                  width="auto" height="auto"
                   style={{ backgroundRepeat: "no-repeat", backgroundSize: "cover" }} />
                 <div
                   className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end"
@@ -213,6 +215,7 @@ function Index() {
                   className="img-fluid position-absolute w-100 h-100"
                   src={about}
                   alt="about us"
+                  width="auto" height="auto"
                   style={{ objectFit: "cover" }}
                 />
               </div>
@@ -263,7 +266,7 @@ function Index() {
           <div className="container d-flex align-items-center justify-content-center position-relative flex-wrap">
             <div className="card d-flex position-relative flex-column">
               <div className="imgContainer">
-                <img src={vedio1} alt="صورة الفيديو 1" />
+                <img src={vedio1} alt="صورة الفيديو 1" width="auto" height="auto" />
               </div>
               <div className="content">
                 <h4>وفّر المال</h4>
@@ -274,7 +277,7 @@ function Index() {
             </div>
             <div className="card d-flex position-relative flex-column">
               <div className="imgContainer">
-                <img src={vedio2} alt="صورة الفيديو 2" />
+                <img src={vedio2} alt="صورة الفيديو 2" width="auto" height="auto" />
               </div>
               <div className="content">
                 <h4>محاضرة جماعية</h4>
@@ -283,7 +286,7 @@ function Index() {
             </div>
             <div className="card d-flex position-relative flex-column">
               <div className="imgContainer">
-                <img src={vedio3} alt="صورة الفيديو 3" />
+                <img src={vedio3} alt="صورة الفيديو 3" width="auto" height="auto" />
               </div>
               <div className="content">
                 <h4>شرح فردي</h4>

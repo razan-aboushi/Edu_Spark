@@ -79,7 +79,7 @@ function SummaryForm() {
     };
 
 
-    // Handle the submit of the add summary form
+    // Handle to submit of the add summary form
     const handleFormSubmitSummary = (event) => {
         event.preventDefault();
 

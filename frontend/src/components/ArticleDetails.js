@@ -171,7 +171,7 @@ function ArticleDetails()
   };
 
 
-  // Convert the date to a string "normal-local date formate"
+  // Convert the date to a string "normal-local date format"
   const convertTimestampTOdate = (timestamp) => {
 
     return new Date(timestamp).toLocaleDateString();
@@ -219,7 +219,7 @@ function ArticleDetails()
                         width="100%"
                       />
                     </div>
-                    <h4 className="title">{article.article_title}</h4>
+                    <h4 className="title mt-4">{article.article_title}</h4>
                     <li className="d-flex align-items-center mt-2">
                       <i className="bi bi-clock ms-2" />
                       <time dateTime={article.created_at}>
@@ -240,7 +240,7 @@ function ArticleDetails()
 
 
 
-                  <div className="comments">
+                  <div className="comments mt-5">
                     <h5 className="comments-count">{comments.length} تعليقات</h5>
                     {showComments && (
                       comments.length > 0 ? (

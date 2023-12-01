@@ -40,7 +40,6 @@ function UserProfileStudent() {
   return (
     <div>
       <header>
-        {/* Navigation bar */}
         <nav className="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
           {/* Navigation links */}
 
@@ -50,32 +49,32 @@ function UserProfileStudent() {
           <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`}>
             <div className="navbar-nav ms-auto p-4 p-lg-0">
 
-              <Link to="/" className="nav-item nav-link scrollto" style={{color:"#06BBCC "}}>
+              <Link to="/" className="nav-item nav-link" style={{color:"#06BBCC"}}>
                 الصفحة الرئيسية
               </Link>
 
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'todo-list' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'todo-list' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('todo-list')}>
                 قائمة المهام
               </span>
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'summary-buy' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'summary-buy' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('summary-buy')}>
                 المُلخصات المُشتراة
               </span>
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'course-calendar' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'course-calendar' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('course-calendar')}>
                 تواريخ دوراتي
               </span>
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'edit-profile' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'edit-profile' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('edit-profile')}>
                 تعديل الملف الشخصي
               </span>
               <span
-                className={`nav-item pointer-link nav-link scrollto ${activeSection === 'profile' ? 'active' : ''}`}
+                className={`nav-item pointer-link nav-link ${activeSection === 'profile' ? 'active' : ''}`}
                 onClick={() => handleSectionClick('profile')}>
                 الملف الشخصي
               </span>

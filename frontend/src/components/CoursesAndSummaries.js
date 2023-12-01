@@ -192,9 +192,9 @@ function CoursesAndSummaries() {
         Swal.fire({
           title: `تمت إضافة ${itemType === "course" ? "الدورة" : "المُلخص"} إلى السلة`,
           html: `
-            <img src="http://localhost:4000/images/${item[`${itemType}_image`]}" alt="صورة ${itemType}" className="popup-image mb-4" width="265px">
-            <p className="popup-title mt-3">${item[`${itemType}_title`]}</p>
-            <p className="popup-price">السعر: ${item[`${itemType}_price`] === "0" ? "مجاني" : item[`${itemType}_price`]} د.أ</p>
+            <img src="http://localhost:4000/images/${item[`${itemType}_image`]}" alt="صورة ${itemType}" class="popup-image mb-4" width="265px">
+            <p class="popup-title mt-3">${item[`${itemType}_title`]}</p>
+            <p class="popup-price">السعر: ${item[`${itemType}_price`] === "0" ? "مجاني" : item[`${itemType}_price`]} د.أ</p>
           `,
           showCancelButton: false,
           confirmButtonText: 'إضافة للسلة',
@@ -217,7 +217,7 @@ function CoursesAndSummaries() {
 
 
   // Function to convert a timestamp to a formatted date string
-  const convertDateFormate = (timestamp) => {
+  const convertDateFormat = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString();
   };
@@ -298,8 +298,8 @@ function CoursesAndSummaries() {
 
               </p>
               <p>
-                <FaCalendarAlt className="icon ms-1" /> التاريخ : {convertDateFormate(course.start_date)} -{' '}
-                {convertDateFormate(course.end_date)}
+                <FaCalendarAlt className="icon ms-1" /> التاريخ : {convertDateFormat(course.start_date)} -{' '}
+                {convertDateFormat(course.end_date)}
               </p>
               <p>
                 <FaUser className="icon ms-1" /> الناشر: {course.publisher_name}

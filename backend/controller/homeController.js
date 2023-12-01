@@ -144,8 +144,6 @@ const getTheCountOfItems = async (req, res) => {
 
 
 
-
-
 // get all users in sign up page
 const emailUsersCheck = (req, res) => {
   const query = 'SELECT * FROM users';

@@ -13,5 +13,8 @@ router.get('/courses',coursesController.getAllCourses);
 router.get('/courses/:course_id',coursesController.getCourseDetails);
 
 
+// get the data " filters the data of courses "
+router.get('/filtered-courses',coursesController.getFilteredCourses);
+
 
 module.exports = router;

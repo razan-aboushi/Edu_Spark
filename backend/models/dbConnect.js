@@ -4,9 +4,9 @@ const mysql = require("mysql2");
 const connection = mysql.createPool({
     connectionLimit: 10,
     host: '127.0.0.1',
-    user: 'root',
-    password: 'razan1234',
-    database: 'edu_spark',
+    user: 'razanaboushi',
+    password: 'Razan$123456',
+    database: 'EduSpark',
   });
   
   // Check if the database connection is successful

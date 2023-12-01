@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Swal from 'sweetalert2';
+import Swal  from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
 function Courses() {
@@ -17,22 +17,21 @@ function Courses() {
   const coursesPerPage = 6;
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token');
+  const decodedToken = token ? jwt_decode(token) : null;
+  const user_id = decodedToken?.userId;
+
 
   useEffect(() => {
     getUniversities();
-  }, []);
-
-  useEffect(() => {
     handleInputChange();
+    fetchEnrolledCourses();
+
   }, []);
 
 
-  // get the enrolled courses for the user to check if he get this course before now or not
-  useEffect(() => {
+  // get the enrolled courses for the user to check if he gets this course before now or not
     const fetchEnrolledCourses = async () => {
-      const token = localStorage.getItem('token');
-      const decodedToken = token ? jwt_decode(token) : null;
-      const user_id = decodedToken?.userId;
 
       try {
         const response = await axios.get(`http://localhost:4000/enrolled-courses/${user_id}`);
@@ -41,10 +40,6 @@ function Courses() {
         console.log('Error fetching enrolled courses:', error);
       }
     };
-
-    fetchEnrolledCourses();
-  }, []);
-
 
 
   // Get the universities in dropdown list
@@ -59,7 +54,7 @@ function Courses() {
 
 
 
-  // Handle when inputs in filters change 
+  // Handle when inputs in filters change
   const handleInputChange = (event = {}) => {
     const { name, value } = event.target || {};
 
@@ -80,7 +75,7 @@ function Courses() {
   };
 
 
-  // get all courses 
+  // get all courses
   useEffect(() => {
     axios.get('http://localhost:4000/courses').then((response) => {
       setCourses(response.data);
@@ -90,32 +85,11 @@ function Courses() {
   }, []);
 
 
-
-
-  const currentDate = new Date();
-
-  // filter the courses by name , brief and publisher name
-  const filteredCourses = courses.filter((course) => {
-    const matchName = course.course_title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchPublisher = course.publisher_name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchUniversity = universityFilter === '' || course.university_id === parseInt(universityFilter);
-    const matchCategory = course.category_name.toLowerCase().includes(categoryFilter.toLowerCase());
-
-
-    // Check if the course end_date is in the past (before the current date)
-    const courseEndDate = new Date(course.end_date);
-    const courseHasEnded = courseEndDate < currentDate;
-
-
-    return (matchName || matchPublisher) && matchUniversity && (matchCategory || categoryFilter === '') && !courseHasEnded;
-  });
-
-
   const handleSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // convert the date from the timestamp to normal date 
+  // convert the date from the timestamp to normal date
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString('en-US');
@@ -125,7 +99,6 @@ function Courses() {
 
   // Handle add the course to cart for the user to get it and complete checkOut
   const handleAddToCart = async (course) => {
-    const token = localStorage.getItem('token');
 
     if (!token) {
       // If the user is not logged in, show a pop-up message asking them to log in first.
@@ -144,10 +117,6 @@ function Courses() {
 
       return;
     }
-
-
-    const decodedToken = token ? jwt_decode(token) : null;
-    const user_id = decodedToken?.userId;
 
     try {
       // Check if the course already exists in the cart table
@@ -176,9 +145,9 @@ function Courses() {
       Swal.fire({
         title: 'تمت إضافة الدورة إلى السلة',
         html: `
-          <img src="http://localhost:4000/images/${course.course_image}" alt="course Image" className="popup-image" width="265px">
-          <p className="popup-title">عنوان الدورة: ${course.course_title}</p>
-          <p className="popup-price">السعر: ${course.course_price === "0" ? "مجاني" : `${course.course_price} د.أ`}</p>
+          <img src="http://localhost:4000/images/${course.course_image}" alt=${course.course_title} class="popup-image" width="265px">
+          <p class="popup-title">عنوان الدورة: ${course.course_title}</p>
+          <p class="popup-price">السعر: ${course.course_price === "0" ? "مجاني" : `${course.course_price} د.أ`}</p>
           `,
         showCancelButton: true,
         confirmButtonText: 'موافق',
@@ -209,11 +178,10 @@ function Courses() {
   // Make the pagination for this page
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+  const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
 
-
-  // TO loop on the courses and number of pages
-  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
+  // To loop on the courses and number of pages
+  const totalPages = Math.ceil(courses.length / coursesPerPage);
   const pageNumbers = [];
   for (let r = 1; r <= totalPages; r++) {
     pageNumbers.push(r);
@@ -223,6 +191,22 @@ function Courses() {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+
+  // get all courses
+  useEffect(() => {
+    axios.get('http://localhost:4000/filtered-courses', {
+      params: {
+        searchTerm,
+        universityFilter,
+        categoryFilter,
+      },
+    }).then((response) => {
+      setCourses(response.data);
+    }).catch((error) => {
+      console.error('Error fetching courses:', error);
+    });
+  }, [searchTerm, universityFilter, categoryFilter]);
 
 
   return (
@@ -238,11 +222,10 @@ function Courses() {
                     الدورات
                   </li>
                   <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
-                    <Link className="text-white">
+                    <p className="text-white">
                       التصنيفات
-                    </Link>
+                    </p>
                   </Breadcrumbs>
-
                 </ol>
               </nav>
             </div>
@@ -304,7 +287,7 @@ function Courses() {
                 <div className="col mb-4 shadow" key={course.course_id}>
                   <div className="course-item bg-light shadow-sm rounded">
                     <div className="position-relative overflow-hidden">
-                      <img src={`http://localhost:4000/images/${course.course_image}`} alt="صورة الكورس" style={{ width: "100%", height: "250px" }} />
+                      <img src={`http://localhost:4000/images/${course.course_image}`} alt={course.course_title} style={{ width: "100%", height: "250px" }} />
                     </div>
                     <div className="text-left p-4 pb-0">
                       <h5 className="mb-4">{course.course_title}</h5>
@@ -346,15 +329,13 @@ function Courses() {
                       <Link to={`/CourseDetails/${course.course_id}`} className="btn-primary my-button  ms-2 mt-3">
                         المزيد عن الدورة
                       </Link>
-                      <Link>
+
                         <button
                           className="btn-primary my-button mt-3"
-                          id="download-btn me-1"
                           onClick={() => handleAddToCart(course)}
                           disabled={enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id)}>
                           {enrolledCourses.some((enrolledCourse) => enrolledCourse.course_id === course.course_id) ? 'لقد تم الإضمام لها مسبقاً' : 'الإنضمام للدورة'}
                         </button>
-                      </Link>
                     </div>
                   </div>
                 </div>
@@ -369,7 +350,7 @@ function Courses() {
       <div className="d-flex justify-content-center">
         <nav aria-label="Page navigation">
           <ul className="pagination">
-            {pageNumbers.map((pageNumber) => (
+            {currentCourses.length > 0 ? pageNumbers.map((pageNumber) => (
               <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
                 <button
                   className="page-link"
@@ -377,7 +358,7 @@ function Courses() {
                   {pageNumber}
                 </button>
               </li>
-            ))}
+            )): null}
           </ul>
         </nav>
       </div>

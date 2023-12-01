@@ -62,7 +62,7 @@ const postCourseIdEnrollment = (req, res) => {
 
 // Insert a transaction into the 'transactions' table
 const postTransaction = (req, res) => {
-  const { payment_methods_id, date } = req.body;
+  const { payment_methods_id } = req.body;
   const { user_id } = req.params;
   const { amount } = req.body;
 

@@ -78,7 +78,7 @@ function SummariesBuy() {
       ) : (
         <div className="summary-cards-container mb-4">
           {currentItems.map((summary) => (
-            <div className="summary-cardBuy" key={summary.summary_id} style={{boxShadow:"0 4px 8px rgba(0, 0, 0, 0.3)"}}>
+            <div className="summary-cardBuy shadow" key={summary.summary_id}>
               <img src={`http://localhost:4000/images/${summary.summary_image}`} alt={summary.summary_title} className="summaryBuy-image"/>
               <h3 className="summaryBuy-title">{summary.summary_title}</h3>
               <p className="summaryBuy-brief">{summary.summary_brief}</p>

@@ -3,10 +3,7 @@ const router = express.Router();
 const articlesController = require('../controller/articlesController')
 
 
-
-
-
-// get the data of articles from the database 
+// get the data of articles from the database
 router.get('/articles', articlesController.articlesAll);
 
 
@@ -22,7 +19,6 @@ router.get('/articles/:article_id', articlesController.getarticlesbyID);
 router.get('/articles/:article_id/comments', articlesController.getAllCommentsForArticle);
 
 
-
 // post comments to database
 router.post('/comments', articlesController.InsertComments);
 
@@ -31,9 +27,10 @@ router.post('/comments', articlesController.InsertComments);
 router.put('/comments/:commentId', articlesController.editUserComment);
 
 
-
 // Delete the user comment 
-router.delete('/comments/:commentId',articlesController.deleteUserComment );
+router.delete('/comments/:commentId', articlesController.deleteUserComment);
 
+
+router.get('/filtered-articles', articlesController.getFilteredArticles);
 
 module.exports = router;

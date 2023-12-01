@@ -303,7 +303,7 @@ function App() {
 
 
       {showBackToTop && (
-        <a href="#" className="btn btn-md btn-primary btn-md-square back-to-top rounded" >
+        <a href="#" className="btn btn-md btn-primary back-to-top" >
           <i className="bi bi-arrow-up text-center"></i>
         </a>
       )}

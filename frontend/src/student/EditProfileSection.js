@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import "../css/UserProfile.css";
@@ -78,8 +78,7 @@ function EditProfileSection() {
           if (password) {
             // Encrypt the password
             const salt = await bcrypt.genSalt(10);
-            const encryptedPassword = await bcrypt.hash(password, salt);
-            updatedUserData.password = encryptedPassword;
+            updatedUserData.password = await bcrypt.hash(password, salt);
           }
 
           axios.put(`http://localhost:4000/userUpdateInfo/${user_id}`, updatedUserData).then((response) => {
@@ -106,8 +105,8 @@ function EditProfileSection() {
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
               <div className="cardImage">
                 <div
-                  className="rounded-top text-white d-flex flex-row"
-                  style={{ backgroundColor: "#06BBCC", height: 200 }}>
+                  className="rounded-top text-white d-flex flex-row backgroundColorTurquoise"
+                  style={{ height: 200 }}>
                   <div
                     className="ms-4 mt-5 d-flex flex-column"
                     style={{ width: 20 }}></div>

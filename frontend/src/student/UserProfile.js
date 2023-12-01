@@ -74,9 +74,9 @@ function UserProfile() {
                   <li>
                     <p>
                       {userProfile.gender === "female" ? (
-                        <span className="fa fa-venus one" style={{ width: 50 }} /> // Use female icon
+                        <span className="fa fa-venus one" style={{ width: 50 }} />
                       ) : (
-                        <span className="fa fa-mars one" style={{ width: 50 }} /> // Use  male icon
+                        <span className="fa fa-mars one" style={{ width: 50 }} />
                       )}
                       {userProfile.gender === "female" ? "أنثى" : "ذكر"}
                     </p>

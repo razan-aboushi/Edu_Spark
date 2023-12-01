@@ -39,9 +39,9 @@ function University() {
                   <li className="breadcrumb-item text-white active" aria-current="page">
                     الجامعات                  </li>
                   <Breadcrumbs aria-label="breadcrumb" className="breadcrumb-item">
-                    <Link className="text-white">
+                    <p className="text-white">
                       التصنيفات
-                    </Link>
+                    </p>
                   </Breadcrumbs>
                   
                 </ol>

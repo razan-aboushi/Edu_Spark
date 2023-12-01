@@ -55,7 +55,7 @@ function Sidebar({ fetchUserData }) {
   }
 
 
-  // when open and close the side bar
+  // when open and close the sidebar
   function toggleSidebar() {
     setIsSidebarOpen(!isSidebarOpen);
   }
@@ -74,7 +74,7 @@ function Sidebar({ fetchUserData }) {
 
 
 
-  // get the count of unread messages of the contact us messages on side bar 
+  // get the count of unread messages of the contact us messages on sidebar
   async function getUnreadMessagesCount() {
     try {
       const response = await axios.get('http://localhost:4000/unreadMessagesCount');

@@ -105,9 +105,9 @@ function SummaryDetails()
         Swal.fire({
           title: 'تمت إضافة المُلخص إلى السلة',
           html: `
-          <img src="http://localhost:4000/images/${summary.summary_image}" alt="Summary Image" className="popup-image" width="265px">
-          <p className="popup-title">عنوان الملخص: ${summary.summary_title}</p>
-          <p className="popup-price">السعر: ${summary.summary_price === "0" ? "مجاني" : `${summary.summary_price} د.أ`}</p>
+          <img src="http://localhost:4000/images/${summary.summary_image}" alt=${summary.summary_title} class="popup-image" width="265px">
+          <p class="popup-title">عنوان الملخص: ${summary.summary_title}</p>
+          <p class="popup-price">السعر: ${summary.summary_price === "0" ? "مجاني" : `${summary.summary_price} د.أ`}</p>
           `,
           showCancelButton: true,
           confirmButtonText: 'موافق',

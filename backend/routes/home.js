@@ -25,7 +25,6 @@ router.get('/courses/latestHome',homeController.getCoursesSection);
 
 
 
-
 // check if the user enrolled to course
 router.get('/enrolled-courses/:user_id', homeController.enrolledCourses);
 
