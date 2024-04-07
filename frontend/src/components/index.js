@@ -143,8 +143,8 @@ function Index() {
 
 
       {/* Features Start */}
-      <div className="container-xxl py-5 mt-5">
-        <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+
+        <div className="text-center wow fadeInUp py-3 mt-5" data-wow-delay="0.1s">
           <h6 className="section-title bg-white text-center text-primary px-3 mb-5">
             المميزات
           </h6>
@@ -196,14 +196,12 @@ function Index() {
             </div>
           </div>
         </div>
-      </div>
       {/* Features End */}
 
 
 
       {/* About us Start */}
-      <div className="container-xxl py-5" style={{ marginTop: "55px" }}>
-        <div className="container">
+        <div className="container py-5" style={{ marginTop: "55px" }}>
           <div className="row g-5">
             <div
               className="col-lg-6 wow fadeInUp"
@@ -239,7 +237,6 @@ function Index() {
             </div>
           </div>
         </div>
-      </div>
       {/* About End */}
 
 
@@ -451,7 +448,6 @@ function Index() {
         </div>
       </section >
       {/* نهاية قسم الأسئلة المتكررة */}
-
 
 
       {/* Some articles */}

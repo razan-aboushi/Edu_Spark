@@ -5,9 +5,7 @@ import logo from '../img/KeepMeOnLogo.png'
 
 function Footer() {
 
-
   return (
-    <>
       <div dir='ltr'>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1435 200">
           <path
@@ -122,7 +120,6 @@ function Footer() {
           </div>
         </footer>
       </div>
-    </>
   )
 }
 

@@ -4,14 +4,13 @@ const homeController =require('../controller/homeController')
 
 
 
-
 // get the last 6 articles in home page
 router.get('/articlesHomePage',homeController.getArticlesHome);
 
 
 
 // get the university in home page 
-router.get('/universities',homeController.getAllUniversitiessection );
+router.get('/universities',homeController.getAllUniversitiesSection );
 
 
 

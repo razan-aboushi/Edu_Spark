@@ -11,14 +11,13 @@ function SummariesHome() {
   const [enrolledSummaries, setEnrolledSummaries] = useState([]);
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token');
+  const decodedToken = token ? jwt_decode(token) : null;
+  const user_id = decodedToken?.userId;
 
-  // Get the enrolled summaries to check if the user buy the summary before now or not
+  // Get the enrolled summaries for the user to check if the user buy the summary before now or not
   useEffect(() => {
     const fetchEnrolledSummaries = async () => {
-      const token = localStorage.getItem('token');
-      const decodedToken = token ? jwt_decode(token) : null;
-      const user_id = decodedToken?.userId;
-
       try {
         const response = await axios.get(`http://localhost:4000/enrolled-summaries/${user_id}`);
         setEnrolledSummaries(response.data);
@@ -44,11 +43,8 @@ function SummariesHome() {
 
 
 
-
   // Handle add to cart function
   const handleAddToCart = async (summary) => {
-    const token = localStorage.getItem('token');
-
 
     if (!token) {
       // If the user is not logged in, show a message asking them to log in first.
@@ -69,9 +65,6 @@ function SummariesHome() {
     }
 
 
-    const decodedToken = token ? jwt_decode(token) : null;
-    const user_id = decodedToken?.userId;
-
     try {
       // Check if the summary already exists in the cart table
       const response = await axios.get(`http://localhost:4000/cart/${user_id}/${summary.summary_id}`);
@@ -85,7 +78,6 @@ function SummariesHome() {
       }
 
 
-
       // Send a request to the server to add the summary to the cart table
       await axios.post('http://localhost:4000/cart', {
         user_id: user_id,
@@ -95,7 +87,6 @@ function SummariesHome() {
         summary_image: summary.summary_image,
         type: 'summary'
       });
-
 
 
       Swal.fire({
@@ -133,7 +124,6 @@ function SummariesHome() {
 
 
 
-
   return (
     <div className="container mb-5" style={{ marginTop: '120px' }}>
       {/* Render summaries */}
@@ -162,7 +152,8 @@ function SummariesHome() {
                       <span style={{ color: 'green' }}>مجاني</span>
                     ) : (
                       <span>{summary.summary_price} د.أ</span>
-                    )}                  </li>
+                    )}
+                  </li>
                   <li className="list-group-item">التخصص: {summary.category_name}</li>
                   <li className="list-group-item">الجامعة: {summary.university_name}</li>
                   <li className="list-group-item">الناشر: {summary.summary_publisher}</li>

@@ -66,7 +66,7 @@ const getThreeSummaries = (req, res) => {
 
 
 // Get all universities for the home page
-const getAllUniversitiessection = (req, res) => {
+const getAllUniversitiesSection = (req, res) => {
   const query = 'SELECT * FROM universities';
 
   connection.query(query, (error, results) => {
@@ -163,12 +163,10 @@ const emailUsersCheck = (req, res) => {
 
 
 
-
-
 module.exports = {
   getArticlesHome,
   getCoursesSection,
   getThreeSummaries,
-  getAllUniversitiessection,
+  getAllUniversitiesSection,
   enrolledCourses,enrolledSummaries,getTheCountOfItems,emailUsersCheck
 };

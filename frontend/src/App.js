@@ -34,12 +34,17 @@ function App() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
 
+
   useEffect(() => {
     // Check if you've scrolled down more than 200 pixels
     const handleScroll = () => setShowBackToTop(window.scrollY > 200);
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Use a passive event listener to improve performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
 
@@ -293,12 +298,9 @@ function App() {
 
           <Route path="*" element={<Error404 />} />
 
-
-
         </Routes>
 
       </BrowserRouter>
-
 
 
 

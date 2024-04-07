@@ -26,7 +26,7 @@ function Article() {
     };
 
 
-// handle the search input when searching for article title or brief
+    // handle the search input when searching for article title or brief
     const handleSearch = async (e) => {
         const searchValue = e.target.value;
         setSearchQuery(searchValue);

@@ -21,7 +21,7 @@ const coursesAndsummaries=require('./routes/summaryAndCourses');
 
 
 const dotenv =require('dotenv');
-dotenv.config({path:'config.env'});
+dotenv.config({path:'.env'});
 const port = process.env.PORT;
 app.use(cors());
 app.use(express.json());
