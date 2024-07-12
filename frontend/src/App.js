@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
-import Nav from './components/nav';
+import Nav from './components/Navbar';
 import Footer from './components/footer';
 import CoursesAndSummaries from './components/CoursesAndSummaries';
 import Index from './components/index';
@@ -305,7 +305,7 @@ function App() {
 
 
       {showBackToTop && (
-        <a href="#" className="btn btn-md btn-primary back-to-top" >
+        <a href="#" className="btn btn-md btn-primary back-to-top rounded" >
           <i className="bi bi-arrow-up text-center"></i>
         </a>
       )}

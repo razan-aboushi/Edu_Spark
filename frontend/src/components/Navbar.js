@@ -16,7 +16,7 @@ import logo from '../img/KeepMeOnLogo.png';
 import '../css/style.css';
 
 
-function Nav() {
+function Navbar() {
     const [activeTab, setActiveTab] = useState('الرئيسية');
     const [isNavbarOpen, setIsNavbarOpen] = useState(false);
     const [userRole, setUserRole] = useState(0);
@@ -48,6 +48,7 @@ function Nav() {
             // Get the count of cart items for a specific user
             const response = await axios.get(`http://localhost:4000/cartItemsLength/${user_id}`);
             setItemCount(response.data);
+            fetchCartItems();
         } catch (error) {
             console.error('Error fetching cart items count:', error);
         }
@@ -228,4 +229,4 @@ function Nav() {
     );
 }
 
-export default Nav;
+export default Navbar;

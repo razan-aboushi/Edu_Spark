@@ -29,7 +29,9 @@ function Footer() {
                   <Link className="btnLinks btn-link" to="/Courses" target="_blank">
                     جميع الدورات
                   </Link>
-
+                  <Link className="btnLinks btn-link" to="/TermsOfService" target="_blank">
+                    الشروط و السياسات
+                  </Link>
                 </div>
                 <div className="col-lg-3 col-md-6 d-flex text-end" style={{ flexDirection: "column" }}>
                   <h4 className="text-white  text-end">روابط سريعة</h4>

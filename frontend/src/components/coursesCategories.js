@@ -32,6 +32,9 @@ function CoursesCategories() {
         setSearchTerm(event.target.value);
     };
 
+    const filteredCategories = categories.filter(category =>
+        category.category_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div>
@@ -79,8 +82,8 @@ function CoursesCategories() {
 
                     {/* Categories */}
                     <div className="row mt-5">
-                        {categories.length > 0 ? (
-                            categories.map((category) =>
+                        {filteredCategories.length > 0 ? (
+                            filteredCategories.map((category) =>
                                     category.category_name.toLowerCase().includes(searchTerm.toLowerCase()) && (
                                         <div className="col-lg-3 col-md-4 col-sm-12" key={category.category_id}>
                                             <div className="cardCategory my-2 wow fadeInUp" data-wow-delay="0.2s">

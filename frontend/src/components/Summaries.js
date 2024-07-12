@@ -318,7 +318,7 @@ function Summaries() {
                                             </li>
                                             <li className="list-group-item">
                                                 <i className="bi bi-person ms-2"></i>
-                                                الناشر: {summary.summary_publisher}
+                                                الناشر: {summary.publisher_name}
                                             </li>
                                         </ul>
                                     </div>
