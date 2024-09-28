@@ -19,7 +19,7 @@ import SummariesHome from './SummariesHome';
 import CoursesHome from './CoursesHome';
 import Swal from 'sweetalert2';
 
-function Index() {
+function Home({scrollElement}) {
     const [aboutUsData, setAboutUsData] = useState({});
 
     useEffect(() => {
@@ -36,7 +36,6 @@ function Index() {
             sessionStorage.setItem('hasVisited', true);
         }
     }, []);
-
 
     // Get about us data in the about or introduction section in home page
     useEffect(() => {
@@ -97,7 +96,6 @@ function Index() {
                             </div>
                         </div>
 
-
                         <div className="item">
                             <div className="header-carousel position-relative">
                                 <img
@@ -139,6 +137,7 @@ function Index() {
                 </div>
             </div>
 
+            <div ref={scrollElement}></div>
 
             {/* Features Start */}
 
@@ -464,4 +463,4 @@ function Index() {
     )
 }
 
-export default Index;
+export default Home;

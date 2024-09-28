@@ -16,11 +16,12 @@ import logo from '../img/KeepMeOnLogo.png';
 import '../css/style.css';
 
 
-function Navbar() {
+const Navbar = () => {
     const [activeTab, setActiveTab] = useState('الرئيسية');
     const [isNavbarOpen, setIsNavbarOpen] = useState(false);
     const [userRole, setUserRole] = useState(0);
     const [itemCount, setItemCount] = useState(0);
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 992);
     const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
@@ -80,7 +81,15 @@ function Navbar() {
 
     return (
         <div dir="ltr">
-            <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top p-0 shadow">
+            <nav
+                className={`navbar navbar-expand-lg navbar-light bg-white sticky-top p-0 shadow`}
+                style={isDesktop ? {
+                    position: 'fixed',
+                    top: 0,
+                    zIndex: 2,
+                    width: '100%',
+                } : {}}
+            >
                 <div className="container-fluid m-0 p-0">
                     <Link to={'/'} className="navbar-brand">
                         <img src={logo} alt="شعار إدوسبارك"/>

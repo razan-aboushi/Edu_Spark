@@ -155,40 +155,48 @@ function Article() {
 
             {/* Article posts list */}
             <div className="row gy-4 posts-list">
-                {currentArticles.map((article) => (
-                    <div className="col-lg-6 col-md-12 shadow border border-dark" key={article.article_id}>
-                        <article className="d-flex flex-column">
-                            <div className="post-img">
-                                <img src={`http://localhost:4000/images/${article.article_image}`} alt="صورة المقالة"
-                                     className="img-fluid" width="100%" height="290px"/>
+                {currentArticles.length > 0 ? (
+                    <>
+                        {currentArticles.map((article) => (
+                            <div className="col-lg-6 col-md-12 shadow border border-dark" key={article.article_id}>
+                                <article className="d-flex flex-column">
+                                    <div className="post-img">
+                                        <img src={`http://localhost:4000/images/${article.article_image}`}
+                                             alt="صورة المقالة"
+                                             className="img-fluid" width="100%" height="290px"/>
+                                    </div>
+                                    <h2 className="title">{article.article_title}</h2>
+                                    <div className="meta-top">
+                                        <ul>
+                                            <li className="d-flex align-items-center">
+                                                <i className="bi bi-clock ms-2"/>
+                                                <time dateTime={article.created_at}>
+                                                    {convertTimestampToDate(article.created_at)}
+                                                </time>
+                                            </li>
+                                            <li className="d-flex align-items-center">
+                                                <i className="bi bi-chat-dots ms-2"/>
+                                                <Link to="#"> {article.comments} تعليقات </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div className="content">
+                                        <p>{article.article_brief}</p>
+                                    </div>
+                                    <div className="ButtonSearch mt-auto align-self-start mt-5">
+                                        <HashLink to={`/ArticleDetails/${article.article_id}`}>إقرأ المزيد</HashLink>
+                                    </div>
+                                </article>
                             </div>
-                            <h2 className="title">{article.article_title}</h2>
-                            <div className="meta-top">
-                                <ul>
-                                    <li className="d-flex align-items-center">
-                                        <i className="bi bi-clock ms-2"/>
-                                        <time dateTime={article.created_at}>
-                                            {convertTimestampToDate(article.created_at)}
-                                        </time>
-                                    </li>
-                                    <li className="d-flex align-items-center">
-                                        <i className="bi bi-chat-dots ms-2"/>
-                                        <Link to="#"> {article.comments} تعليقات </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="content">
-                                <p>{article.article_brief}</p>
-                            </div>
-                            <div className="ButtonSearch mt-auto align-self-start mt-5">
-                                <HashLink to={`/ArticleDetails/${article.article_id}`}>إقرأ المزيد</HashLink>
-                            </div>
-                        </article>
-                    </div>
-                ))}
+                        ))}
+                    </>
+                ) : (
+                    <div className="d-flex justify-content-center align-items-center"
+                         style={{fontWeight: "bold", marginTop: '20px'}}>
+                        لا توجد مقالات بهذا العنوان أو الوصف</div>
+                )}
             </div>
             {/* End Article posts list */}
-
 
             {/* Article pagination */}
             <div className="d-flex justify-content-center mt-5">

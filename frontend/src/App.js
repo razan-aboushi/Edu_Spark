@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
 import Nav from './components/Navbar';
 import Footer from './components/footer';
 import CoursesAndSummaries from './components/CoursesAndSummaries';
-import Index from './components/index';
 import About from './components/about';
 import Faq from './components/faq';
 import Contact from './components/contact';
@@ -29,289 +28,288 @@ import AdminSideBar from "./admin/AdminSideBar";
 import UserProfileStudent from './student/UserProfileStudent';
 
 import UserProfileTeacher from './teacher/UserProfileTeacher';
+import useScrollListener from "./helpers/useScrollListener";
+import Home from "./components";
 
 function App() {
-  const [showBackToTop, setShowBackToTop] = useState(false);
+    const [showBackToTop, setShowBackToTop] = useState(false);
+    const {isScrolling, scrollElement} = useScrollListener();
 
 
+    useEffect(() => {
+        // Check if you've scrolled down more than 200 pixels
+        const handleScroll = () => setShowBackToTop(window.scrollY > 200);
 
-  useEffect(() => {
-    // Check if you've scrolled down more than 200 pixels
-    const handleScroll = () => setShowBackToTop(window.scrollY > 200);
+        // Use a passive event listener to improve performance
+        window.addEventListener('scroll', handleScroll, {passive: true});
 
-    // Use a passive event listener to improve performance
-    window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+
+    // Handle get the user role to give him authority
+    const [userRole, setUserRole] = useState(0);
+
+    const fetchUserData = async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwt_decode(token);
+            const roleId = decodedToken.role;
+            setUserRole(roleId);
+        } else {
+            setUserRole(0);
+        }
     };
-  }, []);
 
 
-  // Handle get the user role to give him authority
-  const [userRole, setUserRole] = useState(0);
-
-  const fetchUserData = async () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decodedToken = jwt_decode(token);
-      const roleId = decodedToken.role;
-      setUserRole(roleId);
-    }
-    else {
-      setUserRole(0);
-    }
-  };
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+    return (
+        <>
+            <BrowserRouter>
+                <Routes>
+
+                    {(userRole === 0 || userRole === 2 || userRole === 3) && (
+                        <>
+                            <Route
+                                path="/"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <Home scrollElement={scrollElement}/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
+
+                            <Route
+                                path="/about"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <About/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
+
+                            <Route
+                                path="/faq"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <Faq/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
+
+                            <Route
+                                path="/contact"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <Contact/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
+
+                            <Route
+                                path="/signUp"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <SignUp fetchUserData={fetchUserData}/>
+                                    </>
+                                }
+                            />
+
+                            <Route
+                                path="/Courses"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <Courses/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
+
+                            <Route
+                                path="/CoursesAndSummaries/:university_id/:category_id"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <CoursesAndSummaries/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
 
-  return (
-    <>
-      <BrowserRouter>
+                            <Route
+                                path="/University"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <University/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
-        <Routes>
+                            <Route
+                                path="/Summaries"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <Summaries/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
-          {(userRole === 0 || userRole === 2 || userRole === 3) && (
-            <>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Nav />
-                    <Index />
-                    <Footer />
-                  </>
-                }
-              />
+                            <Route
+                                path="/Article"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <Article/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
-              <Route
-                path="/about"
-                element={
-                  <>
-                    <Nav />
-                    <About />
-                    <Footer />
-                  </>
-                }
-              />
+                            <Route
+                                path="/ArticleDetails/:article_id"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <ArticleDetails/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
-              <Route
-                path="/faq"
-                element={
-                  <>
-                    <Nav />
-                    <Faq />
-                    <Footer />
-                  </>
-                }
-              />
+                            <Route
+                                path="/coursesCategories/:universityId"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <CoursesCategories/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
-              <Route
-                path="/contact"
-                element={
-                  <>
-                    <Nav />
-                    <Contact />
-                    <Footer />
-                  </>
-                }
-              />
+                            <Route
+                                path="/checkoutPayment"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <CheckoutPayment/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
-              <Route
-                path="/signUp"
-                element={
-                  <>
-                    <Nav />
-                    <SignUp fetchUserData={fetchUserData} />
-                  </>
-                }
-              />
+                            <Route
+                                path="/TermsOfService"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <TermsOfService/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
-              <Route
-                path="/Courses"
-                element={
-                  <>
-                    <Nav />
-                    <Courses />
-                    <Footer />
-                  </>
-                }
-              />
+                            <Route
+                                path="/CourseDetails/:course_id"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <CourseDetails/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
-              <Route
-                path="/CoursesAndSummaries/:university_id/:category_id"
-                element={
-                  <>
-                    <Nav />
-                    <CoursesAndSummaries />
-                    <Footer />
-                  </>
-                }
-              />
+                            <Route
+                                path="/SummaryDetails/:summaryId"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <SummaryDetails/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
 
+                            <Route
+                                path="/ResetPassword"
+                                element={
+                                    <>
+                                        <Nav/>
+                                        <ResetPassword/>
+                                        <Footer/>
+                                    </>
+                                }
+                            />
+                        </>
+                    )}
 
-              <Route
-                path="/University"
-                element={
-                  <>
-                    <Nav />
-                    <University />
-                    <Footer />
-                  </>
-                }
-              />
-
-              <Route
-                path="/Summaries"
-                element={
-                  <>
-                    <Nav />
-                    <Summaries />
-                    <Footer />
-                  </>
-                }
-              />
-
-              <Route
-                path="/Article"
-                element={
-                  <>
-                    <Nav />
-                    <Article />
-                    <Footer />
-                  </>
-                }
-              />
-
-              <Route
-                path="/ArticleDetails/:article_id"
-                element={
-                  <>
-                    <Nav />
-                    <ArticleDetails />
-                    <Footer />
-                  </>
-                }
-              />
-
-              <Route
-                path="/coursesCategories/:universityId"
-                element={
-                  <>
-                    <Nav />
-                    <CoursesCategories />
-                    <Footer />
-                  </>
-                }
-              />
-
-              <Route
-                path="/checkoutPayment"
-                element={
-                  <>
-                    <Nav />
-                    <CheckoutPayment />
-                    <Footer />
-                  </>
-                }
-              />
-
-              <Route
-                path="/TermsOfService"
-                element={
-                  <>
-                    <Nav />
-                    <TermsOfService />
-                    <Footer />
-                  </>
-                }
-              />
-
-              <Route
-                path="/CourseDetails/:course_id"
-                element={
-                  <>
-                    <Nav />
-                    <CourseDetails />
-                    <Footer />
-                  </>
-                }
-              />
-
-              <Route
-                path="/SummaryDetails/:summaryId"
-                element={
-                  <>
-                    <Nav />
-                    <SummaryDetails />
-                    <Footer />
-                  </>
-                }
-              />
-
-              <Route
-                path="/ResetPassword"
-                element={
-                  <>
-                    <Nav />
-                    <ResetPassword />
-                    <Footer />
-                  </>
-                }
-              />
-            </>
-          )}
-
-          <Route
-            path="/LogIn"
-            element={
-              <>
-                <Nav />
-                <LogIn fetchUserData={fetchUserData} />
-              </>
-            } />
+                    <Route
+                        path="/LogIn"
+                        element={
+                            <>
+                                <Nav/>
+                                <LogIn fetchUserData={fetchUserData}/>
+                            </>
+                        }/>
 
 
-          {/* Routes for admin roles */}
-          {userRole === 1 && (
-            <Route
-              path="/AdminSideBar"
-              element={<AdminSideBar fetchUserData={fetchUserData} />} />
-          )}
+                    {/* Routes for admin roles */}
+                    {userRole === 1 && (
+                        <Route
+                            path="/AdminSideBar"
+                            element={<AdminSideBar fetchUserData={fetchUserData}/>}/>
+                    )}
 
-          {/* Routes for student profile */}
-          {userRole === 2 && (
-            <Route path="/UserProfileStudent" element={<UserProfileStudent />} />)}
+                    {/* Routes for student profile */}
+                    {userRole === 2 && (
+                        <Route path="/UserProfileStudent" element={<UserProfileStudent/>}/>)}
 
-          {/* Routes for teacher profile */}
-          {userRole === 3 && (
-            <Route
-              path="/UserProfileTeacher"
-              element={
-                <UserProfileTeacher />}
-            />)}
-
-
-          <Route path="*" element={<Error404 />} />
-
-        </Routes>
-
-      </BrowserRouter>
+                    {/* Routes for teacher profile */}
+                    {userRole === 3 && (
+                        <Route
+                            path="/UserProfileTeacher"
+                            element={
+                                <UserProfileTeacher/>}
+                        />)}
 
 
+                    <Route path="*" element={<Error404/>}/>
 
-      {showBackToTop && (
-        <a href="#" className="btn btn-md btn-primary back-to-top rounded" >
-          <i className="bi bi-arrow-up text-center"></i>
-        </a>
-      )}
+                </Routes>
 
-    </>
-  );
+            </BrowserRouter>
+
+
+            {showBackToTop && (
+                <a href="#" className="btn btn-md btn-primary back-to-top rounded">
+                    <i className="bi bi-arrow-up text-center"></i>
+                </a>
+            )}
+
+        </>
+    );
 }
 
 export default App;
