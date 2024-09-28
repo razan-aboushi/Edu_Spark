@@ -5,7 +5,7 @@ const connection = mysql.createPool({
     connectionLimit: 10,
     host: '127.0.0.1',
     user: 'razanaboushi',
-    password: 'Razan$123456',
+    password: 'razanaboushi',
     database: 'EduSpark',
   });
   
